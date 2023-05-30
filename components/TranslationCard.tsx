@@ -68,7 +68,7 @@ export default function TranslationCard({
         {/* 1,234 글자 */}
       </div>
 
-      <div className="mb-[16px] font-[400] text-[14px] leading-[21px] tracking-[-0.006em] flex justify-between items-center">
+      <div className="font-[400] text-[14px] leading-[21px] tracking-[-0.006em] flex justify-between items-center">
         <div className="flex gap-[4px] justify-center items-center">
           <span>받은 견적</span>
           <span>{quotations}</span>

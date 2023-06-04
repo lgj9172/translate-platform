@@ -14,7 +14,7 @@ interface TranslationCardProps {
 
 export default function TranslationCard({
   translation: {
-    category,
+    categories,
     language,
     end_time,
     desired_fee,
@@ -30,7 +30,7 @@ export default function TranslationCard({
     <div className="p-[20px]">
       <div className="mb-[12px] flex justify-between">
         <div className="flex gap-[4px]">
-          {category.map((category) => (
+          {categories.map((category) => (
             <div className="h-[22px] px-[12px] py-[2px] bg-[#E7EFFF] flex justify-center items-center rounded-[16px] font-[700] text-[12px] leading-[18px] tracking-[-0.004em]">
               {getCategoryLabel(category)}
             </div>

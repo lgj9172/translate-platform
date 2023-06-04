@@ -29,7 +29,7 @@ export interface Translation {
   id: string;
   title: string;
   description: string;
-  category: string[];
+  categories: string[];
   language: Language;
   file: File;
   quantity: Quantity;

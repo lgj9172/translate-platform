@@ -1,13 +1,31 @@
-import { ClientWithAuth } from "./clients";
+import { ClientWithAuth, Response } from "./clients";
 
 export interface Language {
-  source: string;
-  target: string;
+  source:
+    | "ko-KR"
+    | "en-US"
+    | "ja-JP"
+    | "zh-CN"
+    | "ar-SA"
+    | "ru-RU"
+    | "es-ES"
+    | "fr-FR"
+    | "de-DE";
+  target:
+    | "ko-KR"
+    | "en-US"
+    | "ja-JP"
+    | "zh-CN"
+    | "ar-SA"
+    | "ru-RU"
+    | "es-ES"
+    | "fr-FR"
+    | "de-DE";
 }
 
 export interface File {
   id: string;
-  type: string;
+  type: "PPT" | "WORD" | "TEXT";
   url: string;
   char_with_blank: number;
   char_without_blank: number;
@@ -15,13 +33,13 @@ export interface File {
 }
 
 export interface Quantity {
-  unit: string;
+  unit: "CHAR" | "WORD";
   value: number;
   blank: boolean;
 }
 
 export interface DesiredFee {
-  unit: string;
+  unit: "KRW" | "USD";
   value: number;
 }
 
@@ -29,7 +47,18 @@ export interface Translation {
   id: string;
   title: string;
   description: string;
-  categories: string[];
+  categories: Array<
+    | "IT"
+    | "FINANCE"
+    | "CONTENTS"
+    | "GAME"
+    | "LAW"
+    | "MEDICAL"
+    | "CONSTRUCTION"
+    | "MARKETING"
+    | "LITERATURE"
+    | "ETC"
+  >;
   language: Language;
   file: File;
   quantity: Quantity;
@@ -41,6 +70,8 @@ export interface Translation {
 }
 
 export const getTranslations = async () => {
-  const response = await ClientWithAuth.get<Translation[]>("/translations");
-  return response.data;
+  const response = await ClientWithAuth.get<Response<Translation[]>>(
+    "/translations"
+  );
+  return response.data.data;
 };

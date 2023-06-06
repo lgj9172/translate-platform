@@ -7,3 +7,9 @@ export const ClientWithAuth = axios.create({
 export const ClientWithoutAuth = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
 });
+
+export interface Response<T> {
+  code: number;
+  message: string;
+  data: T;
+}

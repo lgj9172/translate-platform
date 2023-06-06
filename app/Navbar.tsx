@@ -34,7 +34,7 @@ export default function Navbar() {
         >
           공지사항
         </Link>
-        <button onClick={handleClickProfile}>
+        <button type="button" onClick={handleClickProfile}>
           <PersonIcon />
         </button>
       </div>

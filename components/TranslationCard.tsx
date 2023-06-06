@@ -1,12 +1,12 @@
-import { Translation } from "@/apis/translations";
+import HeartIcon from "@assets/icons/heart.svg";
+import PPTIcon from "@assets/icons/ppt.svg";
+import { NumericFormat } from "react-number-format";
 import {
   getCategoryLabel,
   getDday,
   getLanguageLabel,
 } from "@/utils/converter/label";
-import HeartIcon from "@assets/icons/heart.svg";
-import PPTIcon from "@assets/icons/ppt.svg";
-import { NumericFormat } from "react-number-format";
+import { Translation } from "@/apis/translations";
 
 interface TranslationCardProps {
   translation: Translation;
@@ -52,11 +52,8 @@ export default function TranslationCard({
             thousandSeparator=","
           />
           <span>
-            {desired_fee.unit === "KRW"
-              ? "원"
-              : desired_fee.unit === "USD"
-              ? "달러"
-              : ""}
+            {desired_fee.unit === "KRW" && "원"}
+            {desired_fee.unit === "USD" && "달러"}
           </span>
         </div>
       </div>
@@ -78,11 +75,8 @@ export default function TranslationCard({
             thousandSeparator=","
           />
           <span>
-            {quantity.unit === "CHAR"
-              ? "글자"
-              : quantity.unit === "WORD"
-              ? "단어"
-              : ""}
+            {quantity.unit === "CHAR" && "글자"}
+            {quantity.unit === "WORD" && "단어"}
           </span>
         </span>
       </div>

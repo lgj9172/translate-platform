@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="container mx-auto flex flex-col">
+          <div className="h-screen container mx-auto flex flex-col">
             <Navbar />
             {children}
           </div>

@@ -1,9 +1,9 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { getTranslations } from "@/apis/translations";
 import Carousel from "@/components/Carousel";
 import TranslationCard from "@/components/TranslationCard";
-import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
   const { data: translations } = useQuery({
@@ -19,7 +19,10 @@ export default function Home() {
         <span className="font-[700] text-[20px] leading-[30px] tracking-[-0.005em]">
           번역 대기중
         </span>
-        <button className="px-[14px] py-[7px] bg-[#F0F0F0] rounded-[8px] font-[700] text-[12px] leading-[19px] tracking-[-0.004em] text-[#787878]">
+        <button
+          type="button"
+          className="px-[14px] py-[7px] bg-[#F0F0F0] rounded-[8px] font-[700] text-[12px] leading-[19px] tracking-[-0.004em] text-[#787878]"
+        >
           필터
         </button>
       </div>

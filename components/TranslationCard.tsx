@@ -44,14 +44,20 @@ export default function TranslationCard({
             {getDday(end_time)}
           </div>
         </div>
-        <div className="font-[700] text-[16px] leading-[18px] tracking-[-0.006em] text-[#4677F4]">
+        <div className="font-[700] text-[16px] leading-[18px] tracking-[-0.006em] text-primary flex items-center">
           <NumericFormat
             displayType="text"
             value={desired_fee.value}
             thousandsGroupStyle="thousand"
             thousandSeparator=","
-            suffix={` ${desired_fee.unit}`}
           />
+          <span>
+            {desired_fee.unit === "KRW"
+              ? "원"
+              : desired_fee.unit === "USD"
+              ? "달러"
+              : ""}
+          </span>
         </div>
       </div>
       <div className="mb-[4px] font-[700] text-[16px] leading-[24px] tracking-[-0.004em]">
@@ -63,9 +69,22 @@ export default function TranslationCard({
       </div>
 
       <div className="mb-[16px] font-[400] text-[14px] leading-[18px] tracking-[-0.006em] text-[#4D4D4D] flex items-center gap-[8px]">
-        <PPTIcon />
-        {file.type} {quantity.value} {quantity.unit}
-        {/* 1,234 글자 */}
+        {file.type === "PPT" ? <PPTIcon /> : ""}
+        <span>
+          <NumericFormat
+            displayType="text"
+            value={quantity.value}
+            thousandsGroupStyle="thousand"
+            thousandSeparator=","
+          />
+          <span>
+            {quantity.unit === "CHAR"
+              ? "글자"
+              : quantity.unit === "WORD"
+              ? "단어"
+              : ""}
+          </span>
+        </span>
       </div>
 
       <div className="font-[400] text-[14px] leading-[21px] tracking-[-0.006em] flex justify-between items-center">

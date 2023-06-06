@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: "#FF824C",
+      },
       fontFamily: {
         sans: ["Spoqa Han Sans", "sans-serif"],
       },

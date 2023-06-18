@@ -6,7 +6,7 @@ import Carousel from "@/components/Carousel";
 import TranslationCard from "@/components/TranslationCard";
 
 export default function Home() {
-  const { data: translations } = useQuery({
+  const { data } = useQuery({
     queryKey: ["translations"],
     queryFn: getTranslations,
   });
@@ -28,7 +28,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col divide-y">
-        {translations?.map((translation) => (
+        {data?.results?.map((translation) => (
           <TranslationCard key={translation.id} translation={translation} />
         ))}
       </div>

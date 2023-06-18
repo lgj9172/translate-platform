@@ -1,4 +1,4 @@
-import { ClientWithAuth, Response } from "./clients";
+import { ClientWithAuth, Pagenation, Response } from "./clients";
 
 export interface Language {
   source:
@@ -70,7 +70,7 @@ export interface Translation {
 }
 
 export const getTranslations = async () => {
-  const response = await ClientWithAuth.get<Response<Translation[]>>(
+  const response = await ClientWithAuth.get<Response<Pagenation<Translation>>>(
     "/translations"
   );
   return response.data.data;

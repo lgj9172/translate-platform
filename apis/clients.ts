@@ -13,3 +13,11 @@ export interface Response<T> {
   message: string;
   data: T;
 }
+
+export interface Pagenation<T> {
+  results: T[];
+  page: number;
+  size: number;
+  total_pages: number;
+  total_items: number;
+}

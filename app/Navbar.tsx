@@ -53,10 +53,10 @@ export default function Navbar() {
             나의 요청
           </Link>
           <Link
-            href="/signout"
+            href="/signin"
             className="font-[400] text-[14px] leading-[18px] tracking-[-0.004em] text-[#4F535A]"
           >
-            로그아웃
+            로그인
           </Link>
         </div>
       )}

@@ -17,9 +17,7 @@ export default function Index() {
     queryFn: () =>
       ClientWithoutAuth.post(url, {
         redirection_uri: process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI,
-        code: `${
-          true ? process.env.NEXT_PUBLIC_NAVER_FAKE_RESPONSE_CODE : code
-        }`,
+        code,
       }),
   });
 

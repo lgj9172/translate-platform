@@ -1,6 +1,7 @@
 "use client";
 
 import PersonIcon from "@assets/icons/person.svg";
+import { Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -14,11 +15,10 @@ export default function Navbar() {
   return (
     <div className="relative p-[20px] flex justify-between items-center z-10">
       <div className="flex">
-        <Link
-          href="/"
-          className="w-[100px] h-[24px] bg-[#D9D9D9] flex justify-center items-center"
-        >
-          Fluence
+        <Link href="/" className="flex justify-center items-center">
+          <Heading size="sm" color="orange.500">
+            Fluence
+          </Heading>
         </Link>
       </div>
       <div className="flex gap-[16px] items-center">

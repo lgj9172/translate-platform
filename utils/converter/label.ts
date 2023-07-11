@@ -17,9 +17,7 @@ const category2label: KeyValueMap = {
   ETC: "기타",
 };
 
-export const getCategoryLabel = (key: string) => {
-  return category2label[key];
-};
+export const getCategoryLabel = (key: string) => category2label[key];
 
 const language2label: KeyValueMap = {
   "ko-KR": "한국어",
@@ -32,10 +30,7 @@ const language2label: KeyValueMap = {
   "fr-FR": "프랑스어",
   "de-DE": "독일어",
 };
-export const getLanguageLabel = (key: string) => {
-  return language2label[key];
-};
+export const getLanguageLabel = (key: string) => language2label[key];
 
-export const getDday = (date: string) => {
-  return `D-${Math.max(0, dayjs(date).diff(dayjs(), "day"))}`;
-};
+export const getDday = (date: string) =>
+  `D-${Math.max(0, dayjs(date).diff(dayjs(), "day"))}`;

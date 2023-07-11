@@ -24,7 +24,7 @@ export default function Typography({
   align = "left",
 }: TypographyProps) {
   return (
-    <p
+    <div
       className={classNames({
         "font-[400]": !bold,
         "font-[700]": bold,
@@ -43,6 +43,6 @@ export default function Typography({
       })}
     >
       {children}
-    </p>
+    </div>
   );
 }

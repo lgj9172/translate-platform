@@ -31,7 +31,9 @@ export default function TranslationCard({
       <div className="mb-[12px] flex justify-between">
         <div className="flex gap-[4px]">
           {categories.map((category) => (
-            <Badge color="blue">{getCategoryLabel(category)}</Badge>
+            <Badge key={category} color="blue">
+              {getCategoryLabel(category)}
+            </Badge>
           ))}
           <Badge color="black">
             {`${getLanguageLabel(language.source)[0]}${

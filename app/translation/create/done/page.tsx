@@ -12,7 +12,7 @@ export default function Index() {
   };
 
   return (
-    <Stack h="full">
+    <Stack h="full" p={8}>
       <Center flexGrow={1}>
         <Stack alignItems="center">
           <CheckCircleIcon fontSize="4xl" color="orange.500" />

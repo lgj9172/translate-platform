@@ -195,7 +195,7 @@ export default function Index() {
       <Stack w="full" h="full" p={8} gap={8}>
         <Heading>번역요청하기</Heading>
 
-        <FormControl isInvalid={!!errors.title?.message}>
+        <FormControl isInvalid={!!errors.title?.message} isRequired>
           <FormLabel mb={0} fontSize="xl">
             제목
           </FormLabel>
@@ -210,6 +210,7 @@ export default function Index() {
           isInvalid={
             !!errors.sourceLanguage?.message || !!errors.targetLanguage?.message
           }
+          isRequired
         >
           <FormLabel mb={0} fontSize="xl">
             언어
@@ -252,7 +253,7 @@ export default function Index() {
           <FormErrorMessage>{errors.targetLanguage?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.categories?.message}>
+        <FormControl isInvalid={!!errors.categories?.message} isRequired>
           <FormLabel mb={0} fontSize="xl">
             분야
           </FormLabel>
@@ -315,6 +316,7 @@ export default function Index() {
             !!errors.translationFile?.message ||
             !!errors.translationText?.message
           }
+          isRequired
         >
           <FormLabel mb={0} fontSize="xl">
             요청자료
@@ -378,7 +380,7 @@ export default function Index() {
           <FormErrorMessage>{errors.sample?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.endDateTime?.message}>
+        <FormControl isInvalid={!!errors.endDateTime?.message} isRequired>
           <FormLabel mb={0} fontSize="xl">
             마감일시
           </FormLabel>
@@ -405,7 +407,7 @@ export default function Index() {
           <FormErrorMessage>{errors.endDateTime?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.desiredFeeValue?.message}>
+        <FormControl isInvalid={!!errors.desiredFeeValue?.message} isRequired>
           <FormLabel mb={0} fontSize="xl">
             예상 번역료
           </FormLabel>

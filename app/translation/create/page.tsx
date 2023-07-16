@@ -14,6 +14,7 @@ import {
   Checkbox,
   CheckboxGroup,
   FormControl,
+  FormErrorMessage,
   FormHelperText,
   FormLabel,
   Grid,
@@ -40,27 +41,78 @@ import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import DatePicker from "react-datepicker";
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-const PostTranslationFormSchema = z.object({
-  title: z.string(),
-  sourceLanguage: z.enum(Language),
-  targetLanguage: z.enum(Language),
-  categories: z.array(z.enum(Category)),
-  description: z.string(),
-  translationFileFormat: z.number(),
-  translationFile: z.any().transform((files) => files[0]),
-  translationText: z.string(),
-  sample: z.string(),
-  endDateTime: z.date(),
-  desiredFeeValue: z.preprocess(Number, z.number()),
-});
+const PostTranslationFormSchema = z
+  .object({
+    title: z.string().min(1, "제목을 입력해 주세요."),
+    sourceLanguage: z.enum(Language, {
+      errorMap: () => ({
+        message: "번역하고 싶은 문서의 언어를 선택해 주세요.",
+      }),
+    }),
+    targetLanguage: z.enum(Language, {
+      errorMap: () => ({
+        message: "어떤 언어로 번역되어야 하는지 선택해 주세요.",
+      }),
+    }),
+    categories: z
+      .array(z.enum(Category))
+      .refine((value) => value.length > 0, "분야를 1개 이상 선택해 주세요.")
+      .refine(
+        (value) => value.length <= 2,
+        "분야는 최대 2개까지만 선택 할 수 있어요.",
+      ),
+    description: z.string(),
+    translationFileFormat: z.number(),
+    translationFile: z.any().transform((files) => files[0]),
+    translationText: z.string(),
+    sample: z.string(),
+    endDateTime: z
+      .date()
+      .refine(
+        (value) => dayjs().isBefore(value),
+        "현재보다 이후 시간을 지정해 주세요.",
+      ),
+    desiredFeeValue: z
+      .string()
+      .refine(
+        (value) => Number.isInteger(Number(value)),
+        "입력된 번역료를 다시 확인해주세요.",
+      )
+      .refine(
+        (value) => Number(value) > 0,
+        "입력된 번역료를 다시 확인해주세요.",
+      ),
+  })
+  .refine(
+    ({ sourceLanguage, targetLanguage }) => sourceLanguage !== targetLanguage,
+    {
+      message: "원문과 번역문의 언어를 다르게 선택해 주세요.",
+      path: ["targetLanguage"],
+    },
+  )
+  .refine(
+    ({ translationFileFormat, translationFile }) => {
+      if (translationFileFormat === 0) return !!translationFile;
+      return true;
+    },
+    {
+      message: "원문 파일을 선택해 주세요.",
+      path: ["translationFile"],
+    },
+  )
+  .refine(
+    ({ translationFileFormat, translationText }) => {
+      if (translationFileFormat === 1) return !!translationText;
+      return true;
+    },
+    {
+      message: "원문을 입력해 주세요.",
+      path: ["translationText"],
+    },
+  );
 
 type PostTranslationFormType = z.infer<typeof PostTranslationFormSchema>;
 
@@ -75,15 +127,21 @@ const PostTranslationFormDefaultValue: PostTranslationFormType = {
   translationText: "",
   sample: "",
   endDateTime: dayjs().toDate(),
-  desiredFeeValue: 0,
+  desiredFeeValue: "0",
 };
 
 export default function Index() {
   const router = useRouter();
 
-  const { register, control, handleSubmit } = useForm<PostTranslationFormType>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PostTranslationFormType>({
     resolver: zodResolver(PostTranslationFormSchema),
     defaultValues: PostTranslationFormDefaultValue,
+    mode: "onChange",
   });
 
   const { mutateAsync: mutatePostTranslationFile, isLoading: isLoading1 } =
@@ -125,26 +183,19 @@ export default function Index() {
       description,
       fileId,
       endDateTime: endDateTime.toUTCString(),
-      desiredFeeValue,
+      desiredFeeValue: Number(desiredFeeValue),
       desiredFeeUnit: "KRW",
       sample,
     });
     router.push("/translation/create/done");
   };
 
-  const handleInvalidInputs: SubmitErrorHandler<PostTranslationFormType> = (
-    error,
-  ) => {
-    const [[, { message }]] = Object.entries(error);
-    console.log(message);
-  };
-
   return (
-    <form onSubmit={handleSubmit(handleClickCreate, handleInvalidInputs)}>
+    <form onSubmit={handleSubmit(handleClickCreate)}>
       <Stack w="full" h="full" p={8} gap={8}>
         <Heading>번역요청하기</Heading>
 
-        <FormControl>
+        <FormControl isInvalid={!!errors.title?.message}>
           <FormLabel mb={0} fontSize="xl">
             제목
           </FormLabel>
@@ -152,14 +203,19 @@ export default function Index() {
             번역가들이 어떤 번역요청인지 알수 있도록 제목을 간단하게 적어주세요.
           </FormHelperText>
           <Input {...register("title")} focusBorderColor="orange" />
+          <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl
+          isInvalid={
+            !!errors.sourceLanguage?.message || !!errors.targetLanguage?.message
+          }
+        >
           <FormLabel mb={0} fontSize="xl">
             언어
           </FormLabel>
           <FormHelperText mt={0} mb={2}>
-            어떤 언어에서 어떤 언어로 번역이 필요한가요?
+            원문과 번역문의 언어를 선택해 주세요.
           </FormHelperText>
           <Grid templateColumns="repeat(7, 1fr)" gap={6}>
             <GridItem colSpan={3}>
@@ -167,6 +223,7 @@ export default function Index() {
                 {...register("sourceLanguage")}
                 focusBorderColor="orange"
                 placeholder="원문 언어"
+                isInvalid={!!errors.sourceLanguage?.message}
               >
                 <option value="ko-KR">한국어</option>
                 <option value="en-US">영어</option>
@@ -182,7 +239,8 @@ export default function Index() {
               <Select
                 {...register("targetLanguage")}
                 focusBorderColor="orange"
-                placeholder="번역 언어"
+                placeholder="번역문 언어"
+                isInvalid={!!errors.targetLanguage?.message}
               >
                 <option value="ko-KR">한국어</option>
                 <option value="en-US">영어</option>
@@ -190,9 +248,11 @@ export default function Index() {
               </Select>
             </GridItem>
           </Grid>
+          <FormErrorMessage>{errors.sourceLanguage?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.targetLanguage?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl isInvalid={!!errors.categories?.message}>
           <FormLabel mb={0} fontSize="xl">
             분야
           </FormLabel>
@@ -233,9 +293,10 @@ export default function Index() {
               </Checkbox>
             </SimpleGrid>
           </CheckboxGroup>
+          <FormErrorMessage>{errors.categories?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl isInvalid={!!errors.description?.message}>
           <FormLabel mb={0} fontSize="xl">
             세부요청
           </FormLabel>
@@ -246,9 +307,15 @@ export default function Index() {
             {...register("description")}
             focusBorderColor="orange"
           />
+          <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl
+          isInvalid={
+            !!errors.translationFile?.message ||
+            !!errors.translationText?.message
+          }
+        >
           <FormLabel mb={0} fontSize="xl">
             요청자료
           </FormLabel>
@@ -274,13 +341,21 @@ export default function Index() {
                       colorScheme="orange"
                       type="file"
                       accept=".ppt,.pptx,.doc,.docx,.hwp,.txt"
+                      isInvalid={!!errors.translationFile?.message}
                     />
+                    <FormErrorMessage>
+                      {errors.translationFile?.message?.toString()}
+                    </FormErrorMessage>
                   </TabPanel>
                   <TabPanel>
                     <AutoResizeTextarea
                       {...register("translationText")}
                       focusBorderColor="orange"
+                      isInvalid={!!errors.translationText?.message}
                     />
+                    <FormErrorMessage>
+                      {errors.translationText?.message}
+                    </FormErrorMessage>
                   </TabPanel>
                 </TabPanels>
               </Tabs>
@@ -288,7 +363,7 @@ export default function Index() {
           />
         </FormControl>
 
-        <FormControl>
+        <FormControl isInvalid={!!errors.sample?.message}>
           <FormLabel mb={0} fontSize="xl">
             원문 샘플
           </FormLabel>
@@ -300,9 +375,10 @@ export default function Index() {
             {...register("sample")}
             focusBorderColor="orange"
           />
+          <FormErrorMessage>{errors.sample?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl isInvalid={!!errors.endDateTime?.message}>
           <FormLabel mb={0} fontSize="xl">
             마감일시
           </FormLabel>
@@ -326,9 +402,10 @@ export default function Index() {
               />
             )}
           />
+          <FormErrorMessage>{errors.endDateTime?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl isInvalid={!!errors.desiredFeeValue?.message}>
           <FormLabel mb={0} fontSize="xl">
             예상 번역료
           </FormLabel>
@@ -344,6 +421,7 @@ export default function Index() {
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
+          <FormErrorMessage>{errors.desiredFeeValue?.message}</FormErrorMessage>
         </FormControl>
 
         <HStack justifyContent="center" py="8">
@@ -353,6 +431,7 @@ export default function Index() {
             colorScheme="orange"
             w="full"
             size="lg"
+            // isDisabled={!isValid}
           >
             다음
           </Button>

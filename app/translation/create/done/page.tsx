@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Button, Center, HStack, Input, Stack, Text } from "@chakra-ui/react";
+import { Button, Center, HStack, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
 export default function Index() {

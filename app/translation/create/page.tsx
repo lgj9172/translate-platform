@@ -144,17 +144,23 @@ export default function Index() {
     mode: "onChange",
   });
 
-  const { mutateAsync: mutatePostTranslationFile, isLoading: isLoading1 } =
-    useMutation({
-      mutationFn: postTranslationFile,
-    });
+  const {
+    mutateAsync: mutatePostTranslationFile,
+    isLoading: isLoading1,
+    isSuccess: isSuccess1,
+  } = useMutation({
+    mutationFn: postTranslationFile,
+  });
 
-  const { mutateAsync: mutatePostTranslation, isLoading: isLoading2 } =
-    useMutation({
-      mutationFn: postTranslation,
-    });
+  const {
+    mutateAsync: mutatePostTranslation,
+    isLoading: isLoading2,
+    isSuccess: isSuccess2,
+  } = useMutation({
+    mutationFn: postTranslation,
+  });
 
-  const isLoading = isLoading1 || isLoading2;
+  const isLoading = isLoading1 || isLoading2 || (isSuccess1 && isSuccess2);
 
   const handleClickCreate: SubmitHandler<PostTranslationFormType> = async ({
     title,
@@ -195,7 +201,7 @@ export default function Index() {
       <Stack w="full" h="full" p={8} gap={8}>
         <Heading>번역요청하기</Heading>
 
-        <FormControl isInvalid={!!errors.title?.message} isRequired>
+        <FormControl isInvalid={!!errors.title?.message}>
           <FormLabel mb={0} fontSize="xl">
             제목
           </FormLabel>
@@ -210,7 +216,6 @@ export default function Index() {
           isInvalid={
             !!errors.sourceLanguage?.message || !!errors.targetLanguage?.message
           }
-          isRequired
         >
           <FormLabel mb={0} fontSize="xl">
             언어
@@ -253,7 +258,7 @@ export default function Index() {
           <FormErrorMessage>{errors.targetLanguage?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.categories?.message} isRequired>
+        <FormControl isInvalid={!!errors.categories?.message}>
           <FormLabel mb={0} fontSize="xl">
             분야
           </FormLabel>
@@ -316,7 +321,6 @@ export default function Index() {
             !!errors.translationFile?.message ||
             !!errors.translationText?.message
           }
-          isRequired
         >
           <FormLabel mb={0} fontSize="xl">
             요청자료
@@ -337,7 +341,7 @@ export default function Index() {
                   <Tab>직접 입력하기</Tab>
                 </TabList>
                 <TabPanels>
-                  <TabPanel>
+                  <TabPanel px={0}>
                     <Input
                       {...register("translationFile")}
                       colorScheme="orange"
@@ -349,7 +353,7 @@ export default function Index() {
                       {errors.translationFile?.message?.toString()}
                     </FormErrorMessage>
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel px={0}>
                     <AutoResizeTextarea
                       {...register("translationText")}
                       focusBorderColor="orange"
@@ -380,7 +384,7 @@ export default function Index() {
           <FormErrorMessage>{errors.sample?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.endDateTime?.message} isRequired>
+        <FormControl isInvalid={!!errors.endDateTime?.message}>
           <FormLabel mb={0} fontSize="xl">
             마감일시
           </FormLabel>
@@ -407,7 +411,7 @@ export default function Index() {
           <FormErrorMessage>{errors.endDateTime?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.desiredFeeValue?.message} isRequired>
+        <FormControl isInvalid={!!errors.desiredFeeValue?.message}>
           <FormLabel mb={0} fontSize="xl">
             예상 번역료
           </FormLabel>

@@ -15,6 +15,7 @@ interface TypographyProps {
   children: ReactNode;
   bold?: boolean;
   align?: "left" | "right" | "center";
+  color?: "inherit" | "black" | "primary";
 }
 
 export default function Typography({
@@ -22,6 +23,7 @@ export default function Typography({
   children,
   bold = false,
   align = "left",
+  color = "inherit",
 }: TypographyProps) {
   return (
     <div
@@ -40,6 +42,9 @@ export default function Typography({
         "text-[20px] tracking-[-0.5] leading-[30px]": type === "title-20",
         "text-[24px] tracking-[-0.6] leading-[40px]": type === "title-24",
         "text-[28px] tracking-[-0.8] leading-[48px]": type === "title-28",
+        "text-inherit": color === "inherit",
+        "text-black": color === "black",
+        "text-primary": color === "primary",
       })}
     >
       {children}

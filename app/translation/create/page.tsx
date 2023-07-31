@@ -40,6 +40,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import DatePicker from "react-datepicker";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -131,6 +132,15 @@ const PostTranslationFormDefaultValue: PostTranslationFormType = {
 };
 
 export default function Index() {
+  const languageOptions = useMemo(
+    () => [
+      { label: "한국어", value: "ko-KR" },
+      { label: "영어", value: "en-US" },
+      { label: "일본어", value: "ja-JP" },
+    ],
+    [],
+  );
+
   const router = useRouter();
 
   const {
@@ -231,9 +241,11 @@ export default function Index() {
                 placeholder="원문 언어"
                 isInvalid={!!errors.sourceLanguage?.message}
               >
-                <option value="ko-KR">한국어</option>
-                <option value="en-US">영어</option>
-                <option value="ja-JP">일본어</option>
+                {languageOptions.map((laguageOption) => (
+                  <option value={laguageOption.value}>
+                    {laguageOption.label}
+                  </option>
+                ))}
               </Select>
             </GridItem>
             <GridItem>
@@ -248,9 +260,11 @@ export default function Index() {
                 placeholder="번역문 언어"
                 isInvalid={!!errors.targetLanguage?.message}
               >
-                <option value="ko-KR">한국어</option>
-                <option value="en-US">영어</option>
-                <option value="ja-JP">일본어</option>
+                {languageOptions.map((laguageOption) => (
+                  <option value={laguageOption.value}>
+                    {laguageOption.label}
+                  </option>
+                ))}
               </Select>
             </GridItem>
           </Grid>

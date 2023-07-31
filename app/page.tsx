@@ -2,20 +2,20 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Button, HStack } from "@chakra-ui/react";
+import { Button, HStack, Spinner } from "@chakra-ui/react";
 import { getTranslations } from "@/apis/translations";
 import Carousel from "@/components/Carousel";
 import TranslationCard from "@/components/TranslationCard";
 
 export default function Home() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["translations"],
     queryFn: getTranslations,
   });
 
   return (
     <div className="flex flex-col">
-      <Carousel />
+      {/* <Carousel /> */}
 
       <div className="h-[53px] mx-[20px] flex justify-between items-end">
         <HStack>
@@ -38,10 +38,12 @@ export default function Home() {
         </HStack>
       </div>
 
+      
+      {isLoading && <div className="h-80 flex justify-center items-center"><Spinner color="orange"/></div>}
       <div className="flex flex-col divide-y">
         {data?.results?.map((translation) => (
           <TranslationCard key={translation.id} translation={translation} />
-        )) ?? null}
+        ))}
       </div>
     </div>
   );

@@ -7,15 +7,16 @@ import {
   useState,
 } from "react";
 import Typography from "./Typography";
+import Checkbox from "./Checkbox";
 
 interface Props {
   options: { label: string; value: string; disabled?: boolean }[];
-  value: string;
-  onChange: (value: string) => void;
+  value: string[];
+  onChange?: (value: string[]) => void;
   placeholder?: string;
 }
 
-const SelectBox = forwardRef(
+const MultipleSelectBox = forwardRef(
   (
     { options, value, onChange, placeholder = "" }: Props,
     ref: Ref<HTMLButtonElement>,
@@ -31,8 +32,10 @@ const SelectBox = forwardRef(
     };
 
     const handleClickOption = (v: string) => {
-      onChange(v);
-      setOpen(false);
+      const updatedValue = value.includes(v)
+        ? value.filter((e) => e !== v)
+        : [...value, v];
+      if (onChange) onChange(updatedValue);
     };
 
     useEffect(() => {
@@ -57,44 +60,39 @@ const SelectBox = forwardRef(
           className="flex items-center"
         >
           <Typography type="body-16">
-            {options.find((option) => option.value === value)?.label ??
-              placeholder}
+            {value.length === 0
+              ? placeholder
+              : options
+                  .filter((option) => value.includes(option.value))
+                  .map((option) => option.label)
+                  .join(", ")}
           </Typography>
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {open ? (
-              <path d="M9 6L13.3301 10.5H4.66987L9 6Z" fill="#8B8C8D" />
-            ) : (
-              <path d="M9 12L4.66987 7.5L13.3301 7.5L9 12Z" fill="#8B8C8D" />
-            )}
-          </svg>
+          {open ? (
+            <path d="M9 6L13.3301 10.5H4.66987L9 6Z" fill="#8B8C8D" />
+          ) : (
+            <path d="M9 12L4.66987 7.5L13.3301 7.5L9 12Z" fill="#8B8C8D" />
+          )}
         </button>
         {open && (
           <ul
             ref={optionsRef}
-            className="z-10 absolute top-8 left-0 mt-1 py-3 min-w-[150px] max-h-[248px]
+            className="z-10 absolute top-6 left-0 mt-1 py-3 min-w-[150px] max-h-[248px]
               border border-[#D7D8D9] rounded-xl bg-white list-none overflow-y-auto"
           >
             {options.map((option) => (
               <li
-                role="presentation"
                 key={option.value}
+                role="presentation"
                 onClick={() => handleClickOption(option.value)}
                 className="px-4 py-1
                   overflow-hidden text-ellipsis whitespace-nowrap
                  hover:bg-[#FFF7ED]"
               >
-                <Typography
-                  type="body-16"
-                  color={value.includes(option.value) ? "primary" : "inherit"}
-                >
-                  {option.label}
-                </Typography>
+                <Checkbox
+                  text={option.label}
+                  readOnly
+                  checked={value.includes(option.value)}
+                />
               </li>
             ))}
           </ul>
@@ -104,4 +102,4 @@ const SelectBox = forwardRef(
   },
 );
 
-export default SelectBox;
+export default MultipleSelectBox;

@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button, HStack, Spinner } from "@chakra-ui/react";
 import { getTranslations } from "@/apis/translations";
-import Carousel from "@/components/Carousel";
 import TranslationCard from "@/components/TranslationCard";
+import Checkbox from "@/components/Checkbox";
 
 export default function Home() {
   const { data, isLoading } = useQuery({
@@ -29,6 +29,7 @@ export default function Home() {
             필터
           </button>
         </HStack>
+        <Checkbox text="이게 이렇게 어려울줄이야" />
         <HStack>
           <Link href="/translation/create" passHref legacyBehavior prefetch>
             <Button colorScheme="orange" size="sm">
@@ -38,8 +39,11 @@ export default function Home() {
         </HStack>
       </div>
 
-      
-      {isLoading && <div className="h-80 flex justify-center items-center"><Spinner color="orange"/></div>}
+      {isLoading && (
+        <div className="h-80 flex justify-center items-center">
+          <Spinner color="orange" />
+        </div>
+      )}
       <div className="flex flex-col divide-y">
         {data?.results?.map((translation) => (
           <TranslationCard key={translation.id} translation={translation} />

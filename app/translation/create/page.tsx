@@ -7,6 +7,7 @@ import {
   postTranslationFile,
 } from "@/apis/translations";
 import { AutoResizeTextarea } from "@/components/AutoResizeTextArea";
+import SelectBox from "@/components/SelectBox";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -27,7 +28,6 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Select,
   SimpleGrid,
   Stack,
   Tab,
@@ -235,18 +235,18 @@ export default function Index() {
           </FormHelperText>
           <Grid templateColumns="repeat(7, 1fr)" gap={6}>
             <GridItem colSpan={3}>
-              <Select
-                {...register("sourceLanguage")}
-                focusBorderColor="orange"
-                placeholder="원문 언어"
-                isInvalid={!!errors.sourceLanguage?.message}
-              >
-                {languageOptions.map((laguageOption) => (
-                  <option value={laguageOption.value}>
-                    {laguageOption.label}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                name="sourceLanguage"
+                control={control}
+                render={({ field: { onChange, ...field } }) => (
+                  <SelectBox
+                    {...field}
+                    onChange={(v) => onChange(v as (typeof Language)[number])}
+                    placeholder="원문 언어"
+                    options={languageOptions}
+                  />
+                )}
+              />
             </GridItem>
             <GridItem>
               <Center h="full">
@@ -254,18 +254,18 @@ export default function Index() {
               </Center>
             </GridItem>
             <GridItem colSpan={3}>
-              <Select
-                {...register("targetLanguage")}
-                focusBorderColor="orange"
-                placeholder="번역문 언어"
-                isInvalid={!!errors.targetLanguage?.message}
-              >
-                {languageOptions.map((laguageOption) => (
-                  <option value={laguageOption.value}>
-                    {laguageOption.label}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                name="targetLanguage"
+                control={control}
+                render={({ field: { onChange, ...field } }) => (
+                  <SelectBox
+                    {...field}
+                    onChange={(v) => onChange(v as (typeof Language)[number])}
+                    placeholder="원문 언어"
+                    options={languageOptions}
+                  />
+                )}
+              />
             </GridItem>
           </Grid>
           <FormErrorMessage>{errors.sourceLanguage?.message}</FormErrorMessage>

@@ -73,10 +73,17 @@ export interface Translation {
 }
 export const getTranslations = async () => {
   const response = await ClientWithAuth.get<Response<Pagenation<Translation>>>(
-    "/translations",
+    `/translations`,
   );
   return response.data.data;
 };
+
+export const getTranslation = async ({translationId}: {translationId: string}) => {
+  const response = await ClientWithAuth.get<Response<Translation>>(
+    `/translations/${translationId}`
+    )
+  return response.data.data;
+}
 
 interface UploadTranslationFileRequest {
   content: File | string;

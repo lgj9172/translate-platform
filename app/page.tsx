@@ -1,11 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { Button, HStack, Spinner } from "@chakra-ui/react";
 import { getTranslations } from "@/apis/translations";
 import TranslationCard from "@/components/TranslationCard";
-import Checkbox from "@/components/Checkbox";
+import { Button, HStack, Spinner } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 export default function Home() {
   const { data, isLoading } = useQuery({
@@ -29,7 +28,6 @@ export default function Home() {
             필터
           </button>
         </HStack>
-        <Checkbox text="이게 이렇게 어려울줄이야" />
         <HStack>
           <Link href="/translation/create" passHref legacyBehavior prefetch>
             <Button colorScheme="orange" size="sm">

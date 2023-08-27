@@ -147,6 +147,7 @@ export default function Index() {
     register,
     control,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm<PostTranslationFormType>({
     resolver: zodResolver(PostTranslationFormSchema),
@@ -241,7 +242,10 @@ export default function Index() {
                 render={({ field: { onChange, ...field } }) => (
                   <SelectBox
                     {...field}
-                    onChange={(v) => onChange(v as (typeof Language)[number])}
+                    onChange={(v) => {
+                      onChange(v as (typeof Language)[number]);
+                      trigger(["sourceLanguage", "targetLanguage"]);
+                    }}
                     placeholder="원문 언어"
                     options={languageOptions}
                   />
@@ -260,7 +264,10 @@ export default function Index() {
                 render={({ field: { onChange, ...field } }) => (
                   <SelectBox
                     {...field}
-                    onChange={(v) => onChange(v as (typeof Language)[number])}
+                    onChange={(v) => {
+                      onChange(v as (typeof Language)[number]);
+                      trigger(["sourceLanguage", "targetLanguage"]);
+                    }}
                     placeholder="원문 언어"
                     options={languageOptions}
                   />

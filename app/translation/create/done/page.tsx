@@ -1,36 +1,23 @@
 "use client";
 
-import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Button, Center, HStack, Stack, Text } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { Button, Center, Stack, Text } from "@mantine/core";
+import Link from "next/link";
+import { FaCircleCheck } from "react-icons/fa6";
 
 export default function Index() {
-  const router = useRouter();
-
-  const handleClickDone = () => {
-    router.push("/");
-  };
-
   return (
-    <Stack h="full" p={8}>
-      <Center flexGrow={1}>
-        <Stack alignItems="center">
-          <CheckCircleIcon fontSize="4xl" color="orange.500" />
-          <Text fontSize="xl" fontWeight="bold">
-            번역 요청을 완료했어요.
+    <Center h={500}>
+      <Stack w="100%" align="center" gap="xl">
+        <Stack align="center">
+          <Text c="orange">
+            <FaCircleCheck size={32} />
           </Text>
+          <Text size="xl">번역 요청을 완료했어요.</Text>
         </Stack>
-      </Center>
-      <HStack justifyContent="center" py="8">
-        <Button
-          w="full"
-          size="lg"
-          colorScheme="orange"
-          onClick={handleClickDone}
-        >
+        <Button component={Link} color="orange" href="/">
           나의 요청 화면으로 이동
         </Button>
-      </HStack>
-    </Stack>
+      </Stack>
+    </Center>
   );
 }

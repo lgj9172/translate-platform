@@ -78,12 +78,16 @@ export const getTranslations = async () => {
   return response.data.data;
 };
 
-export const getTranslation = async ({translationId}: {translationId: string}) => {
+export const getTranslation = async ({
+  translationId,
+}: {
+  translationId: string;
+}) => {
   const response = await ClientWithAuth.get<Response<Translation>>(
-    `/translations/${translationId}`
-    )
+    `/translations/${translationId}`,
+  );
   return response.data.data;
-}
+};
 
 interface UploadTranslationFileRequest {
   content: File | string;

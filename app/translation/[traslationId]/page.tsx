@@ -18,10 +18,7 @@ export default function Page() {
   return (
     <Stack w="full" h="full" p={8} gap={8}>
       <Heading>{data?.title}</Heading>
-
       <Text>{data?.description}</Text>
-
-      <Text>{data?.content}</Text>
     </Stack>
   );
 }

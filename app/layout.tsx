@@ -1,5 +1,9 @@
 import Providers from "@/utils/react-query/Provider";
-import Navbar from "./Navbar";
+import { ColorSchemeScript } from "@mantine/core";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "react-datepicker/dist/react-datepicker.css";
+import Shell from "./Shell";
 import "./globals.css";
 
 export const metadata = {
@@ -14,12 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
         <Providers>
-          <div className="h-screen min-w-[320px] max-w-[768px] mx-auto flex flex-col">
-            <Navbar />
-            {children}
-          </div>
+          <Shell>{children}</Shell>
         </Providers>
       </body>
     </html>

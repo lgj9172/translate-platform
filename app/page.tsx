@@ -1,52 +1,72 @@
 "use client";
 
 import { getTranslations } from "@/apis/translations";
-import TranslationCard from "@/components/TranslationCard";
-import { Button, HStack, Spinner } from "@chakra-ui/react";
+import MantineTranslationCard from "@/components/MantineTranslationCard";
+import PageHeader from "@/components/PageHeader";
+import {
+  ActionIcon,
+  Button,
+  Center,
+  Group,
+  Loader,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { AiOutlinePlus } from "react-icons/ai";
+import { MdFilterList } from "react-icons/md";
 
 export default function Home() {
-  const { data, isLoading } = useQuery({
+  const { data: translations, isLoading } = useQuery({
     queryKey: ["translations"],
     queryFn: getTranslations,
   });
 
   return (
-    <div className="flex flex-col">
-      {/* <Carousel /> */}
-
-      <div className="h-[53px] mx-[20px] flex justify-between items-end">
-        <HStack>
-          <span className="font-[700] text-[20px] leading-[30px] tracking-[-0.005em]">
-            번역 대기중
-          </span>
-          <button
-            type="button"
-            className="px-[14px] py-[7px] bg-[#F0F0F0] rounded-[8px] font-[700] text-[12px] leading-[19px] tracking-[-0.004em] text-[#787878]"
-          >
-            필터
-          </button>
-        </HStack>
-        <HStack>
-          <Link href="/translation/create" passHref legacyBehavior prefetch>
-            <Button colorScheme="orange" size="sm">
-              번역 요청
+    <Stack>
+      <PageHeader>
+        <Group justify="space-between">
+          <Group>
+            <Title>번역</Title>
+            <Group gap={4} justify="end">
+              <ActionIcon variant="light" color="gray" disabled>
+                <MdFilterList />
+              </ActionIcon>
+              <Text c="gray" size="xs">
+                전체 선택됨(미구현)
+              </Text>
+            </Group>
+          </Group>
+          <Group>
+            <Button
+              component={Link}
+              href="/translation/create"
+              variant="light"
+              color="orange"
+              leftSection={<AiOutlinePlus size={14} />}
+              size="xs"
+            >
+              번역요청
             </Button>
-          </Link>
-        </HStack>
-      </div>
-
-      {isLoading && (
-        <div className="h-80 flex justify-center items-center">
-          <Spinner color="orange" />
-        </div>
+          </Group>
+        </Group>
+      </PageHeader>
+      {isLoading ? (
+        <Center h="320px">
+          <Loader color="orange" type="bars" />
+        </Center>
+      ) : (
+        <Stack>
+          {translations?.results?.map((translation) => (
+            <MantineTranslationCard
+              key={translation.id}
+              translation={translation}
+            />
+          ))}
+        </Stack>
       )}
-      <div className="flex flex-col divide-y">
-        {data?.results?.map((translation) => (
-          <TranslationCard key={translation.id} translation={translation} />
-        ))}
-      </div>
-    </div>
+    </Stack>
   );
 }

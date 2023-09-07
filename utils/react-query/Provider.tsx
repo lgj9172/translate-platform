@@ -1,15 +1,21 @@
 "use client";
 
+import "dayjs/locale/ko";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
-import "react-datepicker/dist/react-datepicker.css";
+import { MantineProvider, createTheme } from "@mantine/core";
+import { DatesProvider } from "@mantine/dates";
 
 const colors = {};
 
-export const theme = extendTheme({ colors });
+export const chakraTheme = extendTheme({ colors });
+
+const mantineTheme = createTheme({
+  /** Put your mantine theme override here */
+});
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = React.useState(
@@ -17,14 +23,20 @@ function Providers({ children }: React.PropsWithChildren) {
   );
 
   return (
-    <CacheProvider>
-      <ChakraProvider theme={theme}>
-        <QueryClientProvider client={client}>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </ChakraProvider>
-    </CacheProvider>
+    <DatesProvider
+      settings={{ locale: "ko", firstDayOfWeek: 1, weekendDays: [0, 6] }}
+    >
+      <CacheProvider>
+        <MantineProvider theme={mantineTheme}>
+          <ChakraProvider theme={chakraTheme}>
+            <QueryClientProvider client={client}>
+              {children}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </ChakraProvider>
+        </MantineProvider>
+      </CacheProvider>
+    </DatesProvider>
   );
 }
 

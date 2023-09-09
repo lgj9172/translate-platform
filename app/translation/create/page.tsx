@@ -148,7 +148,7 @@ export default function Index() {
     watch,
     handleSubmit,
     trigger,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<PostTranslationFormType>({
     resolver: zodResolver(PostTranslationFormSchema),
     defaultValues: PostTranslationFormDefaultValue,
@@ -467,14 +467,7 @@ export default function Index() {
         />
 
         <Group>
-          <Button
-            type="submit"
-            // isLoading={isSubmitting}
-            // size="lg"
-            // isDisabled={!isValid}
-            color="orange"
-            fullWidth
-          >
+          <Button type="submit" loading={isSubmitting} color="orange" fullWidth>
             다음
           </Button>
         </Group>

@@ -30,14 +30,6 @@ export default function Home() {
         <Group justify="space-between">
           <Group>
             <Title>번역</Title>
-            <Group gap={4} justify="end">
-              <ActionIcon variant="light" color="gray" disabled>
-                <MdFilterList />
-              </ActionIcon>
-              <Text c="gray" size="xs">
-                전체 선택됨(미구현)
-              </Text>
-            </Group>
           </Group>
           <Group>
             <Button
@@ -59,6 +51,14 @@ export default function Home() {
         </Center>
       ) : (
         <Stack>
+          <Group gap={4} justify="end">
+            <Text c="gray" size="xs">
+              전체 선택됨(미구현)
+            </Text>
+            <ActionIcon variant="light" color="gray" disabled>
+              <MdFilterList />
+            </ActionIcon>
+          </Group>
           {translations?.results?.map((translation) => (
             <MantineTranslationCard
               key={translation.id}

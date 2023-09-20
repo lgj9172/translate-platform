@@ -7,6 +7,7 @@ import {
 import { Badge, Card, Group, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 import { BsFiletypeDoc, BsFiletypePpt, BsFiletypeTxt } from "react-icons/bs";
 import { NumericFormat } from "react-number-format";
 
@@ -18,6 +19,7 @@ interface Props {
 
 export default function MantineTranslationCard({
   translation: {
+    id,
     categories,
     language,
     end_time,
@@ -30,7 +32,7 @@ export default function MantineTranslationCard({
   },
 }: Props) {
   return (
-    <Card withBorder>
+    <Card withBorder component={Link} href={`/translation/${id}`}>
       <Stack gap={8}>
         <Group justify="space-between">
           <Group gap={4}>

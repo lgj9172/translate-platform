@@ -1,13 +1,9 @@
-import { Box } from "@mantine/core";
+import { Stack } from "@mantine/core";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export default function PageHeader({ children }: Props) {
-  return (
-    <Box w="100%" mb="xl">
-      {children}
-    </Box>
-  );
+  return <Stack w="100%">{children}</Stack>;
 }

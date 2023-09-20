@@ -25,31 +25,29 @@ export default function Home() {
   });
 
   return (
-    <Stack>
+    <Stack gap={16}>
+      <Group justify="end" mb={-2}>
+        <Button
+          component={Link}
+          href="/translation/create"
+          variant="light"
+          color="orange"
+          leftSection={<AiOutlinePlus size={14} />}
+          size="xs"
+        >
+          번역요청
+        </Button>
+      </Group>
       <PageHeader>
         <Group justify="space-between">
-          <Group>
-            <Title>번역</Title>
-            <Group gap={4} justify="end">
-              <ActionIcon variant="light" color="gray" disabled>
-                <MdFilterList />
-              </ActionIcon>
-              <Text c="gray" size="xs">
-                전체 선택됨(미구현)
-              </Text>
-            </Group>
-          </Group>
-          <Group>
-            <Button
-              component={Link}
-              href="/translation/create"
-              variant="light"
-              color="orange"
-              leftSection={<AiOutlinePlus size={14} />}
-              size="xs"
-            >
-              번역요청
-            </Button>
+          <Title>번역</Title>
+          <Group gap={4} justify="end">
+            <Text c="gray" size="xs">
+              전체 선택됨(미구현)
+            </Text>
+            <ActionIcon variant="light" color="gray" disabled>
+              <MdFilterList />
+            </ActionIcon>
           </Group>
         </Group>
       </PageHeader>

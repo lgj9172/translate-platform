@@ -9,6 +9,7 @@ import {
 import PageHeader from "@/components/PageHeader";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  ActionIcon,
   Button,
   Chip,
   FileInput,
@@ -26,10 +27,11 @@ import {
 import { DateTimePicker } from "@mantine/dates";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { FaFile, FaRightLong } from "react-icons/fa6";
+import { FaArrowLeft, FaFile, FaRightLong } from "react-icons/fa6";
 import { z } from "zod";
 
 const PostTranslationFormSchema = z
@@ -205,6 +207,16 @@ export default function Index() {
   return (
     <form onSubmit={handleSubmit(handleClickCreate)}>
       <Stack w="full" h="full" gap={16}>
+        <Group>
+          <ActionIcon
+            variant="transparent"
+            color="black"
+            component={Link}
+            href="/"
+          >
+            <FaArrowLeft />
+          </ActionIcon>
+        </Group>
         <PageHeader>
           <Title>번역요청</Title>
         </PageHeader>
@@ -444,7 +456,7 @@ export default function Index() {
               {...field}
               error={errors.desiredFeeValue?.message}
               onChange={(v) => onChange(Number(v))}
-              label="예상 번역료"
+              label="희망 번역료"
               description={
                 <span>
                   이 번역을 위한 번역료의 가격이 어느정도 되나요?

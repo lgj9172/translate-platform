@@ -206,7 +206,7 @@ export default function Index() {
 
   return (
     <form onSubmit={handleSubmit(handleClickCreate)}>
-      <Stack w="full" h="full" gap={16}>
+      <Stack w="full" h="full">
         <Group>
           <ActionIcon
             variant="transparent"

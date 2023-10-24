@@ -18,7 +18,7 @@ import Link from "next/link";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdFilterList } from "react-icons/md";
 
-export default function Home() {
+export default function Page() {
   const { data: translations, isLoading } = useQuery({
     queryKey: ["translations"],
     queryFn: getTranslations,

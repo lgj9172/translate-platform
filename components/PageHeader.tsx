@@ -5,5 +5,9 @@ interface Props {
 }
 
 export default function PageHeader({ children }: Props) {
-  return <Stack w="100%">{children}</Stack>;
+  return (
+    <Stack w="100%" mb="md">
+      {children}
+    </Stack>
+  );
 }

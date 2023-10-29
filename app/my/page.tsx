@@ -56,9 +56,9 @@ export default function Page() {
               </Stack>
             </Group>
             <SimpleGrid cols={{ base: 1, xs: 2 }}>
-              <UnstyledButton>
+              <UnstyledButton component={Link} href="/my/translation">
                 <Paper p="md">
-                  <Text c="dimmed">내 요청</Text>
+                  <Text c="dimmed">내 번역 요청</Text>
                   <Group c="orange" justify="space-between" wrap="nowrap">
                     <Text size="xl" fw="bolder">
                       8

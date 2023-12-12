@@ -7,6 +7,7 @@ import {
   Container,
   Group,
   Menu,
+  Stack,
   Text,
 } from "@mantine/core";
 import Link from "next/link";
@@ -91,7 +92,24 @@ export default function Shell({ children }: Props) {
             </Group>
           </Group>
         </AppShell.Header>
-        <AppShell.Main>{children}</AppShell.Main>
+        <AppShell.Main>
+          {children}
+          <Stack p="md" c="gray" mt="lg">
+            <Stack gap="20px">
+              <Text fz="16px" fw={700}>
+                고객센터 070-8383-6353
+              </Text>
+            </Stack>
+            <Stack gap="8px">
+              <Text fz="16px" fw={700}>
+                (주) 와이준소프트
+              </Text>
+              <Text fz="16px">대표 박윤경</Text>
+              <Text fz="16px">사업자등록번호 888-81-01989</Text>
+              <Text fz="16px">통신판매업신고번호 없음</Text>
+            </Stack>
+          </Stack>
+        </AppShell.Main>
       </AppShell>
     </Container>
   );

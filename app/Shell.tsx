@@ -106,7 +106,6 @@ export default function Shell({ children }: Props) {
               </Text>
               <Text fz="16px">대표 박윤경</Text>
               <Text fz="16px">사업자등록번호 888-81-01989</Text>
-              <Text fz="16px">통신판매업신고번호 없음</Text>
             </Stack>
           </Stack>
         </AppShell.Main>

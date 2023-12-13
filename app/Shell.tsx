@@ -106,6 +106,9 @@ export default function Shell({ children }: Props) {
               </Text>
               <Text fz="16px">대표 박윤경</Text>
               <Text fz="16px">사업자등록번호 888-81-01989</Text>
+              <Text fz="16px">
+                주소 경기도 화성시 동탄대로시범길 192 1005-303
+              </Text>
             </Stack>
           </Stack>
         </AppShell.Main>

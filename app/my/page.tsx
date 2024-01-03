@@ -84,7 +84,12 @@ export default function Page() {
       </Card>
       <Stack>
         <SimpleGrid cols={2}>
-          <Button variant="light" color="orange">
+          <Button
+            variant="light"
+            color="orange"
+            component={Link}
+            href="/my/translator"
+          >
             번역사 등록
           </Button>
           <Button variant="light" color="orange">

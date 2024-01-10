@@ -2,14 +2,18 @@
 
 import {
   ActionIcon,
+  Anchor,
   AppShell,
   Button,
   Container,
   Group,
   Menu,
+  Modal,
   Stack,
   Text,
+  Title,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { BsPersonFill } from "react-icons/bs";
@@ -19,7 +23,7 @@ interface Props {
 }
 
 export default function Shell({ children }: Props) {
-  // const [opened, { toggle }] = useDisclosure();
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <Container maw={768}>
@@ -109,6 +113,22 @@ export default function Shell({ children }: Props) {
               <Text fz="16px">
                 주소 경기도 화성시 동탄대로시범길 192 1005-303
               </Text>
+              <Anchor onClick={open}>
+                <Text fz="16px">이용약관</Text>
+              </Anchor>
+              <Modal
+                opened={opened}
+                onClose={close}
+                title={<Title>플루언스 이용약관</Title>}
+                size="100%"
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      '<iframe src="/assets/html/terms_of_use_230102.html" width="100%" height="500px"/>',
+                  }}
+                />
+              </Modal>
             </Stack>
           </Stack>
         </AppShell.Main>

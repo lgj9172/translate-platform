@@ -23,7 +23,8 @@ interface Props {
 }
 
 export default function Shell({ children }: Props) {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opendTOU, { open: openTOU, close: closeTOU }] = useDisclosure(false);
+  const [openedRP, { open: openRP, close: closeRP }] = useDisclosure(false);
 
   return (
     <Container maw={768}>
@@ -113,19 +114,39 @@ export default function Shell({ children }: Props) {
               <Text fz="16px">
                 주소 경기도 화성시 동탄대로시범길 192 1005-303
               </Text>
-              <Anchor onClick={open}>
-                <Text fz="16px">이용약관</Text>
-              </Anchor>
+              <Group>
+                <Anchor onClick={openTOU}>
+                  <Text fz="16px">이용약관</Text>
+                </Anchor>
+                <Anchor onClick={openRP}>
+                  <Text fz="16px">환불규정</Text>
+                </Anchor>
+              </Group>
               <Modal
-                opened={opened}
-                onClose={close}
-                title={<Title>플루언스 이용약관</Title>}
+                opened={opendTOU}
+                onClose={closeTOU}
+                title={<Title order={3}>이용약관</Title>}
+                centered
                 size="100%"
               >
                 <div
                   dangerouslySetInnerHTML={{
                     __html:
                       '<iframe src="/assets/html/terms_of_use_230102.html" width="100%" height="500px"/>',
+                  }}
+                />
+              </Modal>
+              <Modal
+                opened={openedRP}
+                onClose={closeRP}
+                title={<Title order={3}>환불규정</Title>}
+                centered
+                size="100%"
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      '<iframe src="/assets/html/terms_of_use_230102.html#_msoanchor_2" width="100%" height="500px"/>',
                   }}
                 />
               </Modal>

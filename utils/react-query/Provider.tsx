@@ -6,7 +6,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
-import { MantineProvider, createTheme } from "@mantine/core";
+import { MantineProvider, Textarea, createTheme } from "@mantine/core";
 import { DatesProvider } from "@mantine/dates";
 
 const colors = {};
@@ -15,6 +15,12 @@ export const chakraTheme = extendTheme({ colors });
 
 const mantineTheme = createTheme({
   /** Put your mantine theme override here */
+  // primaryColor: "orange",
+  // components: {
+  //   Textarea: Textarea.extend({
+  //     styles: { input: { "&:focus": { borderColor: "black" } } },
+  //   }),
+  // },
 });
 
 function Providers({ children }: React.PropsWithChildren) {

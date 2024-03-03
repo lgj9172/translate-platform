@@ -31,7 +31,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { FaArrowLeft, FaFile, FaRightLong } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight, FaFile } from "react-icons/fa6";
 import { z } from "zod";
 
 const PostTranslationFormSchema = z
@@ -255,7 +255,7 @@ export default function Index() {
               )}
             />
             <Text c="orange">
-              <FaRightLong />
+              <FaArrowRight />
             </Text>
             <Controller
               name="targetLanguage"

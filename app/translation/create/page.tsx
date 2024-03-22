@@ -116,7 +116,7 @@ const PostTranslationFormDefaultValue = {
 export default function Index() {
   const timeInputRef = useRef<HTMLInputElement>(null);
   const languageOptions = useMemo<
-    { label: string; value: (typeof Language)[number] | "" }[]
+    { label: string; value: (typeof Language)[number] }[]
   >(
     () => [
       { label: "한국어", value: "ko-KR" },
@@ -286,11 +286,11 @@ export default function Index() {
           <Controller
             name="categories"
             control={control}
-            render={({ field: { onChange, ref, ...field } }) => (
+            render={({ field: { onChange, ...field } }) => (
               <Chip.Group
                 multiple
                 {...field}
-                onChange={(v) => onChange(v as (typeof Category)[0][])}
+                onChange={(v) => onChange(v as (typeof Category)[number][])}
               >
                 <Group mt={5} mb={5} gap="xs">
                   {categoryOptions.map((c) => (

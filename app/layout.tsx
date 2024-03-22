@@ -2,6 +2,7 @@ import Providers from "@/utils/react-query/Provider";
 import { ColorSchemeScript } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import { Suspense } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Shell from "./Shell";
 import "./globals.css";
@@ -23,7 +24,9 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <Shell>{children}</Shell>
+          <Suspense>
+            <Shell>{children}</Shell>
+          </Suspense>
         </Providers>
       </body>
     </html>

@@ -1,13 +1,13 @@
 "use client";
 
-import "dayjs/locale/ko";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { MantineProvider, createTheme } from "@mantine/core";
+import { DatesProvider } from "@mantine/dates";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import "dayjs/locale/ko";
 import React from "react";
-import { MantineProvider, Textarea, createTheme } from "@mantine/core";
-import { DatesProvider } from "@mantine/dates";
 
 const colors = {};
 
@@ -24,10 +24,18 @@ const mantineTheme = createTheme({
 });
 
 function Providers({ children }: React.PropsWithChildren) {
-  const [client] = React.useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 5000 } } }),
-  );
-
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            // With SSR, we usually want to set some default staleTime
+            // above 0 to avoid refetching immediately on the client
+            staleTime: 60 * 1000,
+          },
+        },
+      }),
+  )
   return (
     <DatesProvider
       settings={{ locale: "ko", firstDayOfWeek: 1, weekendDays: [0, 6] }}
@@ -35,7 +43,7 @@ function Providers({ children }: React.PropsWithChildren) {
       <CacheProvider>
         <MantineProvider theme={mantineTheme}>
           <ChakraProvider theme={chakraTheme}>
-            <QueryClientProvider client={client}>
+            <QueryClientProvider client={queryClient}>
               {children}
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>

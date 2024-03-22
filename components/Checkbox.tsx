@@ -1,5 +1,4 @@
-import { InputHTMLAttributes, LegacyRef, forwardRef } from "react";
-import { useId } from "@chakra-ui/react";
+import { InputHTMLAttributes, LegacyRef, forwardRef, useId } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   text: string;
@@ -7,7 +6,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 const Checkbox = forwardRef(
   ({ id, text, ...props }: Props, ref: LegacyRef<HTMLInputElement>) => {
-    const uniqueId = useId(id);
+    const uniqueId = useId();
 
     return (
       <div className="relative flex items-center gap-2">

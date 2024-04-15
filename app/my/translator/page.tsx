@@ -7,10 +7,11 @@ import {
   PostTranslatorFormSchema,
 } from "@/model/translator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon, Group, Stack, Title } from "@mantine/core";
+import { ActionIcon, Group, Stack } from "@mantine/core";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
+import PageTitle from "@/components/PageTitle";
 import Career from "./_component/Career";
 import Educations from "./_component/Educations";
 import SelfIntroduction from "./_component/SelfIntroduction";
@@ -49,7 +50,7 @@ export default function Page() {
         </Group>
 
         <PageHeader>
-          <Title>번역사 정보</Title>
+          <PageTitle>번역사 등록 신청</PageTitle>
         </PageHeader>
 
         <Stack gap={40}>

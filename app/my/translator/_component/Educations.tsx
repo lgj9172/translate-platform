@@ -1,9 +1,9 @@
+import Label from "@/components/Label";
 import { EducationDefaultValue } from "@/model/education";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import {
   ActionIcon,
   Box,
-  Button,
   Card,
   CloseIcon,
   FileInput,
@@ -12,7 +12,6 @@ import {
   Select,
   Stack,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { DatesRangeValue, MonthPickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
@@ -45,15 +44,19 @@ export default function Educations() {
   };
 
   return (
-    <Stack gap="xs">
-      <Group justify="space-between">
-        <Title order={4}>학력</Title>
-        <Group>
-          <Button onClick={handleClickAppend} size="xs" variant="subtle">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
+        <Label>학력</Label>
+        <div>
+          <button
+            type="button"
+            className="text-blue-500 text-sm font-bold"
+            onClick={handleClickAppend}
+          >
             추가
-          </Button>
-        </Group>
-      </Group>
+          </button>
+        </div>
+      </div>
       {fields.map((field, index) => (
         <Card
           key={field.id}
@@ -139,6 +142,6 @@ export default function Educations() {
           <FileInput placeholder="졸업/수료 증명서" />
         </Card>
       ))}
-    </Stack>
+    </div>
   );
 }

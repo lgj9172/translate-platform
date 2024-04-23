@@ -1,8 +1,8 @@
+import Label from "@/components/Label";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import {
   ActionIcon,
-  Button,
   Card,
   Checkbox,
   CloseIcon,
@@ -10,7 +10,6 @@ import {
   Stack,
   TextInput,
   Textarea,
-  Title,
 } from "@mantine/core";
 import { DatePickerInput, DatesRangeValue } from "@mantine/dates";
 import dayjs from "dayjs";
@@ -18,7 +17,7 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
 
-export default function Career() {
+export default function Careers() {
   const { control, getValues, setValue, watch } =
     useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
@@ -45,15 +44,19 @@ export default function Career() {
   };
 
   return (
-    <Stack gap="xs">
-      <Group justify="space-between">
-        <Title order={4}>경력</Title>
-        <Group>
-          <Button onClick={handleClickAppend} size="xs" variant="subtle">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
+        <Label>경력</Label>
+        <div>
+          <button
+            type="button"
+            className="text-blue-500 text-sm font-bold"
+            onClick={handleClickAppend}
+          >
             추가
-          </Button>
-        </Group>
-      </Group>
+          </button>
+        </div>
+      </div>
       {fields.map((field, index) => (
         <Card
           key={field.id}
@@ -138,6 +141,6 @@ export default function Career() {
           />
         </Card>
       ))}
-    </Stack>
+    </div>
   );
 }

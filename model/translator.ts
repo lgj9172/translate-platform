@@ -2,6 +2,10 @@ import { Category } from "@/apis/translations";
 import { z } from "zod";
 import { EducationDefaultValue, EducationSchema } from "./education";
 import { CareerDefaultValue, CareerSchema } from "./career";
+import {
+  CertificationDefaultValue,
+  CertificationSchema,
+} from "./certification";
 
 export const PostTranslatorFormSchema = z.object({
   categories: z
@@ -14,6 +18,7 @@ export const PostTranslatorFormSchema = z.object({
   description: z.string().min(1, "자기소개를 입력해주세요."),
   educations: z.array(EducationSchema),
   careers: z.array(CareerSchema),
+  certifications: z.array(CertificationSchema),
 });
 
 export const PostTranslatorFormDefaultValue = {
@@ -21,4 +26,5 @@ export const PostTranslatorFormDefaultValue = {
   description: "",
   educations: [EducationDefaultValue],
   careers: [CareerDefaultValue],
+  certifications: [CertificationDefaultValue],
 };

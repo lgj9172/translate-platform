@@ -12,10 +12,11 @@ import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
 import PageTitle from "@/components/PageTitle";
-import Career from "./_component/Career";
+import Careers from "./_component/Careers";
 import Educations from "./_component/Educations";
 import SelfIntroduction from "./_component/SelfIntroduction";
 import Speciality from "./_component/Speciality";
+import Certifications from "./_component/Certifications";
 
 export default function Page() {
   // const languageOptions = useMemo<
@@ -57,7 +58,8 @@ export default function Page() {
           <Speciality />
           <SelfIntroduction />
           <Educations />
-          <Career />
+          <Careers />
+          <Certifications />
         </Stack>
 
         {/* <Stack gap="xs">

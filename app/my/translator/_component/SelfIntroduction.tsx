@@ -1,25 +1,33 @@
+import ErrorText from "@/components/ErrorText";
+import Label from "@/components/Label";
+import TextArea from "@/components/TextArea";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { Group, Stack, Textarea, Title } from "@mantine/core";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 export default function SelfIntroduction() {
-  const { register } =
+  const { control } =
     useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   return (
-    <Stack gap="xs">
-      <Group justify="space-between">
-        <Title order={4}>자기소개</Title>
-        <Group />
-      </Group>
-      <Textarea
-        minRows={3}
-        autosize
-        color="orange"
-        {...register("description")}
-        placeholder="본인에 대한 간단한 소개를 입력하세요."
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
+        <Label>자기소개</Label>
+      </div>
+      <Controller
+        name="description"
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <div className="flex flex-col gap-1">
+            <TextArea
+              {...field}
+              maxLength={100}
+              placeholder="간단한 소개를 전해보세요. (최대 100자)"
+            />
+            <ErrorText>{error?.message}</ErrorText>
+          </div>
+        )}
       />
-    </Stack>
+    </div>
   );
 }

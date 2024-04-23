@@ -53,7 +53,7 @@ export default function Page() {
           <PageTitle>번역사 등록 신청</PageTitle>
         </PageHeader>
 
-        <Stack gap={40}>
+        <Stack gap={48}>
           <Speciality />
           <SelfIntroduction />
           <Educations />

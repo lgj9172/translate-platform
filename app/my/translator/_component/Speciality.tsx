@@ -3,7 +3,6 @@ import Chip from "@/components/Chip";
 import ErrorText from "@/components/ErrorText";
 import Label from "@/components/Label";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { Group, Stack } from "@mantine/core";
 import { useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { z } from "zod";
@@ -30,17 +29,16 @@ export default function Speciality() {
     useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   return (
-    <Stack gap="xs">
-      <Group justify="space-between">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
         <Label>전문 분야 (최대 3개)</Label>
-        <Group />
-      </Group>
+      </div>
       <Controller
         name="categories"
         control={control}
         render={({ field: { onChange, ...field }, fieldState: { error } }) => (
-          <Stack gap="4px">
-            <Group gap="8px">
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-wrap gap-2">
               {categoryOptions.map((c) => (
                 <Chip
                   key={c.value}
@@ -57,11 +55,11 @@ export default function Speciality() {
                   {c.label}
                 </Chip>
               ))}
-            </Group>
+            </div>
             <ErrorText>{error?.message}</ErrorText>
-          </Stack>
+          </div>
         )}
       />
-    </Stack>
+    </div>
   );
 }

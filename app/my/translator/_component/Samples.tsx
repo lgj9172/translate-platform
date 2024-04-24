@@ -5,10 +5,10 @@ import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
 import { TranslationSampleDefaultValue } from "@/model/translationSample";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { ActionIcon, Card, CloseIcon, Group, Stack } from "@mantine/core";
+import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FaArrowDown } from "react-icons/fa6";
+import { FaArrowDown, FaCircleInfo } from "react-icons/fa6";
 import { z } from "zod";
 
 export default function Samples() {
@@ -53,6 +53,14 @@ export default function Samples() {
           </button>
         </div>
       </div>
+      {fields.length === 0 && (
+        <Alert
+          color="gray"
+          bg="#F9FAFB"
+          title="공개할 번역 샘플이 있다면 추가 버튼을 눌러 입력해주세요."
+          icon={<FaCircleInfo />}
+        />
+      )}
       {fields.map((field, index) => (
         <Card
           key={field.id}
@@ -60,17 +68,19 @@ export default function Samples() {
           radius="16px"
           component={Stack}
           gap="xs"
+          pos="relative"
         >
-          <Group justify="end">
-            <ActionIcon
-              color="dark"
-              variant="transparent"
-              onClick={() => handleClickDelete(index)}
-              disabled={fields.length === 1}
-            >
-              <CloseIcon />
-            </ActionIcon>
-          </Group>
+          <ActionIcon
+            color="dark"
+            variant="transparent"
+            onClick={() => handleClickDelete(index)}
+            // disabled={fields.length === 1}
+            pos="absolute"
+            top={16}
+            right={16}
+          >
+            <CloseIcon />
+          </ActionIcon>
           <Controller
             name={`translation_samples.${index}.source_language`}
             control={control}
@@ -93,7 +103,10 @@ export default function Samples() {
             control={control}
             render={({ field: f, fieldState: { error } }) => (
               <div className="flex flex-col gap-1">
-                <TextArea {...f} placeholder="번역 샘플 원문" />
+                <TextArea
+                  {...f}
+                  placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                />
                 <ErrorText>{error?.message}</ErrorText>
               </div>
             )}
@@ -123,7 +136,10 @@ export default function Samples() {
             control={control}
             render={({ field: f, fieldState: { error } }) => (
               <div className="flex flex-col gap-1">
-                <TextArea {...f} placeholder="번역 샘플 원문" />
+                <TextArea
+                  {...f}
+                  placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                />
                 <ErrorText>{error?.message}</ErrorText>
               </div>
             )}

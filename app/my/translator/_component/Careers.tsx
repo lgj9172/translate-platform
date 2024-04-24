@@ -58,17 +58,19 @@ export default function Careers() {
           radius="16px"
           component={Stack}
           gap="xs"
+          pos="relative"
         >
-          <Group justify="end">
-            <ActionIcon
-              color="dark"
-              variant="transparent"
-              onClick={() => handleClickDelete(index)}
-              disabled={fields.length === 1}
-            >
-              <CloseIcon />
-            </ActionIcon>
-          </Group>
+          <ActionIcon
+            color="dark"
+            variant="transparent"
+            onClick={() => handleClickDelete(index)}
+            disabled={fields.length === 1}
+            pos="absolute"
+            top={16}
+            right={16}
+          >
+            <CloseIcon />
+          </ActionIcon>
           <Group>
             <DatePickerInput
               type="range"

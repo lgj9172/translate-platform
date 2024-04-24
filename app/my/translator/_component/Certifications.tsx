@@ -4,13 +4,20 @@ import Label from "@/components/Label";
 import TextInput from "@/components/TextInput";
 import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { ActionIcon, Card, CloseIcon, Group, Stack } from "@mantine/core";
+import {
+  ActionIcon,
+  Alert,
+  Card,
+  CloseIcon,
+  Group,
+  Stack,
+} from "@mantine/core";
 import { DatePickerInput, DateValue } from "@mantine/dates";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FaRegCalendar } from "react-icons/fa6";
+import { FaCircleInfo, FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
 
 export default function Certifications() {
@@ -62,6 +69,14 @@ export default function Certifications() {
           </button>
         </div>
       </div>
+      {fields.length === 0 && (
+        <Alert
+          color="gray"
+          bg="#F9FAFB"
+          title="자격증이 있다면 추가 버튼을 눌러 입력해주세요."
+          icon={<FaCircleInfo />}
+        />
+      )}
       {fields.map((field, index) => (
         <Card
           key={field.id}
@@ -69,17 +84,19 @@ export default function Certifications() {
           radius="16px"
           component={Stack}
           gap="xs"
+          pos="relative"
         >
-          <Group justify="end">
-            <ActionIcon
-              color="dark"
-              variant="transparent"
-              onClick={() => handleClickDelete(index)}
-              disabled={fields.length === 1}
-            >
-              <CloseIcon />
-            </ActionIcon>
-          </Group>
+          <ActionIcon
+            color="dark"
+            variant="transparent"
+            onClick={() => handleClickDelete(index)}
+            // disabled={fields.length === 1}
+            pos="absolute"
+            top={16}
+            right={16}
+          >
+            <CloseIcon />
+          </ActionIcon>
           <Group>
             <DatePickerInput
               type="default"

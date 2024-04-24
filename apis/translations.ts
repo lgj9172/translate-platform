@@ -72,9 +72,10 @@ export interface Translation {
   sample: string;
 }
 export const getTranslations = async () => {
-  const response = await ClientWithAuth.get<Response<Pagenation<Translation>>>(
-    `/translations`,
-  );
+  const response =
+    await ClientWithAuth.get<Response<Pagenation<Translation>>>(
+      `/translations`,
+    );
   return response.data.data;
 };
 

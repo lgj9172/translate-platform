@@ -1,4 +1,7 @@
+import { postFile } from "@/apis/files";
+import FileInput from "@/components/FileInput";
 import Label from "@/components/Label";
+import TextInput from "@/components/TextInput";
 import { EducationDefaultValue } from "@/model/education";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import {
@@ -6,15 +9,15 @@ import {
   Box,
   Card,
   CloseIcon,
-  FileInput,
   Group,
   Radio,
   Select,
   Stack,
-  TextInput,
 } from "@mantine/core";
 import { DatesRangeValue, MonthPickerInput } from "@mantine/dates";
+import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
@@ -27,6 +30,8 @@ export default function Educations() {
     control,
     name: "educations",
   });
+
+  const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const handleClickAppend = () => {
     append(EducationDefaultValue);
@@ -41,6 +46,17 @@ export default function Educations() {
     const endMonth = dates[1] ? dayjs(dates[1]).toISOString() : "";
     setValue(`educations.${index}.startMonth`, startMonth);
     setValue(`educations.${index}.endMonth`, endMonth);
+  };
+
+  const handleChangeFile = async (
+    index: number,
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const res = await mutateAsync({ content: file });
+      setValue(`educations.${index}.file`, res);
+    }
   };
 
   return (
@@ -139,7 +155,11 @@ export default function Educations() {
               <TextInput {...f} placeholder="전공" />
             )}
           />
-          <FileInput placeholder="졸업/수료 증명서" />
+          <FileInput
+            placeholder="졸업/수료 증명서 (10MB, PDF)"
+            onChange={(e) => handleChangeFile(index, e)}
+            text={`${watch(`educations.${index}.file.name`)}`}
+          />
         </Card>
       ))}
     </div>

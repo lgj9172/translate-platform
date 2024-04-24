@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { FileDefaultValue, FileSchema } from "./file";
 
 export const EducationSchema = z.object({
   startMonth: z.string(),
@@ -7,6 +8,7 @@ export const EducationSchema = z.object({
   major: z.string(),
   degree: z.string(),
   graduation_status: z.string(),
+  file: FileSchema,
 });
 
 export const EducationDefaultValue = {
@@ -16,4 +18,5 @@ export const EducationDefaultValue = {
   major: "",
   degree: "학사",
   graduation_status: "졸업",
+  file: FileDefaultValue,
 };

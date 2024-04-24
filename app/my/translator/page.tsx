@@ -17,6 +17,7 @@ import Educations from "./_component/Educations";
 import SelfIntroduction from "./_component/SelfIntroduction";
 import Speciality from "./_component/Speciality";
 import Certifications from "./_component/Certifications";
+import Samples from "./_component/Samples";
 
 export default function Page() {
   // const languageOptions = useMemo<
@@ -60,6 +61,7 @@ export default function Page() {
           <Educations />
           <Careers />
           <Certifications />
+          <Samples />
         </Stack>
 
         {/* <Stack gap="xs">

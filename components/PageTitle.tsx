@@ -4,7 +4,7 @@ interface Props {
 
 export default function PageTitle({ children }: Props) {
   return (
-    <span className="text-neutral-800 text-xl font-bold font-['SpoqaHanSans'] leading-loose">
+    <span className="text-neutral-800 text-xl font-bold leading-loose">
       {children}
     </span>
   );

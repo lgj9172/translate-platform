@@ -1,17 +1,11 @@
 import { Language } from "@/apis/translations";
 import ErrorText from "@/components/ErrorText";
 import Label from "@/components/Label";
+import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
 import { TranslationSampleDefaultValue } from "@/model/translationSample";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import {
-  ActionIcon,
-  Card,
-  CloseIcon,
-  Group,
-  Select,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon, Card, CloseIcon, Group, Stack } from "@mantine/core";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { FaArrowDown } from "react-icons/fa6";
@@ -81,7 +75,7 @@ export default function Samples() {
             name={`translation_samples.${index}.source_language`}
             control={control}
             render={({ field: { onChange, ...f } }) => (
-              <Select
+              <SelectBox
                 {...f}
                 w={120}
                 data={languageOptions}
@@ -111,7 +105,7 @@ export default function Samples() {
             name={`translation_samples.${index}.target_language`}
             control={control}
             render={({ field: { onChange, ...f } }) => (
-              <Select
+              <SelectBox
                 {...f}
                 w={120}
                 data={languageOptions}

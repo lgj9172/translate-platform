@@ -1,16 +1,10 @@
+import CheckButton from "@/components/CheckButton";
 import Label from "@/components/Label";
+import TextArea from "@/components/TextArea";
+import TextInput from "@/components/TextInput";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import {
-  ActionIcon,
-  Card,
-  Checkbox,
-  CloseIcon,
-  Group,
-  Stack,
-  TextInput,
-  Textarea,
-} from "@mantine/core";
+import { ActionIcon, Card, CloseIcon, Group, Stack } from "@mantine/core";
 import { DatePickerInput, DatesRangeValue } from "@mantine/dates";
 import dayjs from "dayjs";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -98,13 +92,18 @@ export default function Careers() {
                   ? dayjs().toDate()
                   : undefined
               }
+              classNames={{
+                input: "focus:border-primary",
+                placeholder: "text-neutral-400",
+                day: "data-[first-in-range=true]:bg-primary data-[last-in-range=true]:bg-primary data-[in-range=true]:bg-primary",
+              }}
             />
           </Group>
           <Controller
             control={control}
             name={`careers.${index}.isWorking`}
             render={({ field: { value, onChange, ...f } }) => (
-              <Checkbox
+              <CheckButton
                 {...f}
                 label="재직중"
                 checked={value}
@@ -136,7 +135,7 @@ export default function Careers() {
             control={control}
             name={`careers.${index}.achievements`}
             render={({ field: { ...f } }) => (
-              <Textarea {...f} placeholder="주요성과" />
+              <TextArea {...f} placeholder="주요성과" />
             )}
           />
         </Card>

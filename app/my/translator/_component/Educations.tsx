@@ -1,6 +1,8 @@
 import { postFile } from "@/apis/files";
 import FileInput from "@/components/FileInput";
 import Label from "@/components/Label";
+import RadioButton from "@/components/RadioButton";
+import SelectBox from "@/components/SelectBox";
 import TextInput from "@/components/TextInput";
 import { EducationDefaultValue } from "@/model/education";
 import { PostTranslatorFormSchema } from "@/model/translator";
@@ -11,7 +13,6 @@ import {
   CloseIcon,
   Group,
   Radio,
-  Select,
   Stack,
 } from "@mantine/core";
 import { DatesRangeValue, MonthPickerInput } from "@mantine/dates";
@@ -108,6 +109,10 @@ export default function Educations() {
               onChange={(datesRangeValue) => {
                 handleChangeMonthRange(index, datesRangeValue);
               }}
+              classNames={{
+                input: "focus:border-primary",
+                placeholder: "text-neutral-400",
+              }}
             />
           </Group>
           <Controller
@@ -116,8 +121,8 @@ export default function Educations() {
             render={({ field: { value, onChange, ...f } }) => (
               <Radio.Group {...f} value={value} onChange={onChange}>
                 <Group>
-                  <Radio value="졸업" label="졸업" />
-                  <Radio value="수료" label="수료" />
+                  <RadioButton value="졸업" label="졸업" />
+                  <RadioButton value="수료" label="수료" />
                 </Group>
               </Radio.Group>
             )}
@@ -127,7 +132,7 @@ export default function Educations() {
               control={control}
               name={`educations.${index}.degree`}
               render={({ field: { value, onChange, ...f } }) => (
-                <Select
+                <SelectBox
                   {...f}
                   value={value}
                   onChange={(v) => onChange(v as string)}

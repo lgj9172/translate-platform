@@ -7,7 +7,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextareaAutosizeProps>(
   (props, ref) => (
     <TextareaAutosize
       ref={ref}
-      className="px-4 py-1 rounded border border-slate-200 placeholder:text-slate-400 focus:outline-primary font-['SpoqaHanSans']"
+      className="px-3 py-2 rounded border border-slate-200 text-sm placeholder:text-neutral-400 focus:border-primary focus:outline-none"
       {...props}
     />
   ),

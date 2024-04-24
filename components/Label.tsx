@@ -9,7 +9,6 @@ export default function Label({ children }: Props) {
       text-zinc-500
         text-sm
         font-normal
-        font-['SpoqaHanSans']
         leading-normal"
     >
       {children}

@@ -1,19 +1,19 @@
 import { z } from "zod";
 
 export const CareerSchema = z.object({
-  startDate: z.string(),
-  endDate: z.string(),
-  isWorking: z.boolean(),
-  company: z.string(),
+  started_at: z.string(),
+  ended_at: z.string(),
+  is_employed: z.boolean(),
+  name: z.string(),
   position: z.string(),
-  achievements: z.string(),
+  achievement: z.string(),
 });
 
 export const CareerDefaultValue = {
-  startDate: "",
-  endDate: "",
-  isWorking: false,
-  company: "",
+  started_at: "",
+  ended_at: "",
+  is_employed: false,
+  name: "",
   position: "",
-  achievements: "",
+  achievement: "",
 };

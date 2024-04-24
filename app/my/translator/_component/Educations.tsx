@@ -43,10 +43,10 @@ export default function Educations() {
   };
 
   const handleChangeMonthRange = (index: number, dates: DatesRangeValue) => {
-    const startMonth = dates[0] ? dayjs(dates[0]).toISOString() : "";
-    const endMonth = dates[1] ? dayjs(dates[1]).toISOString() : "";
-    setValue(`educations.${index}.startMonth`, startMonth);
-    setValue(`educations.${index}.endMonth`, endMonth);
+    const startedAt = dates[0] ? dayjs(dates[0]).toISOString() : "";
+    const endedAt = dates[1] ? dayjs(dates[1]).toISOString() : "";
+    setValue(`educations.${index}.started_at`, startedAt);
+    setValue(`educations.${index}.ended_at`, endedAt);
   };
 
   const handleChangeFile = async (
@@ -101,11 +101,11 @@ export default function Educations() {
               placeholder="시작월 - 종료월"
               leftSection={<FaRegCalendar />}
               value={[
-                watch(`educations.${index}.startMonth`).length > 0
-                  ? dayjs(watch(`educations.${index}.startMonth`)).toDate()
+                watch(`educations.${index}.started_at`).length > 0
+                  ? dayjs(watch(`educations.${index}.started_at`)).toDate()
                   : null,
-                watch(`educations.${index}.endMonth`).length > 0
-                  ? dayjs(watch(`educations.${index}.endMonth`)).toDate()
+                watch(`educations.${index}.ended_at`).length > 0
+                  ? dayjs(watch(`educations.${index}.ended_at`)).toDate()
                   : null,
               ]}
               onChange={(datesRangeValue) => {
@@ -114,12 +114,14 @@ export default function Educations() {
               classNames={{
                 input: "focus:border-primary",
                 placeholder: "text-neutral-400",
+                monthsListControl:
+                  "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
               }}
             />
           </Group>
           <Controller
             control={control}
-            name={`educations.${index}.graduation_status`}
+            name={`educations.${index}.status`}
             render={({ field: { value, onChange, ...f } }) => (
               <Radio.Group {...f} value={value} onChange={onChange}>
                 <Group>
@@ -150,7 +152,7 @@ export default function Educations() {
           </Box>
           <Controller
             control={control}
-            name={`educations.${index}.schoolName`}
+            name={`educations.${index}.name`}
             render={({ field: { ...f } }) => (
               <TextInput {...f} placeholder="학교 이름" />
             )}

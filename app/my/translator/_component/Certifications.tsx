@@ -40,8 +40,8 @@ export default function Certifications() {
   };
 
   const handleChangeDateRange = (index: number, date: DateValue) => {
-    const startDate = date ? dayjs(date).toISOString() : "";
-    setValue(`certifications.${index}.start_at`, startDate);
+    const staredAt = date ? dayjs(date).toISOString() : "";
+    setValue(`certifications.${index}.started_at`, staredAt);
   };
 
   const handleChangeFile = async (
@@ -104,8 +104,8 @@ export default function Certifications() {
               placeholder="발급일"
               leftSection={<FaRegCalendar />}
               value={
-                dayjs(watch(`certifications.${index}.start_at`)).isValid()
-                  ? dayjs(watch(`certifications.${index}.start_at`)).toDate()
+                dayjs(watch(`certifications.${index}.started_at`)).isValid()
+                  ? dayjs(watch(`certifications.${index}.started_at`)).toDate()
                   : null
               }
               onChange={(dateValue) => {
@@ -114,7 +114,7 @@ export default function Certifications() {
               classNames={{
                 input: "focus:border-primary",
                 placeholder: "text-neutral-400",
-                day: "data-[first-in-range=true]:bg-primary data-[last-in-range=true]:bg-primary data-[in-range=true]:bg-primary",
+                day: "data-[selected=true]:bg-primary",
               }}
             />
           </Group>

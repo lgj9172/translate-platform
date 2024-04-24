@@ -29,12 +29,12 @@ export default function Careers() {
   };
 
   const handleChangeDateRange = (index: number, dates: DatesRangeValue) => {
-    const startDate = dates[0] ? dayjs(dates[0]).toISOString() : "";
-    const endDate = dates[1] ? dayjs(dates[1]).toISOString() : "";
-    const isWorking = getValues(`careers.${index}.isWorking`);
+    const startedAt = dates[0] ? dayjs(dates[0]).toISOString() : "";
+    const endedAt = dates[1] ? dayjs(dates[1]).toISOString() : "";
+    const isEmployed = getValues(`careers.${index}.is_employed`);
     const currentDate = dayjs().toISOString();
-    setValue(`careers.${index}.startDate`, startDate);
-    setValue(`careers.${index}.endDate`, isWorking ? currentDate : endDate);
+    setValue(`careers.${index}.started_at`, startedAt);
+    setValue(`careers.${index}.ended_at`, isEmployed ? currentDate : endedAt);
   };
 
   return (
@@ -78,32 +78,31 @@ export default function Careers() {
               placeholder="시작일 - 종료일"
               leftSection={<FaRegCalendar />}
               value={[
-                dayjs(watch(`careers.${index}.startDate`)).isValid()
-                  ? dayjs(watch(`careers.${index}.startDate`)).toDate()
+                dayjs(watch(`careers.${index}.started_at`)).isValid()
+                  ? dayjs(watch(`careers.${index}.started_at`)).toDate()
                   : null,
-                dayjs(watch(`careers.${index}.endDate`)).isValid()
-                  ? dayjs(watch(`careers.${index}.endDate`)).toDate()
+                dayjs(watch(`careers.${index}.ended_at`)).isValid()
+                  ? dayjs(watch(`careers.${index}.ended_at`)).toDate()
                   : null,
               ]}
               onChange={(datesRangeValue) => {
                 handleChangeDateRange(index, datesRangeValue);
               }}
-              closeOnChange={watch(`careers.${index}.isWorking`)}
               maxDate={
-                watch(`careers.${index}.isWorking`)
+                watch(`careers.${index}.is_employed`)
                   ? dayjs().toDate()
                   : undefined
               }
               classNames={{
                 input: "focus:border-primary",
                 placeholder: "text-neutral-400",
-                day: "data-[first-in-range=true]:bg-primary data-[last-in-range=true]:bg-primary data-[in-range=true]:bg-primary",
+                day: "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
               }}
             />
           </Group>
           <Controller
             control={control}
-            name={`careers.${index}.isWorking`}
+            name={`careers.${index}.is_employed`}
             render={({ field: { value, onChange, ...f } }) => (
               <CheckButton
                 {...f}
@@ -113,7 +112,10 @@ export default function Careers() {
                   const isChecked = e.currentTarget.checked;
                   onChange(isChecked);
                   if (isChecked) {
-                    setValue(`careers.${index}.endDate`, dayjs().toISOString());
+                    setValue(
+                      `careers.${index}.ended_at`,
+                      dayjs().toISOString(),
+                    );
                   }
                 }}
               />
@@ -121,7 +123,7 @@ export default function Careers() {
           />
           <Controller
             control={control}
-            name={`careers.${index}.company`}
+            name={`careers.${index}.name`}
             render={({ field: { ...f } }) => (
               <TextInput {...f} placeholder="회사 이름" />
             )}
@@ -135,7 +137,7 @@ export default function Careers() {
           />
           <Controller
             control={control}
-            name={`careers.${index}.achievements`}
+            name={`careers.${index}.achievement`}
             render={({ field: { ...f } }) => (
               <TextArea {...f} placeholder="주요성과" />
             )}

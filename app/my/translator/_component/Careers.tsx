@@ -1,6 +1,5 @@
 import CheckButton from "@/components/CheckButton";
 import Label from "@/components/Label";
-import TextArea from "@/components/TextArea";
 import TextInput from "@/components/TextInput";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
@@ -139,7 +138,7 @@ export default function Careers() {
             control={control}
             name={`careers.${index}.achievement`}
             render={({ field: { ...f } }) => (
-              <TextArea {...f} placeholder="주요성과" />
+              <TextInput {...f} placeholder="주요성과" />
             )}
           />
         </Card>

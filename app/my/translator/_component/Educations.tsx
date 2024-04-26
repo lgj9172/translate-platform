@@ -4,7 +4,9 @@ import Label from "@/components/Label";
 import RadioButton from "@/components/RadioButton";
 import SelectBox from "@/components/SelectBox";
 import TextInput from "@/components/TextInput";
+import { DegreeSchema } from "@/model/degree";
 import { EducationDefaultValue } from "@/model/education";
+import { EducationStatusSchema } from "@/model/educationStatus";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import {
   ActionIcon,
@@ -18,12 +20,33 @@ import {
 import { DatesRangeValue, MonthPickerInput } from "@mantine/dates";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
 
 export default function Educations() {
+  const educationStatusOptions = useMemo<
+    { label: string; value: z.infer<typeof EducationStatusSchema> }[]
+  >(
+    () => [
+      { label: "졸업", value: "GRADUATED" },
+      { label: "수료", value: "COMPLETED" },
+    ],
+    [],
+  );
+
+  const degreeOptions = useMemo<
+    { label: string; value: z.infer<typeof DegreeSchema> }[]
+  >(
+    () => [
+      { label: "학사", value: "BACHELOR" },
+      { label: "석사", value: "MASTER" },
+      { label: "박사", value: "DOCTOR" },
+    ],
+    [],
+  );
+
   const { control, setValue, watch } =
     useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
@@ -94,7 +117,7 @@ export default function Educations() {
           >
             <CloseIcon />
           </ActionIcon>
-          <Group>
+          <div>
             <MonthPickerInput
               type="range"
               valueFormat="YYYY년 MM월"
@@ -118,15 +141,21 @@ export default function Educations() {
                   "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
               }}
             />
-          </Group>
+            {/* <ErrorText>{errors.educations[index].ended_at.message}</ErrorText> */}
+          </div>
           <Controller
             control={control}
             name={`educations.${index}.status`}
             render={({ field: { value, onChange, ...f } }) => (
               <Radio.Group {...f} value={value} onChange={onChange}>
                 <Group>
-                  <RadioButton value="졸업" label="졸업" />
-                  <RadioButton value="수료" label="수료" />
+                  {educationStatusOptions.map((o) => (
+                    <RadioButton
+                      key={o.value}
+                      value={o.value}
+                      label={o.label}
+                    />
+                  ))}
                 </Group>
               </Radio.Group>
             )}
@@ -140,11 +169,7 @@ export default function Educations() {
                   {...f}
                   value={value}
                   onChange={(v) => onChange(v as string)}
-                  data={[
-                    { value: "학사", label: "학사" },
-                    { value: "석사", label: "석사" },
-                    { value: "박사", label: "박사" },
-                  ]}
+                  data={degreeOptions}
                   allowDeselect={false}
                 />
               )}

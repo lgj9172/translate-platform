@@ -1,6 +1,5 @@
 "use client";
 
-// import { Category } from "@/apis/translations";
 import PageHeader from "@/components/PageHeader";
 import {
   PostTranslatorFormDefaultValue,
@@ -26,33 +25,40 @@ export default function Page() {
     mode: "onChange",
   });
 
+  const handleSubmitSuccess = () => {
+    alert("성공");
+  };
+
   return (
-    <FormProvider {...methods}>
-      <Stack>
-        <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/my"
-          >
-            <FaArrowLeft />
-          </ActionIcon>
-        </Group>
+    <form onSubmit={methods.handleSubmit(handleSubmitSuccess)}>
+      <FormProvider {...methods}>
+        <Stack>
+          <Group>
+            <ActionIcon
+              variant="transparent"
+              color="black"
+              component={Link}
+              href="/my"
+            >
+              <FaArrowLeft />
+            </ActionIcon>
+          </Group>
 
-        <PageHeader>
-          <PageTitle>번역사 등록 신청</PageTitle>
-        </PageHeader>
+          <PageHeader>
+            <PageTitle>번역사 등록 신청</PageTitle>
+          </PageHeader>
 
-        <Stack gap={48}>
-          <Speciality />
-          <SelfIntroduction />
-          <Educations />
-          <Careers />
-          <Certifications />
-          <Samples />
+          <Stack gap={48}>
+            <Speciality />
+            <SelfIntroduction />
+            <Educations />
+            <Careers />
+            <Certifications />
+            <Samples />
+            <button type="submit">제출</button>
+          </Stack>
         </Stack>
-      </Stack>
-    </FormProvider>
+      </FormProvider>
+    </form>
   );
 }

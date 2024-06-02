@@ -1,4 +1,5 @@
 import { postFile } from "@/apis/files";
+import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
 import Label from "@/components/Label";
 import RadioButton from "@/components/RadioButton";
@@ -47,8 +48,12 @@ export default function Educations() {
     [],
   );
 
-  const { control, setValue, watch } =
-    useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -68,8 +73,10 @@ export default function Educations() {
   const handleChangeMonthRange = (index: number, dates: DatesRangeValue) => {
     const startedAt = dates[0] ? dayjs(dates[0]).toISOString() : "";
     const endedAt = dates[1] ? dayjs(dates[1]).toISOString() : "";
-    setValue(`educations.${index}.started_at`, startedAt);
-    setValue(`educations.${index}.ended_at`, endedAt);
+    setValue(`educations.${index}.started_at`, startedAt, {
+      shouldValidate: true,
+    });
+    setValue(`educations.${index}.ended_at`, endedAt, { shouldValidate: true });
   };
 
   const handleChangeFile = async (
@@ -117,7 +124,7 @@ export default function Educations() {
           >
             <CloseIcon />
           </ActionIcon>
-          <div>
+          <div className="flex flex-col gap-1">
             <MonthPickerInput
               type="range"
               valueFormat="YYYY년 MM월"
@@ -141,7 +148,14 @@ export default function Educations() {
                   "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
               }}
             />
-            {/* <ErrorText>{errors.educations[index].ended_at.message}</ErrorText> */}
+            <div className="flex flex-col gap-1">
+              <ErrorText>
+                {errors?.educations?.[index]?.started_at?.message}
+              </ErrorText>
+              <ErrorText>
+                {errors?.educations?.[index]?.ended_at?.message}
+              </ErrorText>
+            </div>
           </div>
           <Controller
             control={control}
@@ -174,26 +188,40 @@ export default function Educations() {
                 />
               )}
             />
+            <ErrorText>
+              {errors?.educations?.[index]?.degree?.message}
+            </ErrorText>
           </Box>
-          <Controller
-            control={control}
-            name={`educations.${index}.name`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="학교 이름" />
-            )}
-          />
-          <Controller
-            control={control}
-            name={`educations.${index}.major`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="전공" />
-            )}
-          />
-          <FileInput
-            placeholder="졸업/수료 증명서 (10MB, PDF)"
-            onChange={(e) => handleChangeFile(index, e)}
-            text={`${watch(`educations.${index}.file.name`)}`}
-          />
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`educations.${index}.name`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="학교 이름" />
+              )}
+            />
+            <ErrorText>{errors?.educations?.[index]?.name?.message}</ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`educations.${index}.major`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="전공" />
+              )}
+            />
+            <ErrorText>{errors?.educations?.[index]?.major?.message}</ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
+            <FileInput
+              placeholder="졸업/수료 증명서 (10MB, PDF)"
+              onChange={(e) => handleChangeFile(index, e)}
+              text={`${watch(`educations.${index}.file.name`)}`}
+            />
+            <ErrorText>
+              {errors?.educations?.[index]?.file?.name?.message}
+            </ErrorText>
+          </div>
         </Card>
       ))}
     </div>

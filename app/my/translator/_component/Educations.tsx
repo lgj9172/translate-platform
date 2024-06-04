@@ -11,7 +11,6 @@ import { EducationStatusSchema } from "@/model/educationStatus";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import {
   ActionIcon,
-  Box,
   Card,
   CloseIcon,
   Group,
@@ -148,33 +147,36 @@ export default function Educations() {
                   "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
               }}
             />
-            <div className="flex flex-col gap-1">
-              <ErrorText>
-                {errors?.educations?.[index]?.started_at?.message}
-              </ErrorText>
-              <ErrorText>
-                {errors?.educations?.[index]?.ended_at?.message}
-              </ErrorText>
-            </div>
+            <ErrorText>
+              {errors?.educations?.[index]?.started_at?.message}
+            </ErrorText>
+            <ErrorText>
+              {errors?.educations?.[index]?.ended_at?.message}
+            </ErrorText>
           </div>
-          <Controller
-            control={control}
-            name={`educations.${index}.status`}
-            render={({ field: { value, onChange, ...f } }) => (
-              <Radio.Group {...f} value={value} onChange={onChange}>
-                <Group>
-                  {educationStatusOptions.map((o) => (
-                    <RadioButton
-                      key={o.value}
-                      value={o.value}
-                      label={o.label}
-                    />
-                  ))}
-                </Group>
-              </Radio.Group>
-            )}
-          />
-          <Box>
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`educations.${index}.status`}
+              render={({ field: { value, onChange, ...f } }) => (
+                <Radio.Group {...f} value={value} onChange={onChange}>
+                  <Group>
+                    {educationStatusOptions.map((o) => (
+                      <RadioButton
+                        key={o.value}
+                        value={o.value}
+                        label={o.label}
+                      />
+                    ))}
+                  </Group>
+                </Radio.Group>
+              )}
+            />
+            <ErrorText>
+              {errors?.educations?.[index]?.status?.message}
+            </ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
             <Controller
               control={control}
               name={`educations.${index}.degree`}
@@ -191,7 +193,7 @@ export default function Educations() {
             <ErrorText>
               {errors?.educations?.[index]?.degree?.message}
             </ErrorText>
-          </Box>
+          </div>
           <div className="flex flex-col gap-1">
             <Controller
               control={control}

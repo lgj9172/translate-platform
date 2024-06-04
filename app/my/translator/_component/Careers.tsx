@@ -1,9 +1,10 @@
 import CheckButton from "@/components/CheckButton";
+import ErrorText from "@/components/ErrorText";
 import Label from "@/components/Label";
 import TextInput from "@/components/TextInput";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { ActionIcon, Card, CloseIcon, Group, Stack } from "@mantine/core";
+import { ActionIcon, Card, CloseIcon, Stack } from "@mantine/core";
 import { DatePickerInput, DatesRangeValue } from "@mantine/dates";
 import dayjs from "dayjs";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -11,8 +12,13 @@ import { FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
 
 export default function Careers() {
-  const { control, getValues, setValue, watch } =
-    useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
+  const {
+    control,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -70,7 +76,7 @@ export default function Careers() {
           >
             <CloseIcon />
           </ActionIcon>
-          <Group>
+          <div className="flex flex-col gap-1">
             <DatePickerInput
               type="range"
               valueFormat="YYYY년 MM월 DD일"
@@ -98,7 +104,11 @@ export default function Careers() {
                 day: "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
               }}
             />
-          </Group>
+            <ErrorText>
+              {errors?.careers?.[index]?.started_at?.message}
+            </ErrorText>
+            <ErrorText>{errors?.careers?.[index]?.ended_at?.message}</ErrorText>
+          </div>
           <Controller
             control={control}
             name={`careers.${index}.is_employed`}
@@ -120,27 +130,38 @@ export default function Careers() {
               />
             )}
           />
-          <Controller
-            control={control}
-            name={`careers.${index}.name`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="회사 이름" />
-            )}
-          />
-          <Controller
-            control={control}
-            name={`careers.${index}.position`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="직무" />
-            )}
-          />
-          <Controller
-            control={control}
-            name={`careers.${index}.achievement`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="주요성과" />
-            )}
-          />
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`careers.${index}.name`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="회사 이름" />
+              )}
+            />
+            <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`careers.${index}.position`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="직무" />
+              )}
+            />
+            <ErrorText>{errors?.careers?.[index]?.position?.message}</ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`careers.${index}.achievement`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="주요성과" />
+              )}
+            />
+            <ErrorText>
+              {errors?.careers?.[index]?.achievement?.message}
+            </ErrorText>
+          </div>
         </Card>
       ))}
     </div>

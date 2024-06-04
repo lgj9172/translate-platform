@@ -23,8 +23,11 @@ export default function Samples() {
     [],
   );
 
-  const { control, trigger } =
-    useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
+  const {
+    control,
+    trigger,
+    formState: { errors },
+  } = useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -81,69 +84,89 @@ export default function Samples() {
           >
             <CloseIcon />
           </ActionIcon>
-          <Controller
-            name={`translation_samples.${index}.source_language`}
-            control={control}
-            render={({ field: { onChange, ...f } }) => (
-              <SelectBox
-                {...f}
-                w={120}
-                data={languageOptions}
-                onChange={(v) => {
-                  onChange(v as (typeof Language)[0]);
-                  trigger(`translation_samples.${index}.target_language`);
-                }}
-                allowDeselect={false}
-                checkIconPosition="right"
-              />
-            )}
-          />
-          <Controller
-            name={`translation_samples.${index}.source_text`}
-            control={control}
-            render={({ field: f, fieldState: { error } }) => (
-              <div className="flex flex-col gap-1">
-                <TextArea
+          <div className="flex flex-col gap-1">
+            <Controller
+              name={`translation_samples.${index}.source_language`}
+              control={control}
+              render={({ field: { onChange, ...f } }) => (
+                <SelectBox
                   {...f}
-                  placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                  w={120}
+                  data={languageOptions}
+                  onChange={(v) => {
+                    onChange(v as (typeof Language)[0]);
+                    trigger(`translation_samples.${index}.source_language`);
+                  }}
+                  allowDeselect={false}
+                  checkIconPosition="right"
                 />
-                <ErrorText>{error?.message}</ErrorText>
-              </div>
-            )}
-          />
+              )}
+            />
+            <ErrorText>
+              {errors?.translation_samples?.[index]?.source_language?.message}
+            </ErrorText>
+          </div>
+          <div className="flex flex-1 gap-1">
+            <Controller
+              name={`translation_samples.${index}.source_text`}
+              control={control}
+              render={({ field: f, fieldState: { error } }) => (
+                <div className="flex flex-col gap-1">
+                  <TextArea
+                    {...f}
+                    placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </div>
+              )}
+            />
+            <ErrorText>
+              {errors?.translation_samples?.[index]?.source_text?.message}
+            </ErrorText>
+          </div>
           <div className="flex justify-center items-center text-primary">
             <FaArrowDown />
           </div>
-          <Controller
-            name={`translation_samples.${index}.target_language`}
-            control={control}
-            render={({ field: { onChange, ...f } }) => (
-              <SelectBox
-                {...f}
-                w={120}
-                data={languageOptions}
-                onChange={(v) => {
-                  onChange(v as (typeof Language)[0]);
-                  trigger(`translation_samples.${index}.source_language`);
-                }}
-                allowDeselect={false}
-                checkIconPosition="right"
-              />
-            )}
-          />
-          <Controller
-            name={`translation_samples.${index}.target_text`}
-            control={control}
-            render={({ field: f, fieldState: { error } }) => (
-              <div className="flex flex-col gap-1">
-                <TextArea
+          <div className="flex flex-col gap-1">
+            <Controller
+              name={`translation_samples.${index}.target_language`}
+              control={control}
+              render={({ field: { onChange, ...f } }) => (
+                <SelectBox
                   {...f}
-                  placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                  w={120}
+                  data={languageOptions}
+                  onChange={(v) => {
+                    onChange(v as (typeof Language)[0]);
+                    trigger(`translation_samples.${index}.target_language`);
+                  }}
+                  allowDeselect={false}
+                  checkIconPosition="right"
                 />
-                <ErrorText>{error?.message}</ErrorText>
-              </div>
-            )}
-          />
+              )}
+            />
+            <ErrorText>
+              {errors?.translation_samples?.[index]?.target_language?.message}
+            </ErrorText>
+          </div>
+          <div className="flex flex-1 gap-1">
+            <Controller
+              name={`translation_samples.${index}.target_text`}
+              control={control}
+              render={({ field: f, fieldState: { error } }) => (
+                <div className="flex flex-col gap-1">
+                  <TextArea
+                    {...f}
+                    placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </div>
+              )}
+            />
+            <ErrorText>
+              {errors?.translation_samples?.[index]?.target_text?.message}
+            </ErrorText>
+          </div>
         </Card>
       ))}
     </div>

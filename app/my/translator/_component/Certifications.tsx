@@ -1,17 +1,11 @@
 import { postFile } from "@/apis/files";
+import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
 import Label from "@/components/Label";
 import TextInput from "@/components/TextInput";
 import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import {
-  ActionIcon,
-  Alert,
-  Card,
-  CloseIcon,
-  Group,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
 import { DatePickerInput, DateValue } from "@mantine/dates";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -21,8 +15,12 @@ import { FaCircleInfo, FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
 
 export default function Certifications() {
-  const { control, setValue, watch } =
-    useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -97,7 +95,7 @@ export default function Certifications() {
           >
             <CloseIcon />
           </ActionIcon>
-          <Group>
+          <div className="flex flex-col gap-1">
             <DatePickerInput
               type="default"
               valueFormat="YYYY년 MM월 DD일"
@@ -117,26 +115,44 @@ export default function Certifications() {
                 day: "data-[selected=true]:bg-primary",
               }}
             />
-          </Group>
-          <Controller
-            control={control}
-            name={`certifications.${index}.name`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="자격증" />
-            )}
-          />
-          <Controller
-            control={control}
-            name={`certifications.${index}.organization`}
-            render={({ field: { ...f } }) => (
-              <TextInput {...f} placeholder="발급기관" />
-            )}
-          />
-          <FileInput
-            placeholder="자격증 사본 추가 (10MB, PDF)"
-            onChange={(e) => handleChangeFile(index, e)}
-            text={`${watch(`educations.${index}.file.name`)}`}
-          />
+            <ErrorText>
+              {errors?.certifications?.[index]?.started_at?.message}
+            </ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`certifications.${index}.name`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="자격증" />
+              )}
+            />
+            <ErrorText>
+              {errors?.certifications?.[index]?.name?.message}
+            </ErrorText>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Controller
+              control={control}
+              name={`certifications.${index}.organization`}
+              render={({ field: { ...f } }) => (
+                <TextInput {...f} placeholder="발급기관" />
+              )}
+            />
+            <ErrorText>
+              {errors?.certifications?.[index]?.organization?.message}
+            </ErrorText>
+          </div>
+          <div>
+            <FileInput
+              placeholder="자격증 사본 추가 (10MB, PDF)"
+              onChange={(e) => handleChangeFile(index, e)}
+              text={`${watch(`certifications.${index}.file.name`)}`}
+            />
+            <ErrorText>
+              {errors?.certifications?.[index]?.file?.name?.message}
+            </ErrorText>
+          </div>
         </Card>
       ))}
     </div>

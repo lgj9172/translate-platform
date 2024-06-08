@@ -39,7 +39,9 @@ export default function Certifications() {
 
   const handleChangeDateRange = (index: number, date: DateValue) => {
     const staredAt = date ? dayjs(date).toISOString() : "";
-    setValue(`certifications.${index}.started_at`, staredAt);
+    setValue(`certifications.${index}.started_at`, staredAt, {
+      shouldValidate: true,
+    });
   };
 
   const handleChangeFile = async (
@@ -49,7 +51,7 @@ export default function Certifications() {
     const file = e.target.files?.[0];
     if (file) {
       const res = await mutateAsync({ content: file });
-      setValue(`educations.${index}.file`, res);
+      setValue(`educations.${index}.file`, res, { shouldValidate: true });
     }
   };
 
@@ -84,17 +86,16 @@ export default function Certifications() {
           gap="xs"
           pos="relative"
         >
-          <ActionIcon
-            color="dark"
-            variant="transparent"
-            onClick={() => handleClickDelete(index)}
-            // disabled={fields.length === 1}
-            pos="absolute"
-            top={16}
-            right={16}
-          >
-            <CloseIcon />
-          </ActionIcon>
+          <div className="flex justify-end">
+            <ActionIcon
+              color="dark"
+              variant="transparent"
+              onClick={() => handleClickDelete(index)}
+              // disabled={fields.length === 1}
+            >
+              <CloseIcon />
+            </ActionIcon>
+          </div>
           <div className="flex flex-col gap-1">
             <DatePickerInput
               type="default"

@@ -105,18 +105,15 @@ export default function Samples() {
               {errors?.translation_samples?.[index]?.source_language?.message}
             </ErrorText>
           </div>
-          <div className="flex flex-1 gap-1">
+          <div className="flex flex-col gap-1">
             <Controller
               name={`translation_samples.${index}.source_text`}
               control={control}
-              render={({ field: f, fieldState: { error } }) => (
-                <div className="flex flex-col gap-1">
-                  <TextArea
-                    {...f}
-                    placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
-                  />
-                  <ErrorText>{error?.message}</ErrorText>
-                </div>
+              render={({ field: f }) => (
+                <TextArea
+                  {...f}
+                  placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                />
               )}
             />
             <ErrorText>
@@ -148,18 +145,15 @@ export default function Samples() {
               {errors?.translation_samples?.[index]?.target_language?.message}
             </ErrorText>
           </div>
-          <div className="flex flex-1 gap-1">
+          <div className="flex flex-col gap-1">
             <Controller
               name={`translation_samples.${index}.target_text`}
               control={control}
-              render={({ field: f, fieldState: { error } }) => (
-                <div className="flex flex-col gap-1">
-                  <TextArea
-                    {...f}
-                    placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
-                  />
-                  <ErrorText>{error?.message}</ErrorText>
-                </div>
+              render={({ field: f }) => (
+                <TextArea
+                  {...f}
+                  placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
+                />
               )}
             />
             <ErrorText>

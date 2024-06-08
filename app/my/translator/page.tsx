@@ -6,7 +6,7 @@ import {
   PostTranslatorFormSchema,
 } from "@/model/translator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon, Group, Stack } from "@mantine/core";
+import { ActionIcon, Button, Group, Stack } from "@mantine/core";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -55,7 +55,11 @@ export default function Page() {
             <Careers />
             <Certifications />
             <Samples />
-            <button type="submit">제출</button>
+            <div className="flex justify-end">
+              <Button type="submit" color="orange" className="w-fit">
+                제출
+              </Button>
+            </div>
           </Stack>
         </Stack>
       </FormProvider>

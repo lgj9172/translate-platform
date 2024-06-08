@@ -17,6 +17,7 @@ export default function Careers() {
     getValues,
     setValue,
     watch,
+
     formState: { errors },
   } = useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
@@ -38,8 +39,12 @@ export default function Careers() {
     const endedAt = dates[1] ? dayjs(dates[1]).toISOString() : "";
     const isEmployed = getValues(`careers.${index}.is_employed`);
     const currentDate = dayjs().toISOString();
-    setValue(`careers.${index}.started_at`, startedAt);
-    setValue(`careers.${index}.ended_at`, isEmployed ? currentDate : endedAt);
+    setValue(`careers.${index}.started_at`, startedAt, {
+      shouldValidate: true,
+    });
+    setValue(`careers.${index}.ended_at`, isEmployed ? currentDate : endedAt, {
+      shouldValidate: true,
+    });
   };
 
   return (

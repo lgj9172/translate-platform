@@ -112,17 +112,16 @@ export default function Educations() {
           gap="xs"
           pos="relative"
         >
-          <ActionIcon
-            color="dark"
-            variant="transparent"
-            onClick={() => handleClickDelete(index)}
-            disabled={fields.length === 1}
-            pos="absolute"
-            top={16}
-            right={16}
-          >
-            <CloseIcon />
-          </ActionIcon>
+          <div className="flex justify-end">
+            <ActionIcon
+              color="dark"
+              variant="transparent"
+              onClick={() => handleClickDelete(index)}
+              disabled={fields.length === 1}
+            >
+              <CloseIcon />
+            </ActionIcon>
+          </div>
           <div className="flex flex-col gap-1">
             <MonthPickerInput
               type="range"

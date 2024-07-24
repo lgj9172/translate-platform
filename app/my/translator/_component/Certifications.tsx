@@ -1,7 +1,9 @@
 import { postFile } from "@/apis/files";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
+import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
+import LabelSection from "@/components/LabelSection";
 import TextInput from "@/components/TextInput";
 import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
@@ -51,13 +53,13 @@ export default function Certifications() {
     const file = e.target.files?.[0];
     if (file) {
       const res = await mutateAsync({ content: file });
-      setValue(`educations.${index}.file`, res, { shouldValidate: true });
+      setValue(`certifications.${index}.file`, res, { shouldValidate: true });
     }
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between">
+    <InputSection>
+      <LabelSection>
         <Label>자격증 (선택)</Label>
         <div>
           <button
@@ -68,7 +70,7 @@ export default function Certifications() {
             추가
           </button>
         </div>
-      </div>
+      </LabelSection>
       {fields.length === 0 && (
         <Alert
           color="gray"
@@ -156,6 +158,6 @@ export default function Certifications() {
           </div>
         </Card>
       ))}
-    </div>
+    </InputSection>
   );
 }

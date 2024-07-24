@@ -1,7 +1,10 @@
 import { Category } from "@/apis/translations";
 import Chip from "@/components/Chip";
+import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
+import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
+import LabelSection from "@/components/LabelSection";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -29,15 +32,15 @@ export default function Speciality() {
     useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between">
+    <InputSection>
+      <LabelSection>
         <Label>전문 분야 (최대 3개)</Label>
-      </div>
+      </LabelSection>
       <Controller
         name="categories"
         control={control}
         render={({ field: { onChange, ...field }, fieldState: { error } }) => (
-          <div className="flex flex-col gap-1">
+          <ControllerSection>
             <div className="flex flex-wrap gap-2">
               {categoryOptions.map((c) => (
                 <Chip
@@ -57,9 +60,9 @@ export default function Speciality() {
               ))}
             </div>
             <ErrorText>{error?.message}</ErrorText>
-          </div>
+          </ControllerSection>
         )}
       />
-    </div>
+    </InputSection>
   );
 }

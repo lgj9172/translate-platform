@@ -8,7 +8,7 @@ interface Props {
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function FI({ text, placeholder = "", onChange }: Props) {
+export default function FileInput({ text, placeholder = "", onChange }: Props) {
   const id = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleClickInput: MouseEventHandler<HTMLInputElement> = () => {

@@ -1,6 +1,8 @@
 import CheckButton from "@/components/CheckButton";
 import ErrorText from "@/components/ErrorText";
+import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
+import LabelSection from "@/components/LabelSection";
 import TextInput from "@/components/TextInput";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
@@ -48,8 +50,8 @@ export default function Careers() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between">
+    <InputSection>
+      <LabelSection>
         <Label>경력</Label>
         <div>
           <button
@@ -60,7 +62,7 @@ export default function Careers() {
             추가
           </button>
         </div>
-      </div>
+      </LabelSection>
       {fields.map((field, index) => (
         <Card
           key={field.id}
@@ -168,6 +170,6 @@ export default function Careers() {
           </div>
         </Card>
       ))}
-    </div>
+    </InputSection>
   );
 }

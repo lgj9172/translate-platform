@@ -1,7 +1,10 @@
 import { postFile } from "@/apis/files";
+import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
+import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
+import LabelSection from "@/components/LabelSection";
 import RadioButton from "@/components/RadioButton";
 import SelectBox from "@/components/SelectBox";
 import TextInput from "@/components/TextInput";
@@ -90,8 +93,8 @@ export default function Educations() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between">
+    <InputSection>
+      <LabelSection>
         <Label>학력</Label>
         <div>
           <button
@@ -102,7 +105,7 @@ export default function Educations() {
             추가
           </button>
         </div>
-      </div>
+      </LabelSection>
       {fields.map((field, index) => (
         <Card
           key={field.id}
@@ -122,7 +125,7 @@ export default function Educations() {
               <CloseIcon />
             </ActionIcon>
           </div>
-          <div className="flex flex-col gap-1">
+          <ControllerSection>
             <MonthPickerInput
               type="range"
               valueFormat="YYYY년 MM월"
@@ -152,8 +155,8 @@ export default function Educations() {
             <ErrorText>
               {errors?.educations?.[index]?.ended_at?.message}
             </ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`educations.${index}.status`}
@@ -174,8 +177,8 @@ export default function Educations() {
             <ErrorText>
               {errors?.educations?.[index]?.status?.message}
             </ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`educations.${index}.degree`}
@@ -192,8 +195,8 @@ export default function Educations() {
             <ErrorText>
               {errors?.educations?.[index]?.degree?.message}
             </ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`educations.${index}.name`}
@@ -202,8 +205,8 @@ export default function Educations() {
               )}
             />
             <ErrorText>{errors?.educations?.[index]?.name?.message}</ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`educations.${index}.major`}
@@ -212,8 +215,8 @@ export default function Educations() {
               )}
             />
             <ErrorText>{errors?.educations?.[index]?.major?.message}</ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <FileInput
               placeholder="졸업/수료 증명서 (10MB, PDF)"
               onChange={(e) => handleChangeFile(index, e)}
@@ -222,9 +225,9 @@ export default function Educations() {
             <ErrorText>
               {errors?.educations?.[index]?.file?.name?.message}
             </ErrorText>
-          </div>
+          </ControllerSection>
         </Card>
       ))}
-    </div>
+    </InputSection>
   );
 }

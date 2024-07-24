@@ -45,8 +45,6 @@ export default function Samples() {
     remove(index);
   };
 
-  console.log(errors);
-
   return (
     <InputSection>
       <LabelSection>

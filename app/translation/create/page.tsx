@@ -7,6 +7,7 @@ import {
   postTranslationFile,
 } from "@/apis/translations";
 import PageHeader from "@/components/PageHeader";
+import PageTitle from "@/components/PageTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ActionIcon,
@@ -22,7 +23,6 @@ import {
   Text,
   TextInput,
   Textarea,
-  Title,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useMutation } from "@tanstack/react-query";
@@ -31,7 +31,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { FaArrowLeft, FaArrowRight, FaFile } from "react-icons/fa6";
+import { FaArrowRight, FaChevronLeft, FaFile } from "react-icons/fa6";
 import { z } from "zod";
 
 const PostTranslationFormSchema = z
@@ -207,18 +207,18 @@ export default function Index() {
   return (
     <form onSubmit={handleSubmit(handleClickCreate)}>
       <Stack w="full" h="full">
-        <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/"
-          >
-            <FaArrowLeft />
-          </ActionIcon>
-        </Group>
         <PageHeader>
-          <Title>번역요청</Title>
+          <Group>
+            <ActionIcon
+              variant="transparent"
+              color="black"
+              component={Link}
+              href="/"
+            >
+              <FaChevronLeft />
+            </ActionIcon>
+            <PageTitle>번역요청</PageTitle>
+          </Group>
         </PageHeader>
         <TextInput
           {...register("title")}

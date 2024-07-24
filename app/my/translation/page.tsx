@@ -1,9 +1,10 @@
 "use client";
 
 import PageHeader from "@/components/PageHeader";
-import { ActionIcon, Group, Stack, Tabs, Title } from "@mantine/core";
+import PageTitle from "@/components/PageTitle";
+import { ActionIcon, Group, Stack, Tabs } from "@mantine/core";
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
 import Before from "./Before";
 import Finished from "./Finished";
 import Ongoing from "./Ongoing";
@@ -11,18 +12,18 @@ import Ongoing from "./Ongoing";
 export default function Page() {
   return (
     <Stack>
-      <Group>
-        <ActionIcon
-          variant="transparent"
-          color="black"
-          component={Link}
-          href="/my"
-        >
-          <FaArrowLeft />
-        </ActionIcon>
-      </Group>
       <PageHeader>
-        <Title>내 번역 요청</Title>
+        <Group>
+          <ActionIcon
+            variant="transparent"
+            color="black"
+            component={Link}
+            href="/my"
+          >
+            <FaChevronLeft />
+          </ActionIcon>
+          <PageTitle>내 번역 요청</PageTitle>
+        </Group>
       </PageHeader>
       <Tabs color="orange" variant="pills" defaultValue="before">
         <Tabs.List mb="md">

@@ -2,6 +2,7 @@
 
 import { getTranslation } from "@/apis/translations";
 import PageHeader from "@/components/PageHeader";
+import PageTitle from "@/components/PageTitle";
 import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
   ActionIcon,
@@ -16,13 +17,12 @@ import {
   Popover,
   Stack,
   Text,
-  Title,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
-import { FaArrowLeft, FaCircleQuestion } from "react-icons/fa6";
+import { FaChevronLeft, FaCircleQuestion } from "react-icons/fa6";
 
 interface Props {
   params: { translationId: string };
@@ -38,45 +38,45 @@ export default function Page({ params: { translationId } }: Props) {
 
   return (
     <Stack w="full" h="full" gap={16}>
-      <Group>
-        <ActionIcon
-          variant="transparent"
-          color="black"
-          component={Link}
-          href="/"
-        >
-          <FaArrowLeft />
-        </ActionIcon>
-      </Group>
-
       <PageHeader>
-        <Title>{translation.title}</Title>
-        <Group justify="space-between">
-          <Group gap={4}>
-            <Badge color="gray">
-              {`${getLanguageLabel(translation.language.source)[0]}${
-                getLanguageLabel(translation.language.target)[0]
-              }`}
-            </Badge>
-            {translation.categories.map((category) => (
-              <Badge key={category} color="blue">
-                {getCategoryLabel(category)}
-              </Badge>
-            ))}
-          </Group>
+        <Group>
+          <ActionIcon
+            variant="transparent"
+            color="black"
+            component={Link}
+            href="/"
+          >
+            <FaChevronLeft />
+          </ActionIcon>
+          <PageTitle>{translation.title}</PageTitle>
         </Group>
-        <Paper p="xs" withBorder>
-          <Group>
-            <Avatar src="avatar.png" />
-            <Stack gap={0}>
-              <Text>작성자</Text>
-              <Text size="xs" c="gray">
-                2023.09.21
-              </Text>
-            </Stack>
-          </Group>
-        </Paper>
       </PageHeader>
+
+      <Group justify="space-between">
+        <Group gap={4}>
+          <Badge color="gray">
+            {`${getLanguageLabel(translation.language.source)[0]}${
+              getLanguageLabel(translation.language.target)[0]
+            }`}
+          </Badge>
+          {translation.categories.map((category) => (
+            <Badge key={category} color="blue">
+              {getCategoryLabel(category)}
+            </Badge>
+          ))}
+        </Group>
+      </Group>
+      <Paper p="xs" withBorder>
+        <Group>
+          <Avatar src="avatar.png" />
+          <Stack gap={0}>
+            <Text>작성자</Text>
+            <Text size="xs" c="gray">
+              2023.09.21
+            </Text>
+          </Stack>
+        </Group>
+      </Paper>
 
       <Stack>
         <Input.Wrapper>

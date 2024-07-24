@@ -3,6 +3,7 @@
 import { getTranslations } from "@/apis/translations";
 import MantineTranslationCard from "@/components/MantineTranslationCard";
 import PageHeader from "@/components/PageHeader";
+import PageTitle from "@/components/PageTitle";
 import {
   ActionIcon,
   Button,
@@ -11,7 +12,6 @@ import {
   Loader,
   Stack,
   Text,
-  Title,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -26,28 +26,26 @@ export default function Page() {
 
   return (
     <Stack gap={16}>
-      <Group justify="end" mb={-2}>
-        <Button
-          component={Link}
-          href="/translation/create"
-          variant="light"
-          color="orange"
-          leftSection={<AiOutlinePlus size={14} />}
-          size="xs"
-        >
-          번역요청
-        </Button>
-      </Group>
       <PageHeader>
         <Group justify="space-between">
-          <Title>번역</Title>
-          <Group gap={4} justify="end">
+          <PageTitle>번역</PageTitle>
+          <Group>
             <Text c="gray" size="xs">
               전체 선택됨(미구현)
             </Text>
             <ActionIcon variant="light" color="gray" disabled>
               <MdFilterList />
             </ActionIcon>
+            <Button
+              component={Link}
+              href="/translation/create"
+              variant="light"
+              color="orange"
+              leftSection={<AiOutlinePlus size={14} />}
+              size="xs"
+            >
+              번역요청
+            </Button>
           </Group>
         </Group>
       </PageHeader>

@@ -1,6 +1,7 @@
 "use client";
 
 import PageHeader from "@/components/PageHeader";
+import PageTitle from "@/components/PageTitle";
 import {
   PostTranslatorFormDefaultValue,
   PostTranslatorFormSchema,
@@ -9,14 +10,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionIcon, Button, Group, Stack } from "@mantine/core";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
-import { FaArrowLeft } from "react-icons/fa6";
-import PageTitle from "@/components/PageTitle";
+import { FaChevronLeft } from "react-icons/fa6";
 import Careers from "./_component/Careers";
+import Certifications from "./_component/Certifications";
 import Educations from "./_component/Educations";
+import Samples from "./_component/Samples";
 import SelfIntroduction from "./_component/SelfIntroduction";
 import Speciality from "./_component/Speciality";
-import Certifications from "./_component/Certifications";
-import Samples from "./_component/Samples";
 
 export default function Page() {
   const methods = useForm({
@@ -33,19 +33,18 @@ export default function Page() {
     <form onSubmit={methods.handleSubmit(handleSubmitSuccess)}>
       <FormProvider {...methods}>
         <Stack>
-          <Group>
-            <ActionIcon
-              variant="transparent"
-              color="black"
-              component={Link}
-              href="/my"
-            >
-              <FaArrowLeft />
-            </ActionIcon>
-          </Group>
-
           <PageHeader>
-            <PageTitle>번역사 등록 신청</PageTitle>
+            <Group>
+              <ActionIcon
+                variant="transparent"
+                color="black"
+                component={Link}
+                href="/my"
+              >
+                <FaChevronLeft/>
+              </ActionIcon>
+              <PageTitle>번역사 등록 신청</PageTitle>
+            </Group>
           </PageHeader>
 
           <Stack gap={48}>

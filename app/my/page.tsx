@@ -1,6 +1,7 @@
 "use client";
 
 import PageHeader from "@/components/PageHeader";
+import PageTitle from "@/components/PageTitle";
 import {
   ActionIcon,
   Avatar,
@@ -11,27 +12,26 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  Title,
   UnstyledButton,
 } from "@mantine/core";
 import Link from "next/link";
-import { FaArrowLeft, FaCaretRight } from "react-icons/fa6";
+import { FaCaretRight, FaChevronLeft } from "react-icons/fa6";
 
 export default function Page() {
   return (
     <Stack>
-      <Group>
-        <ActionIcon
-          variant="transparent"
-          color="black"
-          component={Link}
-          href="/"
-        >
-          <FaArrowLeft />
-        </ActionIcon>
-      </Group>
       <PageHeader>
-        <Title>마이 페이지</Title>
+        <Group>
+          <ActionIcon
+            variant="transparent"
+            color="black"
+            component={Link}
+            href="/"
+          >
+            <FaChevronLeft />
+          </ActionIcon>
+          <PageTitle>마이 페이지</PageTitle>
+        </Group>
       </PageHeader>
       <Card withBorder radius="md">
         <Stack>

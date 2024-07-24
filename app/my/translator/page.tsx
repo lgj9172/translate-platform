@@ -41,7 +41,7 @@ export default function Page() {
                 component={Link}
                 href="/my"
               >
-                <FaChevronLeft/>
+                <FaChevronLeft />
               </ActionIcon>
               <PageTitle>번역사 등록 신청</PageTitle>
             </Group>

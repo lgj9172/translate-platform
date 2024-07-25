@@ -11,7 +11,7 @@ module.exports = {
         primary: "#FF824C",
       },
       fontFamily: {
-        sans: ["Spoqa Han Sans", "sans-serif"],
+        sans: ["var(--font-spoqa-han-sans-neo)", "sans-serif"],
       },
     },
   },

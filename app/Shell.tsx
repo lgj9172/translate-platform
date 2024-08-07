@@ -1,5 +1,6 @@
 "use client";
 
+import FluenceBi from "@assets/icons/fluence-bi.svg";
 import {
   ActionIcon,
   Anchor,
@@ -31,14 +32,10 @@ export default function Shell({ children }: Props) {
       <AppShell header={{ height: 48 }} padding="md">
         <AppShell.Header>
           <Group h="100%" px={8} justify="space-between">
-            <Text
-              size="xl"
-              fw={900}
-              variant="gradient"
-              gradient={{ from: "orange", to: "yellow", deg: 90 }}
-            >
-              FLUENCE
-            </Text>
+            <Link href="/">
+              <FluenceBi />
+            </Link>
+
             <Group gap={2}>
               <Button
                 variant="transparent"
@@ -69,9 +66,6 @@ export default function Shell({ children }: Props) {
               </Button>
               <Menu shadow="md" width={200}>
                 <Menu.Target>
-                  {/* <ActionIcon variant="transparent" color="gray">
-                  <BsPerson />
-                </ActionIcon> */}
                   <ActionIcon variant="transparent" color="orange">
                     <BsPersonFill />
                   </ActionIcon>

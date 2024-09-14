@@ -11,9 +11,9 @@ export default function Before() {
 
   return (
     <Stack>
-      {translations?.results?.map((translation) => (
+      {translations?.map((translation) => (
         <MantineTranslationCard
-          key={translation.id}
+          key={translation.translation_id}
           translation={translation}
           hasControl
         />

@@ -181,7 +181,7 @@ export default function Index() {
     const fileUploadResponse = await mutatePostTranslationFile({
       content: translationData,
     });
-    const fileId = fileUploadResponse.id;
+    const fileId = fileUploadResponse.file_id;
     if (sourceLanguage && targetLanguage) {
       await mutatePostTranslation({
         title,

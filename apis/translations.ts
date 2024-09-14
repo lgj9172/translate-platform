@@ -38,44 +38,52 @@ export interface LanguageInfo {
 }
 
 export interface FileInfo {
-  id: string;
-  type: (typeof FileType)[number];
+  file_id: string;
+  extension: (typeof FileType)[number];
   url: string;
   char_with_blank: number;
   char_without_blank: number;
   word: number;
 }
 
-export interface Quantity {
-  unit: (typeof QuantityUnit)[number];
-  value: number;
-  blank: boolean;
-}
+// export interface Quantity {
+//   unit: (typeof QuantityUnit)[number];
+//   value: number;
+//   blank: boolean;
+// }
 
-export interface DesiredFee {
-  unit: (typeof MoneyUnit)[number];
-  value: number;
-}
+// export interface DesiredFee {
+//   unit: (typeof MoneyUnit)[number];
+//   value: number;
+// }
+
+export const TranslationStatus = ["CHAR", "WORD"] as const;
 
 export interface Translation {
-  id: string;
+  translation_id: string;
   title: string;
-  description: string;
+  source_language: string;
+  target_language: string;
   categories: (typeof Category)[number][];
-  language: LanguageInfo;
-  file: FileInfo;
-  quantity: Quantity;
-  desired_fee: DesiredFee;
-  quotations: number;
-  end_time: string;
-  likes: number;
+  description: string;
+  // language: LanguageInfo;
+  // file: FileInfo;
+  source_files: FileInfo[];
+  target_files: FileInfo[];
+  // quantity: Quantity;
+  // desired_fee: DesiredFee;
+  deadline: string;
+  fee_unit: string;
+  fee_value: number;
   sample: string;
+  status: (typeof TranslationStatus)[number][];
+  // likes: number;
+  quotations: any[];
+  comments: any[];
 }
 export const getTranslations = async () => {
   const response =
-    await ClientWithAuth.get<Response<Pagenation<Translation>>>(
-      `/translations`,
-    );
+    await ClientWithAuth.get<Response<Translation[]>>(`/translations`);
   return response.data.data;
 };
 

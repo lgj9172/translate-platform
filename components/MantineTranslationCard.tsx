@@ -8,7 +8,6 @@ import { Badge, Button, Card, Group, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
-import { BsFiletypeDoc, BsFiletypePpt, BsFiletypeTxt } from "react-icons/bs";
 import { NumericFormat } from "react-number-format";
 
 dayjs.extend(relativeTime);
@@ -20,27 +19,26 @@ interface Props {
 
 export default function MantineTranslationCard({
   translation: {
-    id,
+    translation_id,
     categories,
-    language,
-    end_time,
-    desired_fee,
+    source_language,
+    target_language,
+    deadline,
+    fee_value,
+    fee_unit,
     title,
     description,
-    file,
-    quantity,
-    quotations,
   },
   hasControl = false,
 }: Props) {
   return (
-    <Card withBorder component={Link} href={`/translation/${id}`}>
+    <Card withBorder component={Link} href={`/translation/${translation_id}`}>
       <Stack gap={8}>
         <Group justify="space-between">
           <Group gap={4}>
             <Badge color="gray">
-              {`${getLanguageLabel(language.source)[0]}${
-                getLanguageLabel(language.target)[0]
+              {`${getLanguageLabel(source_language)[0]}${
+                getLanguageLabel(target_language)[0]
               }`}
             </Badge>
             {categories.map((category) => (
@@ -51,7 +49,7 @@ export default function MantineTranslationCard({
           </Group>
           <Group gap={4}>
             <Text c="red" size="xs" fw="bold">
-              {getDday(end_time)}
+              {getDday(deadline)}
             </Text>
           </Group>
         </Group>
@@ -65,12 +63,12 @@ export default function MantineTranslationCard({
 
         <Group justify="space-between">
           <Group gap={2}>
-            <Text c="gray" size="sm">
-              {file.type === "PPT" && <BsFiletypePpt />}
-              {file.type === "WORD" && <BsFiletypeDoc />}
-              {file.type === "TEXT" && <BsFiletypeTxt />}
-            </Text>
-            <Text c="gray" size="sm">
+            {/* <Text c="gray" size="sm">
+              {file.extension === "PPT" && <BsFiletypePpt />}
+              {file.extension === "WORD" && <BsFiletypeDoc />}
+              {file.extension === "TEXT" && <BsFiletypeTxt />}
+            </Text> */}
+            {/* <Text c="gray" size="sm">
               {" / "}
               <NumericFormat
                 displayType="text"
@@ -82,17 +80,17 @@ export default function MantineTranslationCard({
               {quantity.unit === "WORD" && "단어"}
               {" / "}
               {quotations} 견적
-            </Text>
+            </Text> */}
           </Group>
           <Text c="orange" fw="bold">
             <NumericFormat
               displayType="text"
-              value={desired_fee.value}
+              value={fee_value}
               thousandsGroupStyle="thousand"
               thousandSeparator=","
             />
-            {desired_fee.unit === "KRW" && "원"}
-            {desired_fee.unit === "USD" && "달러"}
+            {fee_unit === "KRW" && "원"}
+            {fee_unit === "USD" && "달러"}
           </Text>
         </Group>
 

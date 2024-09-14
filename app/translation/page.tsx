@@ -1,22 +1,12 @@
 "use client";
 
 import { getTranslations } from "@/apis/translations";
-import MantineTranslationCard from "@/components/MantineTranslationCard";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import {
-  ActionIcon,
-  Button,
-  Center,
-  Group,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
+import TranslationCard from "@/components/TranslationCard";
+import { Button, Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { AiOutlinePlus } from "react-icons/ai";
-import { MdFilterList } from "react-icons/md";
 
 export default function Page() {
   const { data: translations, isLoading } = useQuery({
@@ -30,21 +20,19 @@ export default function Page() {
         <Group justify="space-between">
           <PageTitle>번역</PageTitle>
           <Group>
-            <Text c="gray" size="xs">
+            {/* <Text c="gray" size="xs">
               전체 선택됨(미구현)
             </Text>
             <ActionIcon variant="light" color="gray" disabled>
               <MdFilterList />
-            </ActionIcon>
+            </ActionIcon> */}
             <Button
               component={Link}
               href="/translation/create"
-              variant="light"
               color="orange"
-              leftSection={<AiOutlinePlus size={14} />}
               size="xs"
             >
-              번역요청
+              번역요청하기
             </Button>
           </Group>
         </Group>
@@ -54,14 +42,34 @@ export default function Page() {
           <Loader color="orange" type="bars" />
         </Center>
       ) : (
-        <Stack>
-          {translations?.results?.map((translation) => (
-            <MantineTranslationCard
-              key={translation.id}
-              translation={translation}
-            />
-          ))}
-        </Stack>
+        <div className="flex flex-col gap-[20px]">
+          {translations?.flatMap((translation, index) =>
+            index < translations.length - 1
+              ? [
+                  <Link
+                    className="hover:cursor-pointer"
+                    href={`/translation/${translation.translation_id}`}
+                  >
+                    <TranslationCard
+                      key={translation.translation_id}
+                      translation={translation}
+                    />
+                  </Link>,
+                  <hr />,
+                ]
+              : [
+                  <Link
+                    className="hover:cursor-pointer"
+                    href={`/translation/${translation.translation_id}`}
+                  >
+                    <TranslationCard
+                      key={translation.translation_id}
+                      translation={translation}
+                    />
+                  </Link>,
+                ],
+          )}
+        </div>
       )}
     </Stack>
   );

@@ -55,8 +55,8 @@ export default function Page({ params: { translationId } }: Props) {
       <Group justify="space-between">
         <Group gap={4}>
           <Badge color="gray">
-            {`${getLanguageLabel(translation.language.source)[0]}${
-              getLanguageLabel(translation.language.target)[0]
+            {`${getLanguageLabel(translation.source_language)[0]}${
+              getLanguageLabel(translation.target_language)[0]
             }`}
           </Badge>
           {translation.categories.map((category) => (
@@ -84,18 +84,18 @@ export default function Page({ params: { translationId } }: Props) {
           <Text c="gray">{translation.description}</Text>
         </Input.Wrapper>
 
-        <Input.Wrapper>
+        {/* <Input.Wrapper>
           <Input.Label>분량</Input.Label>
           <Text c="gray">
             {translation.quantity.value} {translation.quantity.unit}{" "}
             {translation.quantity.blank ? "(공백 포함)" : "(공백 제외)"}
           </Text>
-        </Input.Wrapper>
+        </Input.Wrapper> */}
 
         <Input.Wrapper>
           <Input.Label>마감기한</Input.Label>
           <Text c="gray">
-            {dayjs(translation.end_time)
+            {dayjs(translation.deadline)
               .locale("ko")
               .format("YYYY.MM.DD A hh:mm")}
           </Text>
@@ -129,9 +129,9 @@ export default function Page({ params: { translationId } }: Props) {
             <Input.Label>희망 번역료</Input.Label>
             <Text c="gray">
               <Text span c="orange" size="xl">
-                {translation.desired_fee.value}
+                {translation.fee_unit}
               </Text>{" "}
-              {translation.desired_fee.unit}
+              {translation.fee_value}
             </Text>
           </Stack>
         </Input.Wrapper>

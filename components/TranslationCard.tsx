@@ -25,7 +25,7 @@ export default function TranslationCard({
   },
 }: TranslationCardProps) {
   return (
-    <div className="flex flex-col">
+    <div className="p-[20px] border-[1px] border-gray-100 rounded-[16px] flex flex-col">
       {/* 헤더 */}
       <div className="mb-[12px] flex justify-between items-center">
         {/* 태그 모음 */}
@@ -62,13 +62,15 @@ export default function TranslationCard({
         </div>
       </div>
       {/* 제목 */}
-      <div className="mb-[4px] text-[16px]">{title}</div>
+      <div className="mb-[4px] text-[16px] font-bold">{title}</div>
       {/* 설명 */}
       <div className="mb-[12px] text-[#7E7F80] text-[14px]">{description}</div>
       {/* 풋터 */}
       <div className="flex justify-between">
         <span>&nbsp;</span>
-        <span className="text-[14px]">받은 견적 {quotations.length}</span>
+        <span className="text-[14px] font-bold text-[#7E7F80]">
+          받은 견적 {quotations.length}
+        </span>
       </div>
     </div>
   );

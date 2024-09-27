@@ -42,8 +42,19 @@ export default function Page() {
           <Loader color="orange" type="bars" />
         </Center>
       ) : (
-        <div className="flex flex-col gap-[20px]">
-          {translations?.flatMap((translation, index) =>
+        <div className="flex flex-col gap-[8px]">
+          {translations?.map((translation) => (
+            <Link
+              className="hover:cursor-pointer"
+              href={`/translation/${translation.translation_id}`}
+            >
+              <TranslationCard
+                key={translation.translation_id}
+                translation={translation}
+              />
+            </Link>
+          ))}
+          {/* {translations?.flatMap((translation, index) =>
             index < translations.length - 1
               ? [
                   <Link
@@ -68,7 +79,7 @@ export default function Page() {
                     />
                   </Link>,
                 ],
-          )}
+          )} */}
         </div>
       )}
     </Stack>

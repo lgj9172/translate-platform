@@ -1,5 +1,5 @@
 import { objectToFormData } from "@/utils/converter/form";
-import { ClientWithAuth, Pagenation, Response } from "./clients";
+import { ClientWithAuth, Response } from "./clients";
 
 export const Category = [
   "IT",
@@ -57,7 +57,15 @@ export interface FileInfo {
 //   value: number;
 // }
 
-export const TranslationStatus = ["CHAR", "WORD"] as const;
+export const TranslationStatus = [
+  "QUOTE_SENT",
+  "TRANSLATION_CANCELLED",
+  "TRANSLATOR_SELECTED",
+  "TRANSLATION_BEGAN",
+  "TRANSLATION_SUBMITTED",
+  "TRANSLATION_EDIT_REQUESTED",
+  "TRANSLATION_RESOLVED",
+] as const;
 
 export interface Translation {
   translation_id: string;
@@ -76,10 +84,10 @@ export interface Translation {
   fee_unit: string;
   fee_value: number;
   sample: string;
-  status: (typeof TranslationStatus)[number][];
+  status: (typeof TranslationStatus)[number];
   // likes: number;
-  quotations: any[];
-  comments: any[];
+  quotations: unknown[];
+  comments: unknown[];
 }
 export const getTranslations = async () => {
   const response =

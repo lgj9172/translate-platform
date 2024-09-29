@@ -73,7 +73,9 @@ export default function Shell({ children }: Props) {
 
                 <Menu.Dropdown>
                   <Menu.Label>고객서비스</Menu.Label>
-                  <Menu.Item>공지사항</Menu.Item>
+                  <Menu.Item component={Link} href="/cs/notice">
+                    공지사항
+                  </Menu.Item>
                   <Menu.Item>자주하는질문</Menu.Item>
                   <Menu.Item>고객센터</Menu.Item>
 

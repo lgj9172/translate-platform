@@ -38,7 +38,7 @@ export default function Page() {
         </Group>
       </PageHeader>
       {isLoading ? (
-        <Center h="320px">
+        <Center mih="320px">
           <Loader color="orange" type="bars" />
         </Center>
       ) : (

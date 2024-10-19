@@ -47,11 +47,12 @@ export default function Page() {
             <Link
               className="hover:cursor-pointer"
               href={`/translation/${translation.translation_id}`}
+              key={translation.translation_id}
             >
               <TranslationCard
                 key={translation.translation_id}
                 translation={translation}
-                showQuotations
+                // showQuotations
               />
             </Link>
           ))}

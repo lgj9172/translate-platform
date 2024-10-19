@@ -10,7 +10,7 @@ import Card from "./Card";
 
 interface TranslationCardProps {
   translation: Translation;
-  showQuotations?: boolean;
+  // showQuotations?: boolean;
   showStatus?: boolean;
 }
 
@@ -25,9 +25,9 @@ export default function TranslationCard({
     title,
     description,
     status,
-    quotations,
+    // quotations,
   },
-  showQuotations = false,
+  // showQuotations = false,
   showStatus = false,
 }: TranslationCardProps) {
   const STATUS2LABEL = {
@@ -103,14 +103,14 @@ export default function TranslationCard({
           {description}
         </div>
         {/* 풋터 */}
-        {showQuotations && (
+        {/* {showQuotations && (
           <div className="flex justify-between">
             <span>&nbsp;</span>
             <span className="text-[14px] font-bold text-[#7E7F80]">
-              받은 견적 {quotations.length}
+              받은 견적 {quotations?.length}
             </span>
           </div>
-        )}
+        )} */}
         {/* 상태 */}
         {showStatus && (
           <div className="flex flex-col gap-1">

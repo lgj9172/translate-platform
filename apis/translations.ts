@@ -86,7 +86,7 @@ export interface Translation {
   sample: string;
   status: (typeof TranslationStatus)[number];
   // likes: number;
-  quotations: unknown[];
+  // quotations: unknown[];
   comments: unknown[];
 }
 export const getTranslations = async () => {

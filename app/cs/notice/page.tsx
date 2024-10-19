@@ -40,13 +40,10 @@ export default function Page() {
           {notices?.map((notice) => (
             <Link
               className="hover:cursor-pointer"
-              href={`/notice/${notice.notice_id}`}
+              href={`/cs/notice/${notice.notice_id}`}
+              key={notice.notice_id}
             >
-              <NoticeCard
-                key={notice.notice_id}
-                notice={notice}
-                // showQuotations
-              />
+              <NoticeCard key={notice.notice_id} notice={notice} />
             </Link>
           ))}
         </div>

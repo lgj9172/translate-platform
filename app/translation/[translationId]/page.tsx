@@ -1,20 +1,20 @@
 "use client";
 
 import { getTranslation } from "@/apis/translations";
+import Badge from "@/components/Badge";
+import InputSection from "@/components/InputSection";
+import Label from "@/components/Label";
+import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
   ActionIcon,
   Avatar,
-  Badge,
-  Button,
   Divider,
-  Flex,
   Group,
   Input,
   Paper,
-  Popover,
   Stack,
   Text,
 } from "@mantine/core";
@@ -22,7 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
-import { FaChevronLeft, FaCircleQuestion } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
 
 interface Props {
   params: { translationId: string };
@@ -54,7 +54,7 @@ export default function Page({ params: { translationId } }: Props) {
 
       <Group justify="space-between">
         <Group gap={4}>
-          <Badge color="gray">
+          <Badge color="black">
             {`${getLanguageLabel(translation.source_language)[0]}${
               getLanguageLabel(translation.target_language)[0]
             }`}
@@ -66,7 +66,7 @@ export default function Page({ params: { translationId } }: Props) {
           ))}
         </Group>
       </Group>
-      <Paper p="xs" withBorder>
+      <Paper p="xs">
         <Group>
           <Avatar src="avatar.png" />
           <Stack gap={0}>
@@ -78,11 +78,26 @@ export default function Page({ params: { translationId } }: Props) {
         </Group>
       </Paper>
 
+      <Divider />
+
       <Stack>
-        <Input.Wrapper>
-          <Input.Label>세부 요청사항</Input.Label>
-          <Text c="gray">{translation.description}</Text>
-        </Input.Wrapper>
+        <InputSection>
+          <LabelSection>
+            <Label>세부 요청사항</Label>
+          </LabelSection>
+          <Text>{translation.description}</Text>
+        </InputSection>
+
+        <InputSection>
+          <LabelSection>
+            <Label>마감 기한</Label>
+          </LabelSection>
+          <Text>
+            {dayjs(translation.deadline)
+              .locale("ko")
+              .format("YYYY.MM.DD A hh:mm")}
+          </Text>
+        </InputSection>
 
         {/* <Input.Wrapper>
           <Input.Label>분량</Input.Label>
@@ -92,16 +107,19 @@ export default function Page({ params: { translationId } }: Props) {
           </Text>
         </Input.Wrapper> */}
 
-        <Input.Wrapper>
-          <Input.Label>마감기한</Input.Label>
-          <Text c="gray">
-            {dayjs(translation.deadline)
-              .locale("ko")
-              .format("YYYY.MM.DD A hh:mm")}
-          </Text>
-        </Input.Wrapper>
+        <InputSection>
+          <LabelSection>
+            <Label>원문 샘플</Label>
+          </LabelSection>
 
-        <Input.Wrapper>
+          <Text>
+            <Link href={`/translation/${translationId}/sample`}>
+              {translation.sample}
+            </Link>
+          </Text>
+        </InputSection>
+
+        {/* <Input.Wrapper>
           <Flex align="center">
             <Input.Label>원문 샘플</Input.Label>
             <Popover position="right" withArrow>
@@ -120,12 +138,12 @@ export default function Page({ params: { translationId } }: Props) {
             </Popover>
           </Flex>
           <Text c="gray">{translation.sample}</Text>
-        </Input.Wrapper>
+        </Input.Wrapper> */}
 
         <Divider />
 
         <Input.Wrapper>
-          <Stack align="end" gap={0}>
+          <Stack gap={0}>
             <Input.Label>희망 번역료</Input.Label>
             <Text c="gray">
               <Text span c="orange" size="xl">
@@ -136,11 +154,14 @@ export default function Page({ params: { translationId } }: Props) {
           </Stack>
         </Input.Wrapper>
 
-        <Group>
-          <Button type="submit" color="orange" fullWidth>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="w-full max-w-[420px] h-[56px] bg-primary rounded-[8px] text-white font-bold"
+          >
             견적 보내기
-          </Button>
-        </Group>
+          </button>
+        </div>
       </Stack>
     </Stack>
   );

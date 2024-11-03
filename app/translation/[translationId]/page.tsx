@@ -1,7 +1,9 @@
 "use client";
 
 import { getTranslation } from "@/apis/translations";
+import Alert from "@/components/Alert";
 import Badge from "@/components/Badge";
+import Button from "@/components/Button";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -113,13 +115,23 @@ export default function Page({ params: { translationId } }: Props) {
           </Text>
         </InputSection>
 
-        {/* <Input.Wrapper>
-          <Input.Label>분량</Input.Label>
-          <Text c="gray">
-            {translation.quantity.value} {translation.quantity.unit}{" "}
-            {translation.quantity.blank ? "(공백 포함)" : "(공백 제외)"}
-          </Text>
-        </Input.Wrapper> */}
+        <InputSection>
+          <LabelSection>
+            <Label>분량</Label>
+          </LabelSection>
+          <div>
+            <NumericFormat
+              displayType="text"
+              value={translation.source_files.reduce(
+                (prev, { char_with_blank }) => prev + char_with_blank,
+                0,
+              )}
+              thousandsGroupStyle="thousand"
+              thousandSeparator=","
+            />
+            자<span className="text-[#8B8C8D]"> (공백 포함)</span>
+          </div>
+        </InputSection>
 
         <InputSection>
           <LabelSection>
@@ -181,13 +193,171 @@ export default function Page({ params: { translationId } }: Props) {
           </div>
         </InputSection>
 
-        <div className="flex justify-center">
-          <button
-            type="submit"
-            className="w-full max-w-[420px] h-[56px] bg-primary rounded-[8px] text-white font-bold"
-          >
-            견적 보내기
-          </button>
+        <div className="flex flex-col gap-2">
+          {/* 번역 상태: 견적 요청 */}
+          {translation.status === "QUOTE_SENT" && (
+            <div className="flex justify-end gap-2">
+              {/* 내가 작성자와 입찰자가 아닌 경우 견적 보내기 버튼 */}
+              {true && (
+                <Button size="lg" variant="primary">
+                  견적 보내기
+                </Button>
+              )}
+              {/* 내가 작성자인 경우 입찰이 없는 경우 요청 취소 버튼 */}
+              {true && (
+                <Button size="lg" variant="secondary">
+                  요청 취소
+                </Button>
+              )}
+              {/* 내가 작성자인 경우 입찰이 있는 경우 낙찰 버튼 */}
+              {true && (
+                <Button size="lg" variant="primary">
+                  번역사 선택하기
+                </Button>
+              )}
+              {/* 내가 입찰자인 경우 입찰 취소 버튼 */}
+              {true && (
+                <Button size="lg" variant="secondary">
+                  입찰 취소
+                </Button>
+              )}
+            </div>
+          )}
+
+          {/* 번역 상태: 번역 취소 */}
+          {translation.status === "TRANSLATION_CANCELLED" && (
+            <>
+              {/* 모든 경우 */}
+              {true && <Alert>취소된 번역입니다.</Alert>}
+            </>
+          )}
+
+          {/* 번역 상태: 번역사 선택 완료 */}
+          {translation.status === "TRANSLATOR_SELECTED" && (
+            <>
+              {/* 내가 작성자인 경우 */}
+              {true && (
+                <Alert>선택한 번역사가 번역을 곧 시작 할 예정입니다.</Alert>
+              )}
+              {/* 내가 번역사인 경우 */}
+              {true && (
+                <Alert>번역을 시작하려면 번역 시작 버튼을 눌러주세요.</Alert>
+              )}
+              <div className="flex justify-end gap-2">
+                {/* 내가 번역사인 경우 번역 시작 버튼 */}
+                {true && (
+                  <Button size="lg" variant="primary">
+                    번역 시작
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* 번역 상태: 번역 시작 */}
+          {translation.status === "TRANSLATION_BEGAN" && (
+            <>
+              {/* 내가 작성자인 경우 */}
+              {true && <Alert>번역사가 번역을 진행중입니다.</Alert>}
+              {/* 내가 번역사인 경우 */}
+              {true && (
+                <Alert>번역이 완료되었다면 번역 제출 버튼을 눌러주세요.</Alert>
+              )}
+              <div className="flex justify-end gap-2">
+                {/* 내가 번역사인 경우 번역 제출 버튼 */}
+                {true && (
+                  <Button size="lg" variant="primary">
+                    번역 제출
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* 번역 상태: 번역 제출 완료 */}
+          {translation.status === "TRANSLATION_SUBMITTED" && (
+            <>
+              {/* 내가 작성자인 경우 */}
+              {true && (
+                <Alert>
+                  번역이 완료되었습니다.
+                  <br />
+                  결과물을 확인하고 수정 요청 또는 확정 버튼을 눌러주세요.
+                  <br /> 최대 3번 수정 요청이 가능합니다.
+                </Alert>
+              )}
+              {/* 내가 번역사인 경우 */}
+              {true && (
+                <Alert>
+                  번역이 제출되었습니다.
+                  <br />
+                  번역 요청자의 수정 요청 또는 확정을 기다리는 중입니다.
+                </Alert>
+              )}
+              <div className="flex justify-end gap-2">
+                {/* 내가 작성자인 경우 수정 요청 버튼 */}
+                {true && (
+                  <Button size="lg" variant="secondary">
+                    수정 요청
+                  </Button>
+                )}
+                {/* 내가 작성자인 경우 확정 버튼 */}
+                {true && (
+                  <Button size="lg" variant="primary">
+                    확정
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* 번역 상태: 번역 수정 요청 */}
+          {translation.status === "TRANSLATION_EDIT_REQUESTED" && (
+            <>
+              {/* 내가 작성자인 경우 */}
+              {true && <Alert>번역사가 결과물을 수정 중 입니다.</Alert>}
+              {/* 내가 번역사인 경우 */}
+              {true && (
+                <Alert>
+                  번역 수정을 요청받았습니다.
+                  <br />
+                  번역 결과물을 수정하고 다시 제출해주세요.
+                </Alert>
+              )}
+              <div className="flex justify-end gap-2">
+                {/* 내가 번역사인 경우 번역 제출 버튼 */}
+                {true && (
+                  <Button size="lg" variant="primary">
+                    번역 제출
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* 번역 상태: 번역 확정 */}
+          {translation.status === "TRANSLATION_RESOLVED" && (
+            <>
+              {/* 내가 작성자인 경우 */}
+              {true && <Alert>번역이 완료되었습니다.</Alert>}
+              {/* 내가 번역사인 경우 */}
+              {true && <Alert>번역이 완료되었습니다.</Alert>}
+              <div className="flex justify-end gap-2">
+                {/* 내가 작성자인 경우 리뷰 작성하기 버튼 */}
+                {true && (
+                  <Button size="lg" variant="primary">
+                    리뷰 작성하기
+                  </Button>
+                )}
+                {/* 내가 번역사인 경우 정산 버튼 */}
+                {true && (
+                  <Button size="lg" variant="primary">
+                    정산
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </Stack>
     </Stack>

@@ -1,32 +1,33 @@
 "use client";
 
-import { getTranslations } from "@/apis/translations";
-import Button from "@/components/Button";
+import { getTranslationsRequest } from "@/apis/translations";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
-import { Center, Group, Loader, Stack } from "@mantine/core";
+import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { FaChevronLeft } from "react-icons/fa6";
 
 export default function Page() {
-  const { data: translations, isLoading } = useQuery({
-    queryKey: ["translations"],
-    queryFn: getTranslations,
+  const { data: translationsRequest, isLoading } = useQuery({
+    queryKey: ["translations-request"],
+    queryFn: getTranslationsRequest,
   });
 
   return (
     <Stack>
       <PageHeader>
-        <Group justify="space-between">
-          <PageTitle>번역</PageTitle>
-          <Group>
-            <Link href="/translation/create">
-              <Button variant="primary" size="sm">
-                번역요청하기
-              </Button>
-            </Link>
-          </Group>
+        <Group>
+          <ActionIcon
+            variant="transparent"
+            color="black"
+            component={Link}
+            href="/my"
+          >
+            <FaChevronLeft />
+          </ActionIcon>
+          <PageTitle>보낸 번역 요청</PageTitle>
         </Group>
       </PageHeader>
       {isLoading ? (
@@ -35,7 +36,7 @@ export default function Page() {
         </Center>
       ) : (
         <div className="flex flex-col gap-[8px]">
-          {translations?.map((translation) => (
+          {translationsRequest?.map((translation) => (
             <Link
               className="hover:cursor-pointer"
               href={`/translation/${translation.translation_id}`}
@@ -44,7 +45,7 @@ export default function Page() {
               <TranslationCard
                 key={translation.translation_id}
                 translation={translation}
-                // showQuotations
+                showStatus
               />
             </Link>
           ))}

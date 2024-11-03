@@ -140,3 +140,16 @@ export const postTranslation = async (input: PostTranslationRequest) => {
   );
   return response.data.data;
 };
+
+export const getTranslationsRequest = async () => {
+  const response =
+    await ClientWithAuth.get<Response<Translation[]>>(`/translations/client`);
+  return response.data.data;
+};
+
+export const getTranslationsResponse = async () => {
+  const response = await ClientWithAuth.get<Response<Translation[]>>(
+    `/translations/translator`,
+  );
+  return response.data.data;
+};

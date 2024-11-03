@@ -44,7 +44,7 @@ export default function Page() {
               >
                 <FaChevronLeft />
               </ActionIcon>
-              <PageTitle>번역사 등록 신청</PageTitle>
+              <PageTitle>번역사 등록</PageTitle>
             </Group>
           </PageHeader>
 

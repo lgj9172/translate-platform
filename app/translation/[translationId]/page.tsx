@@ -11,10 +11,10 @@ import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
   ActionIcon,
   Avatar,
+  Center,
   Divider,
   Group,
-  Input,
-  Paper,
+  Loader,
   Stack,
   Text,
 } from "@mantine/core";
@@ -23,16 +23,34 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
+import { NumericFormat } from "react-number-format";
 
 interface Props {
   params: { translationId: string };
 }
 
 export default function Page({ params: { translationId } }: Props) {
-  const { data: translation } = useQuery({
+  const { data: translation, isLoading } = useQuery({
     queryKey: ["translation", translationId],
     queryFn: () => getTranslation({ translationId }),
   });
+
+  const handleClickDownload = async (url: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  if (isLoading) {
+    return (
+      <Center mih="320px">
+        <Loader color="orange" type="bars" />
+      </Center>
+    );
+  }
 
   if (!translation) return null;
 
@@ -66,17 +84,13 @@ export default function Page({ params: { translationId } }: Props) {
           ))}
         </Group>
       </Group>
-      <Paper p="xs">
-        <Group>
-          <Avatar src="avatar.png" />
-          <Stack gap={0}>
-            <Text>작성자</Text>
-            <Text size="xs" c="gray">
-              2023.09.21
-            </Text>
-          </Stack>
-        </Group>
-      </Paper>
+      <div className="flex gap-[8px]">
+        <Avatar src="avatar.png" />
+        <div>
+          <div className="text-[14px] text-[#4B4D4D]">작성자</div>
+          <div className="text-[14px] text-[#8B8C8D]">작성일</div>
+        </div>
+      </div>
 
       <Divider />
 
@@ -109,50 +123,63 @@ export default function Page({ params: { translationId } }: Props) {
 
         <InputSection>
           <LabelSection>
+            <Label>원문</Label>
+          </LabelSection>
+
+          {translation.source_files.map(
+            ({ char_with_blank, file, source_file_id }) => (
+              <div key={source_file_id}>
+                <button
+                  type="button"
+                  onClick={() => handleClickDownload(file.url, file.name)}
+                >
+                  <span>{file.name}</span>
+                </button>
+                <span className="text-[#8B8C8D]">
+                  {" "}
+                  (공백 포함{" "}
+                  <NumericFormat
+                    displayType="text"
+                    value={char_with_blank}
+                    thousandsGroupStyle="thousand"
+                    thousandSeparator=","
+                  />
+                  자)
+                </span>
+              </div>
+            ),
+          )}
+        </InputSection>
+
+        <InputSection>
+          <LabelSection>
             <Label>원문 샘플</Label>
           </LabelSection>
 
-          <Text>
-            <Link href={`/translation/${translationId}/sample`}>
-              {translation.sample}
-            </Link>
-          </Text>
+          <div>{translation.sample}</div>
         </InputSection>
-
-        {/* <Input.Wrapper>
-          <Flex align="center">
-            <Input.Label>원문 샘플</Input.Label>
-            <Popover position="right" withArrow>
-              <Popover.Target>
-                <Input.Label>
-                  <ActionIcon variant="transparent" color="gray">
-                    <FaCircleQuestion />
-                  </ActionIcon>
-                </Input.Label>
-              </Popover.Target>
-              <Popover.Dropdown>
-                <Text size="xs">
-                  고객에게 견적이 선택되면 모든 내용을 볼 수 있어요.
-                </Text>
-              </Popover.Dropdown>
-            </Popover>
-          </Flex>
-          <Text c="gray">{translation.sample}</Text>
-        </Input.Wrapper> */}
-
         <Divider />
 
-        <Input.Wrapper>
-          <Stack gap={0}>
-            <Input.Label>희망 번역료</Input.Label>
-            <Text c="gray">
-              <Text span c="orange" size="xl">
-                {translation.fee_unit}
-              </Text>{" "}
-              {translation.fee_value}
-            </Text>
-          </Stack>
-        </Input.Wrapper>
+        <InputSection>
+          <LabelSection>
+            <Label>희망 번역료</Label>
+          </LabelSection>
+
+          <div className="flex text-primary font-bold text-[16px]">
+            <span>
+              <NumericFormat
+                displayType="text"
+                value={translation.fee_value}
+                thousandsGroupStyle="thousand"
+                thousandSeparator=","
+              />
+            </span>
+            <span>
+              {translation.fee_unit === "KRW" && "원"}
+              {translation.fee_unit === "USD" && "달러"}
+            </span>
+          </div>
+        </InputSection>
 
         <div className="flex justify-center">
           <button

@@ -10,7 +10,7 @@ import PageTitle from "@/components/PageTitle";
 import { ActionIcon, Avatar, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { FaChevronLeft } from "react-icons/fa6";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 export default function Page() {
   const { data: translationRequest, isLoading: isLoadingTranslationRequest } =
@@ -99,8 +99,13 @@ export default function Page() {
         </Card>
       </Link>
 
-      <Link className="hover:cursor-pointer" href="/">
-        <Card>회원 탈퇴</Card>
+      <Link className="hover:cursor-pointer" href="/my/withdraw">
+        <Card>
+          <div className="flex justify-between items-center">
+            <div>회원 탈퇴</div>
+            <FaChevronRight color="#8B8C8D" />
+          </div>
+        </Card>
       </Link>
     </Stack>
   );

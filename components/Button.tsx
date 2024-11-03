@@ -8,7 +8,7 @@ type ButtonVariant = "primary" | "secondary" | "subtle";
 
 // Button 컴포넌트의 Props 타입 정의
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  size: ButtonSize;
+  size?: ButtonSize;
   variant: ButtonVariant;
   children: React.ReactNode;
 }

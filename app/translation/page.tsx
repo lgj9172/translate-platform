@@ -1,10 +1,11 @@
 "use client";
 
 import { getTranslations } from "@/apis/translations";
+import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
-import { Button, Center, Group, Loader, Stack } from "@mantine/core";
+import { Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
@@ -26,14 +27,11 @@ export default function Page() {
             <ActionIcon variant="light" color="gray" disabled>
               <MdFilterList />
             </ActionIcon> */}
-            <Button
-              component={Link}
-              href="/translation/create"
-              color="orange"
-              size="xs"
-            >
-              번역요청하기
-            </Button>
+            <Link href="/translation/create">
+              <Button variant="primary" size="sm">
+                번역요청하기
+              </Button>
+            </Link>
           </Group>
         </Group>
       </PageHeader>
@@ -56,32 +54,6 @@ export default function Page() {
               />
             </Link>
           ))}
-          {/* {translations?.flatMap((translation, index) =>
-            index < translations.length - 1
-              ? [
-                  <Link
-                    className="hover:cursor-pointer"
-                    href={`/translation/${translation.translation_id}`}
-                  >
-                    <TranslationCard
-                      key={translation.translation_id}
-                      translation={translation}
-                    />
-                  </Link>,
-                  <hr />,
-                ]
-              : [
-                  <Link
-                    className="hover:cursor-pointer"
-                    href={`/translation/${translation.translation_id}`}
-                  >
-                    <TranslationCard
-                      key={translation.translation_id}
-                      translation={translation}
-                    />
-                  </Link>,
-                ],
-          )} */}
         </div>
       )}
     </Stack>

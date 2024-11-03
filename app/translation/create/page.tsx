@@ -8,6 +8,7 @@ import {
   postTranslationFile,
 } from "@/apis/translations";
 import Speciality from "@/app/my/translator/_component/Speciality";
+import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -21,7 +22,6 @@ import TextArea from "@/components/TextArea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ActionIcon,
-  Button,
   Group,
   NumberInput,
   Stack,
@@ -413,16 +413,11 @@ export default function Index() {
             />
           </InputSection>
 
-          <Group>
-            <Button
-              type="submit"
-              loading={isSubmitting}
-              color="orange"
-              fullWidth
-            >
-              다음
+          <div className="flex justify-end">
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
+              등록
             </Button>
-          </Group>
+          </div>
         </Stack>
       </FormProvider>
     </form>

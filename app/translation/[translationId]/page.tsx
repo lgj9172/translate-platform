@@ -86,6 +86,7 @@ export default function Page({ params: { translationId } }: Props) {
           ))}
         </Group>
       </Group>
+
       <div className="flex gap-[8px]">
         <Avatar src="avatar.png" />
         <div>
@@ -199,25 +200,25 @@ export default function Page({ params: { translationId } }: Props) {
             <div className="flex justify-end gap-2">
               {/* 내가 작성자와 입찰자가 아닌 경우 견적 보내기 버튼 */}
               {true && (
-                <Button size="lg" variant="primary">
+                <Button size="md" variant="primary">
                   견적 보내기
                 </Button>
               )}
               {/* 내가 작성자인 경우 입찰이 없는 경우 요청 취소 버튼 */}
               {true && (
-                <Button size="lg" variant="secondary">
+                <Button size="md" variant="secondary">
                   요청 취소
                 </Button>
               )}
               {/* 내가 작성자인 경우 입찰이 있는 경우 낙찰 버튼 */}
               {true && (
-                <Button size="lg" variant="primary">
+                <Button size="md" variant="primary">
                   번역사 선택하기
                 </Button>
               )}
               {/* 내가 입찰자인 경우 입찰 취소 버튼 */}
               {true && (
-                <Button size="lg" variant="secondary">
+                <Button size="md" variant="secondary">
                   입찰 취소
                 </Button>
               )}
@@ -246,7 +247,7 @@ export default function Page({ params: { translationId } }: Props) {
               <div className="flex justify-end gap-2">
                 {/* 내가 번역사인 경우 번역 시작 버튼 */}
                 {true && (
-                  <Button size="lg" variant="primary">
+                  <Button size="md" variant="primary">
                     번역 시작
                   </Button>
                 )}
@@ -266,7 +267,7 @@ export default function Page({ params: { translationId } }: Props) {
               <div className="flex justify-end gap-2">
                 {/* 내가 번역사인 경우 번역 제출 버튼 */}
                 {true && (
-                  <Button size="lg" variant="primary">
+                  <Button size="md" variant="primary">
                     번역 제출
                   </Button>
                 )}
@@ -297,13 +298,13 @@ export default function Page({ params: { translationId } }: Props) {
               <div className="flex justify-end gap-2">
                 {/* 내가 작성자인 경우 수정 요청 버튼 */}
                 {true && (
-                  <Button size="lg" variant="secondary">
+                  <Button size="md" variant="secondary">
                     수정 요청
                   </Button>
                 )}
                 {/* 내가 작성자인 경우 확정 버튼 */}
                 {true && (
-                  <Button size="lg" variant="primary">
+                  <Button size="md" variant="primary">
                     확정
                   </Button>
                 )}
@@ -327,7 +328,7 @@ export default function Page({ params: { translationId } }: Props) {
               <div className="flex justify-end gap-2">
                 {/* 내가 번역사인 경우 번역 제출 버튼 */}
                 {true && (
-                  <Button size="lg" variant="primary">
+                  <Button size="md" variant="primary">
                     번역 제출
                   </Button>
                 )}
@@ -345,13 +346,13 @@ export default function Page({ params: { translationId } }: Props) {
               <div className="flex justify-end gap-2">
                 {/* 내가 작성자인 경우 리뷰 작성하기 버튼 */}
                 {true && (
-                  <Button size="lg" variant="primary">
+                  <Button size="md" variant="primary">
                     리뷰 작성하기
                   </Button>
                 )}
                 {/* 내가 번역사인 경우 정산 버튼 */}
                 {true && (
-                  <Button size="lg" variant="primary">
+                  <Button size="md" variant="primary">
                     정산
                   </Button>
                 )}

@@ -85,7 +85,6 @@ export default function Shell({ children }: Props) {
                   <Menu.Item component={Link} href="/my">
                     마이 페이지
                   </Menu.Item>
-                  <Menu.Item>프로필 설정</Menu.Item>
                   <Menu.Item color="orange">로그인</Menu.Item>
                   <Menu.Item color="orange">로그아웃</Menu.Item>
                 </Menu.Dropdown>

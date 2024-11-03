@@ -3,7 +3,15 @@
 import { getNotice } from "@/apis/notices";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Center,
+  Divider,
+  Group,
+  Loader,
+  Stack,
+} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -49,11 +57,19 @@ export default function Page({ params: { noticeId } }: Props) {
         </Group>
       </PageHeader>
 
-      <div className="text-[14px] text-[#8B8C8D]">
-        {dayjs(notice.created_at).format("YYYY.MM.DD")}
+      <div className="flex gap-[8px]">
+        <Avatar src="avatar.png" />
+        <div>
+          <div className="text-[14px] text-[#4B4D4D]">플루언스</div>
+          <div className="text-[14px] text-[#8B8C8D]">
+            {dayjs(notice.created_at).format("YYYY.MM.DD")}
+          </div>
+        </div>
       </div>
 
-      <div className="text-[14px]">
+      <Divider />
+
+      <div className="min-h-[320px] text-[14px]">
         {notice.description.split("\n").map((line, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <p key={index}>{line}</p>

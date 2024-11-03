@@ -32,30 +32,20 @@ export const FileType = ["PPT", "WORD", "TEXT"] as const;
 
 export const QuantityUnit = ["CHAR", "WORD"] as const;
 
-export interface LanguageInfo {
-  source: (typeof Language)[number];
-  target: (typeof Language)[number];
-}
-
 export interface FileInfo {
   file_id: string;
+  name: string;
   extension: (typeof FileType)[number];
   url: string;
+}
+
+export interface TranslationSourceFileInfo {
+  source_file_id: string;
   char_with_blank: number;
   char_without_blank: number;
   word: number;
+  file: FileInfo;
 }
-
-// export interface Quantity {
-//   unit: (typeof QuantityUnit)[number];
-//   value: number;
-//   blank: boolean;
-// }
-
-// export interface DesiredFee {
-//   unit: (typeof MoneyUnit)[number];
-//   value: number;
-// }
 
 export const TranslationStatus = [
   "QUOTE_SENT",
@@ -70,24 +60,17 @@ export const TranslationStatus = [
 export interface Translation {
   translation_id: string;
   title: string;
-  source_language: string;
-  target_language: string;
+  source_language: (typeof Language)[number];
+  target_language: (typeof Language)[number];
   categories: (typeof Category)[number][];
   description: string;
-  // language: LanguageInfo;
-  // file: FileInfo;
-  source_files: FileInfo[];
-  target_files: FileInfo[];
-  // quantity: Quantity;
-  // desired_fee: DesiredFee;
+  source_files: TranslationSourceFileInfo[];
+  target_files: TranslationSourceFileInfo[];
   deadline: string;
   fee_unit: string;
   fee_value: number;
   sample: string;
   status: (typeof TranslationStatus)[number];
-  // likes: number;
-  // quotations: unknown[];
-  comments: unknown[];
 }
 export const getTranslations = async () => {
   const response =

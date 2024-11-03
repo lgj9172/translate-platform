@@ -56,7 +56,7 @@ export default function Page() {
 
       <Link className="hover:cursor-pointer" href="/my/translation/request">
         <Card>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div>보낸 번역 요청</div>
             {isLoadingTranslationRequest ? (
               <Loader color="orange" type="bars" size="sm" />
@@ -74,7 +74,7 @@ export default function Page() {
 
       <Link className="hover:cursor-pointer" href="/my/translation/response">
         <Card>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div>받은 번역 요청</div>
             {isLoadingTranslationResponse ? (
               <Loader color="orange" type="bars" size="sm" />
@@ -92,7 +92,7 @@ export default function Page() {
 
       <Link className="hover:cursor-pointer" href="/my/translator">
         <Card>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div>번역사 등록</div>
             <div className="text-[#8B8C8D] font-bold">등록 필요</div>
           </div>

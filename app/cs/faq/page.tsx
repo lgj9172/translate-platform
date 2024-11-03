@@ -1,18 +1,18 @@
 "use client";
 
-import { getNotices } from "@/apis/cs";
+import { getFAQs } from "@/apis/cs";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
-import NoticeCard from "./_component/NoticeCard";
+import FaqCard from "./_component/FAQCard";
 
 export default function Page() {
-  const { data: notices, isLoading } = useQuery({
-    queryKey: ["notices"],
-    queryFn: getNotices,
+  const { data: faqs, isLoading } = useQuery({
+    queryKey: ["faqs"],
+    queryFn: getFAQs,
   });
 
   return (
@@ -27,7 +27,7 @@ export default function Page() {
           >
             <FaChevronLeft />
           </ActionIcon>
-          <PageTitle>공지사항</PageTitle>
+          <PageTitle>자주하는 질문(FAQ)</PageTitle>
         </Group>
       </PageHeader>
 
@@ -37,15 +37,7 @@ export default function Page() {
         </Center>
       ) : (
         <div className="flex flex-col gap-[8px]">
-          {notices?.map((notice) => (
-            <Link
-              className="hover:cursor-pointer"
-              href={`/cs/notice/${notice.notice_id}`}
-              key={notice.notice_id}
-            >
-              <NoticeCard key={notice.notice_id} notice={notice} />
-            </Link>
-          ))}
+          {faqs?.map((faq) => <FaqCard key={faq.faq_id} faq={faq} />)}
         </div>
       )}
     </Stack>

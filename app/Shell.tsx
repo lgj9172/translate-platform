@@ -37,7 +37,7 @@ export default function Shell({ children }: Props) {
             </Link>
 
             <Group gap={2}>
-              <Button
+              {/* <Button
                 variant="transparent"
                 color="gray"
                 size="compact-xs"
@@ -45,8 +45,8 @@ export default function Shell({ children }: Props) {
                 href="/translation"
               >
                 번역
-              </Button>
-              <Button
+              </Button> */}
+              {/* <Button
                 variant="transparent"
                 color="gray"
                 size="compact-xs"
@@ -54,7 +54,7 @@ export default function Shell({ children }: Props) {
                 href="/interpret"
               >
                 통역
-              </Button>
+              </Button> */}
               <Button
                 variant="transparent"
                 color="gray"
@@ -64,6 +64,15 @@ export default function Shell({ children }: Props) {
               >
                 플루언스
               </Button>
+              <Button
+                variant="transparent"
+                color="gray"
+                size="compact-xs"
+                component={Link}
+                href="/cs"
+              >
+                고객센터
+              </Button>
               <Menu shadow="md" width={200}>
                 <Menu.Target>
                   <ActionIcon variant="transparent" color="orange">
@@ -72,12 +81,16 @@ export default function Shell({ children }: Props) {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                  <Menu.Label>고객서비스</Menu.Label>
+                  <Menu.Label>고객센터</Menu.Label>
                   <Menu.Item component={Link} href="/cs/notice">
                     공지사항
                   </Menu.Item>
-                  <Menu.Item>자주하는질문</Menu.Item>
-                  <Menu.Item>고객센터</Menu.Item>
+                  <Menu.Item component={Link} href="/cs/faq">
+                    자주하는 질문(FAQ)
+                  </Menu.Item>
+                  <Menu.Item component={Link} href="/cs/contact">
+                    1:1 문의
+                  </Menu.Item>
 
                   <Menu.Divider />
 

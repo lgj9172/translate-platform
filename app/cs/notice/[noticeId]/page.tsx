@@ -1,6 +1,6 @@
 "use client";
 
-import { getNotice } from "@/apis/notices";
+import { getNotice } from "@/apis/cs";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import {

@@ -22,3 +22,23 @@ export const getNotice = async ({ noticeId }: { noticeId: string }) => {
   );
   return response.data.data;
 };
+
+export interface FAQ {
+  faq_id: string;
+  title: string;
+  description: string;
+  created_by: string;
+  updated_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export const getFAQs = async () => {
+  const response = await ClientWithoutAuth.get<Response<FAQ[]>>(`/faqs`);
+  return response.data.data;
+};
+
+export const getFAQ = async ({ faqId }: { faqId: string }) => {
+  const response = await ClientWithoutAuth.get<Response<FAQ>>(`/faqs/${faqId}`);
+  return response.data.data;
+};

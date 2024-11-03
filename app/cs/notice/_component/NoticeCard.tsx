@@ -1,4 +1,4 @@
-import { Notice } from "@/apis/notices";
+import { Notice } from "@/apis/cs";
 import Card from "@/components/Card";
 import dayjs from "dayjs";
 

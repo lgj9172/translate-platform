@@ -1,21 +1,11 @@
 "use client";
 
+import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import {
-  ActionIcon,
-  Avatar,
-  Button,
-  Card,
-  Group,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  UnstyledButton,
-} from "@mantine/core";
+import { ActionIcon, Avatar, Group, Stack } from "@mantine/core";
 import Link from "next/link";
-import { FaCaretRight, FaChevronLeft } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
 
 export default function Page() {
   return (
@@ -33,7 +23,63 @@ export default function Page() {
           <PageTitle>마이 페이지</PageTitle>
         </Group>
       </PageHeader>
-      <Card withBorder radius="md">
+
+      <div className="flex gap-[8px]">
+        <Avatar src="avatar.png" />
+        <div>
+          <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
+          <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
+        </div>
+      </div>
+
+      {/* <Divider /> */}
+      <Link className="hover:cursor-pointer" href="/">
+        <Card>
+          <div className="flex justify-between">
+            <div>내 정보 수정</div>
+            <div className="text-[#8B8C8D] font-bold">
+              <span />
+            </div>
+          </div>
+        </Card>
+      </Link>
+
+      <Link className="hover:cursor-pointer" href="/">
+        <Card>
+          <div className="flex justify-between">
+            <div>보낸 번역 요청</div>
+            <div className="text-[#8B8C8D] font-bold">
+              <span className="text-primary">2</span> 건
+            </div>
+          </div>
+        </Card>
+      </Link>
+
+      <Link className="hover:cursor-pointer" href="/">
+        <Card>
+          <div className="flex justify-between">
+            <div>받은 번역 요청</div>
+            <div className="text-[#8B8C8D] font-bold">
+              <span className="text-primary">2</span> 건
+            </div>
+          </div>
+        </Card>
+      </Link>
+
+      <Link className="hover:cursor-pointer" href="/">
+        <Card>
+          <div className="flex justify-between">
+            <div>번역사 등록</div>
+            <div className="text-[#8B8C8D] font-bold">등록 필요</div>
+          </div>
+        </Card>
+      </Link>
+
+      <Link className="hover:cursor-pointer" href="/">
+        <Card>회원 탈퇴</Card>
+      </Link>
+
+      {/* <Card withBorder radius="md">
         <Stack>
           <SimpleGrid cols={2}>
             <Group>
@@ -81,8 +127,9 @@ export default function Page() {
             </SimpleGrid>
           </SimpleGrid>
         </Stack>
-      </Card>
-      <Stack>
+      </Card> */}
+
+      {/* <Stack>
         <SimpleGrid cols={2}>
           <Button
             variant="light"
@@ -105,7 +152,7 @@ export default function Page() {
         <Button variant="outline" color="orange">
           로그아웃
         </Button>
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 }

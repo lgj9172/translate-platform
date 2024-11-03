@@ -168,10 +168,10 @@ export default function Page({ params: { translationId } }: Props) {
           <LabelSection>
             <Label>원문 샘플</Label>
           </LabelSection>
-
           <div>{translation.sample}</div>
         </InputSection>
-        <Divider />
+
+        {/* <Divider /> */}
 
         <InputSection>
           <LabelSection>

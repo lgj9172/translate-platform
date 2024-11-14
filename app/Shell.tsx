@@ -4,9 +4,7 @@ import FluenceBi from "@assets/icons/fluence-bi.svg";
 import {
   ActionIcon,
   Anchor,
-  AppShell,
   Button,
-  Container,
   Group,
   Menu,
   Modal,
@@ -28,86 +26,67 @@ export default function Shell({ children }: Props) {
   const [openedRP, { open: openRP, close: closeRP }] = useDisclosure(false);
 
   return (
-    <Container maw={768}>
-      <AppShell header={{ height: 48 }} padding="md">
-        <AppShell.Header>
-          <Group h="100%" px={8} justify="space-between">
-            <Link href="/">
-              <FluenceBi />
-            </Link>
+    <div className="min-w-[360px] max-w-[768px]  container mx-auto">
+      <div className="h-[48px] p-[20px]">
+        <Group h="100%" justify="space-between">
+          <Link href="/">
+            <FluenceBi />
+          </Link>
+          <Group gap={2}>
+            <Button
+              variant="transparent"
+              color="gray"
+              size="compact-xs"
+              component={Link}
+              href="/fluence"
+            >
+              플루언스
+            </Button>
+            <Button
+              variant="transparent"
+              color="gray"
+              size="compact-xs"
+              component={Link}
+              href="/cs"
+            >
+              고객센터
+            </Button>
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <ActionIcon variant="transparent" color="orange">
+                  <BsPersonFill />
+                </ActionIcon>
+              </Menu.Target>
 
-            <Group gap={2}>
-              {/* <Button
-                variant="transparent"
-                color="gray"
-                size="compact-xs"
-                component={Link}
-                href="/translation"
-              >
-                번역
-              </Button> */}
-              {/* <Button
-                variant="transparent"
-                color="gray"
-                size="compact-xs"
-                component={Link}
-                href="/interpret"
-              >
-                통역
-              </Button> */}
-              <Button
-                variant="transparent"
-                color="gray"
-                size="compact-xs"
-                component={Link}
-                href="/fluence"
-              >
-                플루언스
-              </Button>
-              <Button
-                variant="transparent"
-                color="gray"
-                size="compact-xs"
-                component={Link}
-                href="/cs"
-              >
-                고객센터
-              </Button>
-              <Menu shadow="md" width={200}>
-                <Menu.Target>
-                  <ActionIcon variant="transparent" color="orange">
-                    <BsPersonFill />
-                  </ActionIcon>
-                </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Label>고객센터</Menu.Label>
+                <Menu.Item component={Link} href="/cs/notice">
+                  공지사항
+                </Menu.Item>
+                <Menu.Item component={Link} href="/cs/faq">
+                  자주하는 질문(FAQ)
+                </Menu.Item>
+                <Menu.Item component={Link} href="/cs/contact">
+                  1:1 문의
+                </Menu.Item>
 
-                <Menu.Dropdown>
-                  <Menu.Label>고객센터</Menu.Label>
-                  <Menu.Item component={Link} href="/cs/notice">
-                    공지사항
-                  </Menu.Item>
-                  <Menu.Item component={Link} href="/cs/faq">
-                    자주하는 질문(FAQ)
-                  </Menu.Item>
-                  <Menu.Item component={Link} href="/cs/contact">
-                    1:1 문의
-                  </Menu.Item>
+                <Menu.Divider />
 
-                  <Menu.Divider />
-
-                  <Menu.Label>개인</Menu.Label>
-                  <Menu.Item component={Link} href="/my">
-                    마이 페이지
-                  </Menu.Item>
-                  <Menu.Item color="orange">로그인</Menu.Item>
-                  <Menu.Item color="orange">로그아웃</Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
+                <Menu.Label>개인</Menu.Label>
+                <Menu.Item component={Link} href="/my">
+                  마이 페이지
+                </Menu.Item>
+                <Menu.Item color="orange">로그인</Menu.Item>
+                <Menu.Item color="orange">로그아웃</Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           </Group>
-        </AppShell.Header>
-        <AppShell.Main>
-          {children}
-          <Stack p="md" c="gray" mt="lg">
+        </Group>
+      </div>
+      <div className="p-[20px]">
+        {children}
+        <div>
+          <Stack c="gray" mt="lg">
             <Stack gap="20px">
               <Text fz="16px" fw={700}>
                 고객센터 070-8383-6353
@@ -160,8 +139,8 @@ export default function Shell({ children }: Props) {
               </Modal>
             </Stack>
           </Stack>
-        </AppShell.Main>
-      </AppShell>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }

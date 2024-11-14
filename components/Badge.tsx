@@ -10,7 +10,7 @@ export default function Badge({ color, children }: BadgeProps) {
   return (
     <div
       className={classNames(
-        "h-[26px] px-[12px] py-[4px] flex justify-center items-center rounded-[16px]",
+        "h-[26px] px-[12px] py-[4px] flex justify-center items-center rounded-[16px] text-nowrap",
         {
           "bg-[#F0F0F0] text-[#000000]": color === "black",
           "bg-[#E7EFFF] text-[#2563EB]": color === "blue",

@@ -106,7 +106,7 @@ function TranslationCard({
   showStatus = false,
 }: TranslationCardProps) {
   // const { progress, label, progressLabel } = STATUS[status];
-  const { progress } = STATUS[status];
+  const { progress, label } = STATUS[status];
 
   return (
     <Card>
@@ -167,29 +167,35 @@ function TranslationCard({
           </div>
         )} */}
         {showStatus && (
-          <div className="flex gap-1">
-            {STEPS.map((step, i) => (
-              <div
-                key={step}
-                className={`w-1/6 rounded-full ${i !== progress && "opacity-30"}`}
-              >
-                <div
-                  className={`h-1 rounded-full ${i <= progress ? "bg-primary" : "bg-[#8B8C8D]"}`}
-                />
-                <div
-                  className={`truncate text-center text-[14px] font-bold ${i <= progress ? "text-primary" : "text-[#8B8C8D]"}`}
-                >
-                  {STATUS[step].label}
-                </div>
+          <div className="flex gap-[2px]">
+            {status === "TRANSLATION_CANCELLED" && (
+              <div className="truncate text-center text-[14px] font-bold text-[#8B8C8D]">
+                {label}
               </div>
+            )}
+            {status !== "TRANSLATION_CANCELLED" &&
+              STEPS.map((step, i) => (
+                <div
+                  key={step}
+                  className={`w-1/6 rounded-full ${i !== progress && "opacity-30"}`}
+                >
+                  <div
+                    className={`h-1 rounded-full ${i <= progress ? "bg-primary" : "bg-[#8B8C8D]"}`}
+                  />
+                  <div
+                    className={`truncate text-center text-[14px] font-bold ${i <= progress ? "text-primary" : "text-[#8B8C8D]"}`}
+                  >
+                    {STATUS[step].label}
+                  </div>
+                </div>
 
-              // <div
-              //   key={step}
-              //   className={`w-1/6 p-1 rounded-md truncate text-center text-[14px] text-white ${i <= progress ? "bg-primary" : "bg-gray-300"}`}
-              // >
-              //   {STATUS[step].label}
-              // </div>
-            ))}
+                // <div
+                //   key={step}
+                //   className={`w-1/6 p-1 rounded-md truncate text-center text-[14px] text-white ${i <= progress ? "bg-primary" : "bg-gray-300"}`}
+                // >
+                //   {STATUS[step].label}
+                // </div>
+              ))}
           </div>
         )}
       </div>

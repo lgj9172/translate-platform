@@ -19,14 +19,9 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
+import TextInput from "@/components/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ActionIcon,
-  Group,
-  NumberInput,
-  Stack,
-  TextInput,
-} from "@mantine/core";
+import { ActionIcon, Group, NumberInput, Stack } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -44,7 +39,7 @@ import { z } from "zod";
 
 const PostTranslationFormSchema = z
   .object({
-    title: z.string().nonempty("제목을 입력해 주세요."),
+    title: z.string().min(1, "제목을 입력해 주세요."),
     sourceLanguage: z
       .enum([...Language, ""])
       .refine((value) => value !== "", "번역 할 문서의 언어를 선택해 주세요."),

@@ -200,9 +200,15 @@ export default function Page({ params: { translationId } }: Props) {
             <div className="flex justify-end gap-2">
               {/* 내가 작성자와 입찰자가 아닌 경우 견적 보내기 버튼 */}
               {true && (
-                <Button size="md" variant="primary">
-                  견적 보내기
-                </Button>
+                <Link
+                  href={{
+                    pathname: `/translation/${translationId}/quote/create`,
+                  }}
+                >
+                  <Button size="md" variant="primary">
+                    견적 보내기
+                  </Button>
+                </Link>
               )}
               {/* 내가 작성자인 경우 입찰이 없는 경우 요청 취소 버튼 */}
               {true && (

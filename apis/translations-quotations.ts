@@ -21,6 +21,17 @@ interface PostTranslationQuote {
   translation_id: string;
 }
 
+export const getTranslationQuotes = async ({
+  translationId,
+}: {
+  translationId: string;
+}) => {
+  const response = await ClientWithAuth.get<Response<TranslationQuote[]>>(
+    `/translations/${translationId}/quotations`,
+  );
+  return response.data.data;
+};
+
 export const postTranslationQuote = async (input: PostTranslationQuote) => {
   const payload = {
     translation_fee: input.translation_fee,
@@ -29,6 +40,36 @@ export const postTranslationQuote = async (input: PostTranslationQuote) => {
   const response = await ClientWithAuth.post<Response<TranslationQuote>>(
     `/translations/${input.translation_id}/quotations`,
     payload,
+  );
+  return response.data.data;
+};
+
+export interface PostTranslationQuoteCancelRequest {
+  translationId: string;
+  quotationId: string;
+}
+
+export const postTranslationQuoteCancel = async ({
+  translationId,
+  quotationId,
+}: PostTranslationQuoteCancelRequest) => {
+  const response = await ClientWithAuth.post<Response<TranslationQuote>>(
+    `/translations/${translationId}/quotations/${quotationId}/cancel`,
+  );
+  return response.data.data;
+};
+
+export interface PostTranslationQuoteSelectRequest {
+  translationId: string;
+  quotationId: string;
+}
+
+export const postTranslationQuoteSelect = async ({
+  translationId,
+  quotationId,
+}: PostTranslationQuoteSelectRequest) => {
+  const response = await ClientWithAuth.post<Response<TranslationQuote>>(
+    `/translations/${translationId}/quotations/${quotationId}/assign`,
   );
   return response.data.data;
 };

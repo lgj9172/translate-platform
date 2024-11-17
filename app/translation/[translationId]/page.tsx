@@ -26,6 +26,8 @@ import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
+import SendQuote from "./_component/SendQuote";
+import SelectQuote from "./_component/SelectQuote";
 
 interface Props {
   params: { translationId: string };
@@ -197,37 +199,44 @@ export default function Page({ params: { translationId } }: Props) {
         <div className="flex flex-col gap-2">
           {/* 번역 상태: 견적 요청 */}
           {translation.status === "QUOTE_SENT" && (
-            <div className="flex justify-end gap-2">
-              {/* 내가 작성자와 입찰자가 아닌 경우 견적 보내기 버튼 */}
-              {true && (
-                <Link
-                  href={{
-                    pathname: `/translation/${translationId}/quote/create`,
-                  }}
-                >
-                  <Button size="md" variant="primary">
-                    견적 보내기
+            <div>
+              {/* 내가 번역사인 경우 */}
+              <SendQuote translation={translation} />
+              {/* 내가 작성자인 경우 */}
+              <SelectQuote translation={translation} />
+
+              <div className="flex justify-end gap-2">
+                {/* 내가 작성자와 입찰자가 아닌 경우 견적 보내기 버튼 */}
+                {/* {true && (
+                  <Link
+                    href={{
+                      pathname: `/translation/${translationId}/quote/create`,
+                    }}
+                  >
+                    <Button size="md" variant="primary">
+                      견적 보내기
+                    </Button>
+                  </Link>
+                )} */}
+                {/* 내가 작성자인 경우 입찰이 없는 경우 요청 취소 버튼 */}
+                {/* {true && (
+                  <Button size="md" variant="secondary">
+                    요청 취소
                   </Button>
-                </Link>
-              )}
-              {/* 내가 작성자인 경우 입찰이 없는 경우 요청 취소 버튼 */}
-              {true && (
-                <Button size="md" variant="secondary">
-                  요청 취소
-                </Button>
-              )}
-              {/* 내가 작성자인 경우 입찰이 있는 경우 낙찰 버튼 */}
-              {true && (
-                <Button size="md" variant="primary">
-                  번역사 선택하기
-                </Button>
-              )}
-              {/* 내가 입찰자인 경우 입찰 취소 버튼 */}
-              {true && (
-                <Button size="md" variant="secondary">
-                  입찰 취소
-                </Button>
-              )}
+                )} */}
+                {/* 내가 작성자인 경우 입찰이 있는 경우 낙찰 버튼 */}
+                {/* {true && (
+                  <Button size="md" variant="primary">
+                    번역사 선택하기
+                  </Button>
+                )} */}
+                {/* 내가 입찰자인 경우 입찰 취소 버튼 */}
+                {/* {true && (
+                  <Button size="md" variant="secondary">
+                    입찰 취소
+                  </Button>
+                )} */}
+              </div>
             </div>
           )}
 

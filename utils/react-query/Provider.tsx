@@ -2,6 +2,7 @@
 
 import { MantineProvider, createTheme } from "@mantine/core";
 import { DatesProvider } from "@mantine/dates";
+import { ModalsProvider } from "@mantine/modals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "dayjs/locale/ko";
@@ -35,10 +36,12 @@ function Providers({ children }: React.PropsWithChildren) {
       settings={{ locale: "ko", firstDayOfWeek: 1, weekendDays: [0, 6] }}
     >
       <MantineProvider theme={mantineTheme}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <ModalsProvider modalProps={{ centered: true }}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ModalsProvider>
       </MantineProvider>
     </DatesProvider>
   );

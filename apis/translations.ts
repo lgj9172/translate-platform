@@ -104,7 +104,7 @@ export const postTranslationFile = async (
   return response.data.data;
 };
 
-interface PostTranslationRequest {
+export interface PostTranslationRequest {
   title: string;
   description: string;
   categories: (typeof Category)[number][];
@@ -137,6 +137,19 @@ export const postTranslation = async (input: PostTranslationRequest) => {
   const response = await ClientWithAuth.post<Response<Translation>>(
     "/translations",
     payload,
+  );
+  return response.data.data;
+};
+
+export interface PostTranslationCancelRequest {
+  translationId: string;
+}
+
+export const postTranslationCancel = async ({
+  translationId,
+}: PostTranslationCancelRequest) => {
+  const response = await ClientWithAuth.post<Response<Translation>>(
+    `/translations/${translationId}/cancel`,
   );
   return response.data.data;
 };

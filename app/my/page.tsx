@@ -46,13 +46,15 @@ export default function Page() {
         </Group>
       </PageHeader>
 
-      <div className="flex gap-[8px]">
-        <Avatar src="avatar.png" />
-        <div>
-          <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
-          <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
+      <Card>
+        <div className="flex gap-[8px]">
+          <Avatar src="avatar.png" />
+          <div>
+            <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
+            <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
+          </div>
         </div>
-      </div>
+      </Card>
 
       <Link className="hover:cursor-pointer" href="/my/translation/request">
         <Card>

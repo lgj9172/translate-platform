@@ -24,14 +24,6 @@ export default function Page() {
         </Group>
       </PageHeader>
 
-      {/* <div className="flex gap-[8px]">
-        <Avatar src="avatar.png" />
-        <div>
-          <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
-          <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
-        </div>
-      </div> */}
-
       <div className="text-[14px] text-[#8B8C8D]">
         <div>플루언스를 사용하시는데 어려움이 있으신가요?</div>
         <div>대표전화나 1:1 문의하기를 이용하여 문의해주세요.</div>

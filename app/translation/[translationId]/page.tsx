@@ -4,6 +4,7 @@ import { getTranslation } from "@/apis/translations";
 import Alert from "@/components/Alert";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
+import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -14,7 +15,6 @@ import {
   ActionIcon,
   Avatar,
   Center,
-  Divider,
   Group,
   Loader,
   Stack,
@@ -87,15 +87,15 @@ export default function Page({ params: { translationId } }: Props) {
         </Group>
       </Group>
 
-      <div className="flex gap-[8px]">
-        <Avatar src="avatar.png" />
-        <div>
-          <div className="text-[14px] text-[#4B4D4D]">작성자</div>
-          <div className="text-[14px] text-[#8B8C8D]">작성일</div>
+      <Card>
+        <div className="flex gap-[8px]">
+          <Avatar src="avatar.png" />
+          <div>
+            <div className="text-[14px] text-[#4B4D4D]">작성자</div>
+            <div className="text-[14px] text-[#8B8C8D]">작성일</div>
+          </div>
         </div>
-      </div>
-
-      <Divider />
+      </Card>
 
       <Stack>
         <InputSection>

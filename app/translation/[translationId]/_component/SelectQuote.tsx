@@ -117,7 +117,7 @@ export default function SelectQuote({ translation }: Props) {
 
   if (translationQuotes.length === 0)
     return (
-      <Card>
+      <Stack>
         <div className="text-lg font-bold">
           고객 님, 번역사가 견적을 보내면 알려드릴게요.
         </div>
@@ -130,19 +130,19 @@ export default function SelectQuote({ translation }: Props) {
             번역 요청 취소
           </Button>
         </div>
-      </Card>
+      </Stack>
     );
 
   return (
-    <Card>
-      <Stack>
-        <div className="text-lg font-bold">
-          고객 님, 번역을 진행할 번역사를 선택해주세요.
-        </div>
+    <Stack>
+      <div className="text-lg font-bold">
+        고객 님, 번역을 진행할 번역사를 선택해주세요.
+      </div>
 
-        {translationQuotes?.map((quote) => (
-          <Card>
-            <div className="flex flex-col gap-2">
+      {translationQuotes?.map((quote) => (
+        <Card>
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between">
               <div className="flex gap-[8px]">
                 <Avatar src="avatar.png" />
                 <div>
@@ -152,38 +152,9 @@ export default function SelectQuote({ translation }: Props) {
                   </div>
                 </div>
               </div>
-
-              <InputSection>
-                <LabelSection>
-                  <Label>번역료</Label>
-                </LabelSection>
-
-                <div className="flex text-primary font-bold text-[16px]">
-                  <span>
-                    <NumericFormat
-                      displayType="text"
-                      value={quote.translation_fee}
-                      thousandsGroupStyle="thousand"
-                      thousandSeparator=","
-                    />
-                  </span>
-                  <span>
-                    {translation.fee_unit === "KRW" && "원"}
-                    {translation.fee_unit === "USD" && "달러"}
-                  </span>
-                </div>
-              </InputSection>
-
-              <InputSection>
-                <LabelSection>
-                  <Label>세부사항</Label>
-                </LabelSection>
-                <div>{quote.detail}</div>
-              </InputSection>
-
               <div className="flex justify-end">
                 <Button
-                  size="md"
+                  size="sm"
                   variant="primary"
                   onClick={() => handleClickSelectQuote(quote.quotation_id)}
                 >
@@ -191,18 +162,46 @@ export default function SelectQuote({ translation }: Props) {
                 </Button>
               </div>
             </div>
-          </Card>
-        ))}
-        <div className="flex justify-end">
-          <Button
-            size="md"
-            variant="secondary"
-            onClick={handleClickCancelTranslation}
-          >
-            번역 요청 취소
-          </Button>
-        </div>
-      </Stack>
-    </Card>
+
+            <InputSection>
+              <LabelSection>
+                <Label>번역료</Label>
+              </LabelSection>
+
+              <div className="flex text-primary font-bold text-[16px]">
+                <span>
+                  <NumericFormat
+                    displayType="text"
+                    value={quote.translation_fee}
+                    thousandsGroupStyle="thousand"
+                    thousandSeparator=","
+                  />
+                </span>
+                <span>
+                  {translation.fee_unit === "KRW" && "원"}
+                  {translation.fee_unit === "USD" && "달러"}
+                </span>
+              </div>
+            </InputSection>
+
+            <InputSection>
+              <LabelSection>
+                <Label>세부사항</Label>
+              </LabelSection>
+              <div>{quote.detail}</div>
+            </InputSection>
+          </div>
+        </Card>
+      ))}
+      <div className="flex justify-end">
+        <Button
+          size="md"
+          variant="secondary"
+          onClick={handleClickCancelTranslation}
+        >
+          번역 요청 취소
+        </Button>
+      </div>
+    </Stack>
   );
 }

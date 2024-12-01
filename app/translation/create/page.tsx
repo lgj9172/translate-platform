@@ -148,13 +148,13 @@ export default function Index() {
 
   const { mutateAsync: mutatePostTranslationFile } = useMutation({
     mutationFn: postTranslationFile,
-    onSuccess: () => {
-      router.push("/translation/create/done");
-    },
   });
 
   const { mutateAsync: mutatePostTranslation } = useMutation({
     mutationFn: postTranslation,
+    onSuccess: () => {
+      router.push("/translation/create/done");
+    },
   });
 
   const { mutateAsync } = useMutation({ mutationFn: postFile });

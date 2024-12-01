@@ -102,6 +102,7 @@ function TranslationCard({
     title,
     description,
     status,
+    is_canceled,
   },
   showStatus = false,
 }: TranslationCardProps) {
@@ -168,12 +169,12 @@ function TranslationCard({
         )} */}
         {showStatus && (
           <div className="flex gap-[2px]">
-            {status === "TRANSLATION_CANCELLED" && (
+            {is_canceled && (
               <div className="truncate text-center text-[14px] font-bold text-[#8B8C8D]">
                 {label}
               </div>
             )}
-            {status !== "TRANSLATION_CANCELLED" &&
+            {!is_canceled &&
               STEPS.map((step, i) => (
                 <div
                   key={step}

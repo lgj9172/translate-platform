@@ -49,7 +49,6 @@ export interface TranslationSourceFileInfo {
 
 export const TranslationStatus = [
   "QUOTE_SENT",
-  "TRANSLATION_CANCELLED",
   "TRANSLATOR_SELECTED",
   "TRANSLATION_BEGAN",
   "TRANSLATION_SUBMITTED",
@@ -71,6 +70,7 @@ export interface Translation {
   fee_value: number;
   sample: string;
   status: (typeof TranslationStatus)[number];
+  is_canceled: boolean;
 }
 export const getTranslations = async () => {
   const response =
@@ -150,6 +150,38 @@ export const postTranslationCancel = async ({
 }: PostTranslationCancelRequest) => {
   const response = await ClientWithAuth.post<Response<Translation>>(
     `/translations/${translationId}/cancel`,
+  );
+  return response.data.data;
+};
+
+export interface PostTranslationStartRequest {
+  translationId: string;
+}
+
+export const postTranslationStart = async ({
+  translationId,
+}: PostTranslationStartRequest) => {
+  const response = await ClientWithAuth.post<Response<Translation>>(
+    `/translations/${translationId}/start`,
+  );
+  return response.data.data;
+};
+
+export interface PostTranslationSubmitRequest {
+  translationId: string;
+  fileId: string;
+}
+
+export const postTranslationSubmit = async ({
+  translationId,
+  fileId,
+}: PostTranslationSubmitRequest) => {
+  const payload = {
+    file_id: fileId,
+  };
+  const response = await ClientWithAuth.post<Response<Translation>>(
+    `/translations/${translationId}/submit/`,
+    payload,
   );
   return response.data.data;
 };

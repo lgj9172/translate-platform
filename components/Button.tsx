@@ -17,7 +17,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ size = "md", variant = "primary", children, disabled, ...props }, ref) => {
     // Define base styles
-    const baseStyles = "font-bold rounded-[8px]";
+    const baseStyles = "h-fit font-bold rounded-[8px]";
 
     // Define size styles
     const sizeStyles = {

@@ -1,4 +1,3 @@
-import { postFile } from "@/apis/files";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
@@ -9,7 +8,6 @@ import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
 import { DatePickerInput, DateValue } from "@mantine/dates";
-import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -29,7 +27,7 @@ export default function Certifications() {
     name: "certifications",
   });
 
-  const { mutateAsync } = useMutation({ mutationFn: postFile });
+  // const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const handleClickAppend = () => {
     append(CertificationDefaultValue);
@@ -52,8 +50,8 @@ export default function Certifications() {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      const res = await mutateAsync({ content: file });
-      setValue(`certifications.${index}.file`, res, { shouldValidate: true });
+      // const res = await mutateAsync({ content: file });
+      // setValue(`certifications.${index}.file`, res, { shouldValidate: true });
     }
   };
 

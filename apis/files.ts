@@ -2,7 +2,7 @@ import { objectToFormData } from "@/utils/converter/form";
 import { ClientWithAuth, Response } from "./clients";
 
 export interface FileInfo {
-  id: number;
+  id: string;
   name: string;
   extension: string;
   created_at: string;

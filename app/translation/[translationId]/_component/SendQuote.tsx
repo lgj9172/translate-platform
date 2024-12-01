@@ -7,7 +7,6 @@ import {
   PostTranslationQuoteCancelRequest,
 } from "@/apis/translations-quotations";
 import Button from "@/components/Button";
-import Card from "@/components/Card";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
@@ -150,123 +149,119 @@ export default function SendQuote({ translation }: Props) {
   return (
     <form onSubmit={handleSubmit(handleClickCreateQuote)}>
       <FormProvider {...methods}>
-        <Card>
-          <Stack>
-            <div className="text-lg font-bold">
-              번역사 님, 이 번역 작업에 견적을 보내세요.
-            </div>
-            <InputSection>
-              <LabelSection>
-                <Label>번역료</Label>
-              </LabelSection>
-              <Controller
-                name="translation_fee"
-                control={control}
-                render={({
-                  field: { onChange, ...field },
-                  fieldState: { error },
-                }) => (
-                  <ControllerSection>
-                    <NumberInput
-                      {...field}
-                      onChange={(v) => onChange(Number(v))}
-                      step={1000}
-                      clampBehavior="strict"
-                      min={0}
-                      max={1000000000}
-                      allowNegative={false}
-                      allowDecimal={false}
-                      thousandSeparator=","
-                      leftSection="₩"
-                      withAsterisk
-                      classNames={{
-                        input: "focus:border-primary",
-                      }}
-                    />
-                    <ErrorText>{error?.message}</ErrorText>
-                  </ControllerSection>
-                )}
-              />
-            </InputSection>
+        <Stack>
+          <div className="text-lg font-bold">
+            번역사 님, 이 번역 작업에 견적을 보내세요.
+          </div>
+          <InputSection>
+            <LabelSection>
+              <Label>번역료</Label>
+            </LabelSection>
+            <Controller
+              name="translation_fee"
+              control={control}
+              render={({
+                field: { onChange, ...field },
+                fieldState: { error },
+              }) => (
+                <ControllerSection>
+                  <NumberInput
+                    {...field}
+                    onChange={(v) => onChange(Number(v))}
+                    step={1000}
+                    clampBehavior="strict"
+                    min={0}
+                    max={1000000000}
+                    allowNegative={false}
+                    allowDecimal={false}
+                    thousandSeparator=","
+                    leftSection="₩"
+                    withAsterisk
+                    classNames={{
+                      input: "focus:border-primary",
+                    }}
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </ControllerSection>
+              )}
+            />
+          </InputSection>
 
-            <InputSection>
-              <LabelSection>
-                <Label>세부사항(선택)</Label>
-              </LabelSection>
-              <Controller
-                name="detail"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <ControllerSection>
-                    <TextArea
-                      {...field}
-                      maxLength={100}
-                      placeholder="번역을 요청한 사람에게 남길 말을 입력해주세요."
-                    />
-                    <ErrorText>{error?.message}</ErrorText>
-                  </ControllerSection>
-                )}
-              />
-            </InputSection>
+          <InputSection>
+            <LabelSection>
+              <Label>세부사항(선택)</Label>
+            </LabelSection>
+            <Controller
+              name="detail"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <ControllerSection>
+                  <TextArea
+                    {...field}
+                    maxLength={100}
+                    placeholder="번역을 요청한 사람에게 남길 말을 입력해주세요."
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </ControllerSection>
+              )}
+            />
+          </InputSection>
 
-            <div className="flex justify-end">
-              <Button type="submit" variant="primary" disabled={isSubmitting}>
-                견적 보내기
-              </Button>
-            </div>
-          </Stack>
-        </Card>
+          <div className="flex justify-end">
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
+              견적 보내기
+            </Button>
+          </div>
+        </Stack>
 
         {/* TODO: 견적을 보냈는지 여부에 따라 분기 */}
-        <Card>
-          <Stack>
-            <div className="text-lg font-bold">
-              번역사 님, 이 번역 작업에 견적을 보냈어요.
-            </div>
+        <Stack>
+          <div className="text-lg font-bold">
+            번역사 님, 이 번역 작업에 견적을 보냈어요.
+          </div>
 
-            <InputSection>
-              <LabelSection>
-                <Label>번역료</Label>
-              </LabelSection>
+          <InputSection>
+            <LabelSection>
+              <Label>번역료</Label>
+            </LabelSection>
 
-              <div className="flex text-primary font-bold text-[16px]">
-                <span>
-                  <NumericFormat
-                    displayType="text"
-                    // TODO: 견적 아이디 추가
-                    value={12345}
-                    thousandsGroupStyle="thousand"
-                    thousandSeparator=","
-                  />
-                </span>
-                <span>
-                  {translation.fee_unit === "KRW" && "원"}
-                  {translation.fee_unit === "USD" && "달러"}
-                </span>
-              </div>
-            </InputSection>
-
-            <InputSection>
-              <LabelSection>
-                <Label>세부사항</Label>
-              </LabelSection>
-              <div>세부사항에 대한 내용이 표시됩니다.</div>
-            </InputSection>
-
-            <div className="flex justify-end">
-              <Button
-                size="md"
-                variant="secondary"
-                onClick={() =>
+            <div className="flex text-primary font-bold text-[16px]">
+              <span>
+                <NumericFormat
+                  displayType="text"
                   // TODO: 견적 아이디 추가
-                  handleClickCancelQuote(translation.translation_id, "12345")
-                }
-              >
-                견적 보내기 취소
-              </Button>
+                  value={12345}
+                  thousandsGroupStyle="thousand"
+                  thousandSeparator=","
+                />
+              </span>
+              <span>
+                {translation.fee_unit === "KRW" && "원"}
+                {translation.fee_unit === "USD" && "달러"}
+              </span>
             </div>
-          </Stack>
-        </Card>
+          </InputSection>
+
+          <InputSection>
+            <LabelSection>
+              <Label>세부사항</Label>
+            </LabelSection>
+            <div>세부사항에 대한 내용이 표시됩니다.</div>
+          </InputSection>
+
+          <div className="flex justify-end">
+            <Button
+              size="md"
+              variant="secondary"
+              onClick={() =>
+                // TODO: 견적 아이디 추가
+                handleClickCancelQuote(translation.translation_id, "12345")
+              }
+            >
+              견적 보내기 취소
+            </Button>
+          </div>
+        </Stack>
       </FormProvider>
     </form>
   );

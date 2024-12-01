@@ -88,7 +88,11 @@ export default function Educations() {
     const file = e.target.files?.[0];
     if (file) {
       const res = await mutateAsync({ content: file });
-      setValue(`educations.${index}.file`, res, { shouldValidate: true });
+      setValue(
+        `educations.${index}.file`,
+        { ...res, id: Number(res.id) },
+        { shouldValidate: true },
+      );
     }
   };
 

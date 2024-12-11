@@ -78,10 +78,10 @@ export default function SubmitTranslation({ translation }: Props) {
             <Button
               variant="primary"
               onClick={async () => {
-                const { id } = await mutateAsync({ content: file });
+                const res = await mutateAsync({ content: file });
                 mutatePostTranslationSubmit({
                   translationId: translation.translation_id,
-                  fileId: id,
+                  fileId: res.file_id,
                 });
                 modals.closeAll();
               }}

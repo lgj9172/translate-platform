@@ -3,9 +3,10 @@
 import { postFile } from "@/apis/files";
 import {
   Category,
+  FileType,
   Language,
+  MoneyUnit,
   postTranslation,
-  postTranslationFile,
 } from "@/apis/translations";
 import Speciality from "@/app/my/translator/_component/Speciality";
 import Button from "@/components/Button";
@@ -27,10 +28,11 @@ import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useMemo } from "react";
+import { useMemo } from "react";
 import {
   Controller,
   FormProvider,
+  SubmitErrorHandler,
   SubmitHandler,
   useForm,
 } from "react-hook-form";
@@ -40,15 +42,8 @@ import { z } from "zod";
 const PostTranslationFormSchema = z
   .object({
     title: z.string().min(1, "제목을 입력해 주세요."),
-    sourceLanguage: z
-      .enum([...Language, ""])
-      .refine((value) => value !== "", "번역 할 문서의 언어를 선택해 주세요."),
-    targetLanguage: z
-      .enum([...Language, ""])
-      .refine(
-        (value) => value !== "",
-        "어떤 언어로 번역되어야 하는지 선택해 주세요.",
-      ),
+    source_language: z.enum(Language),
+    target_language: z.enum(Language),
     categories: z
       .array(z.enum(Category))
       .refine((value) => value.length > 0, "분야를 1개 이상 선택해 주세요.")
@@ -57,66 +52,58 @@ const PostTranslationFormSchema = z
         "분야는 최대 2개까지만 선택 할 수 있어요.",
       ),
     description: z.string(),
-    translationFileFormat: z.string(),
-    translationFile: z.any().transform((files) => files[0]),
-    translationText: z.string(),
-    sample: z.string(),
-    endDateTime: z
-      .date()
+    source_files: z
+      .array(
+        z
+          .instanceof(File, {
+            message: "파일이 선택되지 않았어요.",
+          })
+          .refine(
+            (file) => file.size <= 10 * 1024 * 1024,
+            "원문 파일은 최대 10MB까지 업로드 할 수 있어요.",
+          ),
+      )
+      .refine((files) => files.length > 0, "원문 파일을 선택해 주세요."),
+    deadline: z
+      .string()
       .refine(
         (value) => dayjs().isBefore(value),
         "현재보다 이후 시간을 지정해 주세요.",
       ),
-    desiredFeeValue: z
+    fee_unit: z.enum(MoneyUnit).describe("화폐 단위를 다시 확인해주세요."),
+    fee_value: z
       .number()
       .min(0, "입력된 번역료를 다시 확인해주세요.")
       .max(1000000000, "입력된 번역료를 다시 확인해주세요."),
+    sample: z.string(),
   })
   .refine(
-    ({ sourceLanguage, targetLanguage }) => sourceLanguage !== targetLanguage,
+    ({ source_language, target_language }) =>
+      source_language !== target_language,
     {
       message: "원문과 번역문의 언어를 다르게 선택해 주세요.",
-      path: ["targetLanguage"],
-    },
-  )
-  .refine(
-    ({ translationFileFormat, translationFile }) => {
-      if (translationFileFormat === "file") return !!translationFile;
-      return true;
-    },
-    {
-      message: "원문 파일을 선택해 주세요.",
-      path: ["translationFile"],
-    },
-  )
-  .refine(
-    ({ translationFileFormat, translationText }) => {
-      if (translationFileFormat === "text") return !!translationText;
-      return true;
-    },
-    {
-      message: "원문을 입력해 주세요.",
-      path: ["translationText"],
+      path: ["target_language"],
     },
   );
 
-type PostTranslationFormType = z.infer<typeof PostTranslationFormSchema>;
+export type PostTranslationFormType = z.infer<typeof PostTranslationFormSchema>;
 
 const PostTranslationFormDefaultValue = {
   title: "",
-  sourceLanguage: "ko-KR" as const,
-  targetLanguage: "en-US" as const,
+  source_language: "ko-KR" as const,
+  target_language: "en-US" as const,
   categories: [],
   description: "",
-  translationFileFormat: "file",
-  translationFile: "",
-  translationText: "",
+  source_files: [],
+  deadline: dayjs().toISOString(),
+  fee_unit: "KRW" as const,
+  fee_value: 0,
   sample: "",
-  endDateTime: dayjs().toDate(),
-  desiredFeeValue: 0,
 };
 
 export default function Index() {
+  const router = useRouter();
+
   const languageOptions = useMemo<
     { label: string; value: (typeof Language)[number] }[]
   >(
@@ -128,8 +115,6 @@ export default function Index() {
     [],
   );
 
-  const router = useRouter();
-
   const methods = useForm<PostTranslationFormType>({
     resolver: zodResolver(PostTranslationFormSchema),
     defaultValues: PostTranslationFormDefaultValue,
@@ -138,72 +123,46 @@ export default function Index() {
 
   const {
     control,
-    watch,
     handleSubmit,
     trigger,
     formState: { errors, isSubmitting },
   } = methods;
 
-  const translationFileFormat = watch("translationFileFormat");
-
-  const { mutateAsync: mutatePostTranslationFile } = useMutation({
-    mutationFn: postTranslationFile,
-  });
-
-  const { mutateAsync: mutatePostTranslation } = useMutation({
+  const { mutate: mutatePostTranslation } = useMutation({
     mutationFn: postTranslation,
     onSuccess: () => {
       router.push("/translation/create/done");
     },
   });
 
-  const { mutateAsync } = useMutation({ mutationFn: postFile });
+  const { mutateAsync: mutatePostFile } = useMutation({
+    mutationFn: postFile,
+  });
 
-  const handleClickCreate: SubmitHandler<PostTranslationFormType> = async ({
-    title,
-    sourceLanguage,
-    targetLanguage,
-    categories,
-    description,
-    translationFile,
-    translationText,
-    endDateTime,
-    desiredFeeValue,
-    sample,
-  }) => {
-    const translationData =
-      translationFileFormat === "file" ? translationFile : translationText;
-    const fileUploadResponse = await mutatePostTranslationFile({
-      content: translationData,
+  const handlSubmitSuccess: SubmitHandler<PostTranslationFormType> = async (
+    input,
+  ) => {
+    const filesInfo = await Promise.all(
+      input.source_files.map((file) => mutatePostFile({ content: file })),
+    );
+    await mutatePostTranslation({
+      ...input,
+      source_files: filesInfo.map((file) => ({
+        file_id: file.file_id,
+        name: file.name,
+        extension: file.extension as (typeof FileType)[number],
+      })),
     });
-    const fileId = fileUploadResponse.file_id;
-    if (sourceLanguage && targetLanguage) {
-      await mutatePostTranslation({
-        title,
-        sourceLanguage,
-        targetLanguage,
-        categories,
-        description,
-        fileId,
-        endDateTime: endDateTime.toUTCString(),
-        desiredFeeValue,
-        desiredFeeUnit: "KRW",
-        sample,
-      });
-    }
   };
 
-  const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      await mutateAsync({ content: file });
-      // const res = await mutateAsync({ content: file });
-      // setValue(`educations.${index}.file`, res, { shouldValidate: true });
-    }
+  const handleSubmitError: SubmitErrorHandler<PostTranslationFormType> = async (
+    error,
+  ) => {
+    console.log(error);
   };
 
   return (
-    <form onSubmit={handleSubmit(handleClickCreate)}>
+    <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>
       <FormProvider {...methods}>
         <Stack w="full" h="full">
           <PageHeader>
@@ -246,7 +205,7 @@ export default function Index() {
             </LabelSection>
             <Group>
               <Controller
-                name="sourceLanguage"
+                name="source_language"
                 control={control}
                 render={({ field: { onChange, ...f } }) => (
                   <SelectBox
@@ -255,7 +214,7 @@ export default function Index() {
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as (typeof Language)[0]);
-                      trigger(`sourceLanguage`);
+                      trigger(`source_language`);
                     }}
                     allowDeselect={false}
                     checkIconPosition="right"
@@ -266,7 +225,7 @@ export default function Index() {
                 <FaArrowRight />
               </div>
               <Controller
-                name="targetLanguage"
+                name="target_language"
                 control={control}
                 render={({ field: { onChange, ...f } }) => (
                   <SelectBox
@@ -275,7 +234,7 @@ export default function Index() {
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as (typeof Language)[0]);
-                      trigger(`sourceLanguage`);
+                      trigger(`target_language`);
                     }}
                     allowDeselect={false}
                     checkIconPosition="right"
@@ -284,7 +243,8 @@ export default function Index() {
               />
             </Group>
             <ErrorText>
-              {errors.sourceLanguage?.message ?? errors.targetLanguage?.message}
+              {errors.source_language?.message ??
+                errors.target_language?.message}
             </ErrorText>
           </InputSection>
 
@@ -314,16 +274,30 @@ export default function Index() {
             <LabelSection>
               <Label>원문</Label>
             </LabelSection>
-            <ControllerSection>
-              <FileInput
-                placeholder="원문 파일 (10MB, PDF)"
-                onChange={(e) => handleChangeFile(e)}
-                // text={`${watch(`educations.${index}.file.name`)}`}
-              />
-              {/* <ErrorText>
-                {errors?.educations?.[index]?.file?.name?.message}
-              </ErrorText> */}
-            </ControllerSection>
+            <Controller
+              name="source_files"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <ControllerSection>
+                  <FileInput
+                    placeholder="원문 파일 (10MB, PDF)"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        onChange([file]);
+                        e.target.value = "";
+                      }
+                    }}
+                    onRemove={() => onChange([])}
+                    text={value?.[0]?.name}
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </ControllerSection>
+              )}
+            />
           </InputSection>
 
           <InputSection>
@@ -331,25 +305,31 @@ export default function Index() {
               <Label>마감 기한</Label>
             </LabelSection>
             <Controller
-              name="endDateTime"
+              name="deadline"
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <DateTimePicker
-                  valueFormat="YYYY년 MM월 DD일 HH시 mm분"
-                  leftSection={<FaRegCalendar />}
-                  value={dayjs(value).toDate()}
-                  onChange={(dateValue) =>
-                    dateValue
-                      ? onChange(dayjs(dateValue).toISOString())
-                      : onChange(null)
-                  }
-                  classNames={{
-                    input: "focus:border-primary",
-                    // placeholder: "text-neutral-400",
-                    day: "data-[selected=true]:bg-primary",
-                    timeInput: "focus:border-primary",
-                  }}
-                />
+              render={({
+                field: { value, onChange },
+                fieldState: { error },
+              }) => (
+                <ControllerSection>
+                  <DateTimePicker
+                    valueFormat="YYYY년 MM월 DD일 HH시 mm분"
+                    leftSection={<FaRegCalendar />}
+                    value={dayjs(value).toDate()}
+                    onChange={(dateValue) =>
+                      dateValue
+                        ? onChange(dayjs(dateValue).toISOString())
+                        : onChange(null)
+                    }
+                    classNames={{
+                      input: "focus:border-primary",
+                      // placeholder: "text-neutral-400",
+                      day: "data-[selected=true]:bg-primary",
+                      timeInput: "focus:border-primary",
+                    }}
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </ControllerSection>
               )}
             />
           </InputSection>
@@ -359,7 +339,7 @@ export default function Index() {
               <Label>희망 번역료</Label>
             </LabelSection>
             <Controller
-              name="desiredFeeValue"
+              name="fee_value"
               control={control}
               render={({
                 field: { onChange, ...field },

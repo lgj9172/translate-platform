@@ -88,11 +88,9 @@ export default function Educations() {
     const file = e.target.files?.[0];
     if (file) {
       const res = await mutateAsync({ content: file });
-      setValue(
-        `educations.${index}.file`,
-        { ...res, id: Number(res.id) },
-        { shouldValidate: true },
-      );
+      setValue(`educations.${index}.file_id`, res.file_id, {
+        shouldValidate: true,
+      });
     }
   };
 
@@ -163,7 +161,7 @@ export default function Educations() {
           <ControllerSection>
             <Controller
               control={control}
-              name={`educations.${index}.status`}
+              name={`educations.${index}.graduation_status`}
               render={({ field: { value, onChange, ...f } }) => (
                 <Radio.Group {...f} value={value} onChange={onChange}>
                   <Group>
@@ -179,7 +177,7 @@ export default function Educations() {
               )}
             />
             <ErrorText>
-              {errors?.educations?.[index]?.status?.message}
+              {errors?.educations?.[index]?.graduation_status?.message}
             </ErrorText>
           </ControllerSection>
           <ControllerSection>
@@ -224,10 +222,10 @@ export default function Educations() {
             <FileInput
               placeholder="졸업/수료 증명서 (10MB, PDF)"
               onChange={(e) => handleChangeFile(index, e)}
-              text={`${watch(`educations.${index}.file.name`)}`}
+              text={`${watch(`educations.${index}.file_id`)}`}
             />
             <ErrorText>
-              {errors?.educations?.[index]?.file?.name?.message}
+              {errors?.educations?.[index]?.file_id?.message}
             </ErrorText>
           </ControllerSection>
         </Card>

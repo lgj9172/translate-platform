@@ -152,7 +152,11 @@ export default function Page({ params: { translationId } }: Props) {
               <div key={source_file_id}>
                 <button
                   type="button"
-                  onClick={() => handleClickDownload(file.url, file.name)}
+                  onClick={() => {
+                    if (file.url) {
+                      handleClickDownload(file.url, file.name);
+                    }
+                  }}
                 >
                   <span>{file.name}</span>
                 </button>

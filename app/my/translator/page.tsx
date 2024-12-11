@@ -27,7 +27,7 @@ export default function Page() {
   });
 
   const handleSubmitSuccess = () => {
-    alert("성공");
+    // alert("성공");
   };
 
   return (

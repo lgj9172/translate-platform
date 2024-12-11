@@ -148,10 +148,10 @@ export default function Certifications() {
             <FileInput
               placeholder="자격증 사본 추가 (10MB, PDF)"
               onChange={(e) => handleChangeFile(index, e)}
-              text={`${watch(`certifications.${index}.file.name`)}`}
+              text={`${watch(`certifications.${index}.file_id`)}`}
             />
             <ErrorText>
-              {errors?.certifications?.[index]?.file?.name?.message}
+              {errors?.certifications?.[index]?.file_id?.message}
             </ErrorText>
           </div>
         </Card>

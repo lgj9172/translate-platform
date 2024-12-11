@@ -2,15 +2,14 @@ import { objectToFormData } from "@/utils/converter/form";
 import { ClientWithAuth, Response } from "./clients";
 
 export interface FileInfo {
-  id: string;
+  file_id: string;
   name: string;
   extension: string;
-  created_at: string;
-  updated_at: string;
+  url: string;
 }
 
 interface PostFileRequest {
-  content: File | null;
+  content: File;
 }
 
 export const postFile = async (input: PostFileRequest) => {

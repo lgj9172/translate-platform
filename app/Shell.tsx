@@ -117,6 +117,7 @@ export default function Shell({ children }: Props) {
                 size="100%"
               >
                 <div
+                  // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={{
                     __html:
                       '<iframe src="/assets/html/terms_of_use_230102.html" width="100%" height="500px"/>',
@@ -131,6 +132,7 @@ export default function Shell({ children }: Props) {
                 size="100%"
               >
                 <div
+                  // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={{
                     __html:
                       '<iframe src="/assets/html/terms_of_use_230102.html#_msoanchor_2" width="100%" height="500px"/>',

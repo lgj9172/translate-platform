@@ -1,9 +1,8 @@
 "use client";
 
-import { postFile } from "@/apis/files";
+import { FileType, postFile } from "@/apis/files";
 import {
   Category,
-  FileType,
   Language,
   MoneyUnit,
   postTranslation,

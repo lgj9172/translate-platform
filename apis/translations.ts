@@ -1,4 +1,7 @@
 import { ClientWithAuth, Response } from "./clients";
+import { FileInfo } from "./files";
+import { Translator } from "./translator";
+import { User } from "./user";
 
 export const Category = [
   "IT",
@@ -27,8 +30,6 @@ export const Language = [
 
 export const MoneyUnit = ["KRW", "USD"] as const;
 
-export const FileType = ["PPT", "WORD", "TEXT"] as const;
-
 export const QuantityUnit = ["CHAR", "WORD"] as const;
 
 export interface SourceFileInfo {
@@ -39,11 +40,9 @@ export interface SourceFileInfo {
   file: FileInfo;
 }
 
-export interface FileInfo {
-  file_id: string;
-  name: string;
-  extension: (typeof FileType)[number];
-  url?: string;
+export interface TargetFileInfo {
+  target_file_id: string;
+  file: FileInfo;
 }
 
 export const TranslationStatus = [
@@ -63,13 +62,15 @@ export interface Translation {
   categories: (typeof Category)[number][];
   description: string;
   source_files: SourceFileInfo[];
-  target_files: SourceFileInfo[];
+  target_files: TargetFileInfo[];
   deadline: string;
   fee_unit: string;
   fee_value: number;
   sample: string;
   status: (typeof TranslationStatus)[number];
   is_canceled: boolean;
+  user: User;
+  translator: Translator;
 }
 export const getTranslations = async () => {
   const response =

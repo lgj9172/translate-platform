@@ -69,7 +69,7 @@ export default function Page({ params: { noticeId } }: Props) {
         </div>
       </Card>
 
-      <div className="min-h-[320px] text-[14px]">
+      <div className="min-h-[320px]">
         {notice.description.split("\n").map((line, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <p key={index}>{line}</p>

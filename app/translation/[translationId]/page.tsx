@@ -26,6 +26,7 @@ import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
+import { useFileDownload } from "@/hooks/useFileDownload";
 import SendQuote from "./_component/SendQuote";
 import SelectQuote from "./_component/SelectQuote";
 import StartTranslation from "./_component/StartTranslation";
@@ -45,14 +46,7 @@ export default function Page({ params: { translationId } }: Props) {
     queryFn: () => getTranslation({ translationId }),
   });
 
-  const handleClickDownload = async (url: string, fileName: string) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  const { downloadFile } = useFileDownload();
 
   if (isLoading) {
     return (
@@ -152,9 +146,10 @@ export default function Page({ params: { translationId } }: Props) {
               <div key={source_file_id}>
                 <button
                   type="button"
+                  className="text-[#3B82F6] font-bold"
                   onClick={() => {
                     if (file.url) {
-                      handleClickDownload(file.url, file.name);
+                      downloadFile(file.url, file.name);
                     }
                   }}
                 >

@@ -146,9 +146,11 @@ export default function SelectQuote({ translation }: Props) {
               <div className="flex gap-[8px]">
                 <Avatar src="avatar.png" />
                 <div>
-                  <div className="text-[14px] text-[#4B4D4D]">{quote.name}</div>
+                  <div className="text-[14px] text-[#4B4D4D]">
+                    {quote.translator.translator_id}
+                  </div>
                   <div className="text-[14px] text-[#8B8C8D]">
-                    경력 {quote.experience}년
+                    경력 {quote.translator.experience}년
                   </div>
                 </div>
               </div>

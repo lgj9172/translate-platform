@@ -1,18 +1,15 @@
 import { ClientWithAuth, Response } from "./clients";
-import { TranslationStatus } from "./translations";
+import { Translator } from "./translator";
 
 export interface TranslationQuote {
   quotation_id: string;
   translation_fee: number;
   detail: string;
-  status: (typeof TranslationStatus)[number];
+  is_deleted: boolean;
+  is_selected: boolean;
+  is_canceled: boolean;
   translation_id: string;
-  translator_id: string;
-  name: string;
-  experience: number;
-  recent_translations: number;
-  created_at: string;
-  updated_at: string;
+  translator: Translator;
 }
 
 interface PostTranslationQuote {

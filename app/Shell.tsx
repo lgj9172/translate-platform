@@ -66,7 +66,7 @@ export default function Shell({ children }: Props) {
                 <Menu.Item component={Link} href="/cs/faq">
                   자주하는 질문(FAQ)
                 </Menu.Item>
-                <Menu.Item component={Link} href="/cs/contact">
+                <Menu.Item component={Link} href="/cs/ask">
                   1:1 문의
                 </Menu.Item>
 

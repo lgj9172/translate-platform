@@ -62,7 +62,7 @@ export default function Page() {
         </Card>
       </Link>
 
-      <Link className="hover:cursor-pointer" href="/cs/contact">
+      <Link className="hover:cursor-pointer" href="/cs/ask">
         <Card>
           <div className="flex justify-between items-center">
             <div>1:1 문의</div>

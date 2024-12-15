@@ -96,7 +96,7 @@ export default function Index() {
     );
     await mutatePostCSAsk({
       ...input,
-      files: filesInfo.map((file) => file.file_id),
+      files: filesInfo.map((file) => ({ file_id: file.file_id })),
     });
   };
 

@@ -1,5 +1,5 @@
 import { ClientWithAuth, ClientWithoutAuth, Response } from "./clients";
-import { FileInfo } from "./files";
+import { FileId, FileInfo } from "./files";
 
 export interface Notice {
   notice_id: string;
@@ -53,6 +53,8 @@ export interface CSAsk {
   content: string;
   files: FileInfo[];
   status: string; // TODO: enum 정의 필요
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CSAnswer {
@@ -66,7 +68,7 @@ export interface CSAnswer {
 interface PostCSAskRequest {
   category: string;
   content: string;
-  files: string[];
+  files: FileId[];
 }
 
 export const postCSAsk = async (payload: PostCSAskRequest) => {

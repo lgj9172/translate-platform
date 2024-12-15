@@ -18,8 +18,7 @@ export default function AskCard({ ask }: Props) {
         </div>
         {/* 날짜 */}
         <div className="text-[14px] text-[#8B8C8D]">
-          {/* TODO: 날짜 추가 */}
-          {dayjs().format("YYYY.MM.DD")}
+          {dayjs(ask.created_at).format("YYYY.MM.DD")}
         </div>
       </div>
     </Card>

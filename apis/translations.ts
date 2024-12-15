@@ -1,5 +1,5 @@
 import { ClientWithAuth, Response } from "./clients";
-import { FileInfo } from "./files";
+import { FileId, FileInfo } from "./files";
 import { Translator } from "./translator";
 import { User } from "./user";
 
@@ -95,7 +95,7 @@ interface PostTranslationRequest {
   target_language: (typeof Language)[number];
   categories: (typeof Category)[number][];
   description: string;
-  source_files: FileInfo[];
+  source_files: FileId[];
   deadline: string;
   fee_unit: (typeof MoneyUnit)[number];
   fee_value: number;

@@ -62,11 +62,6 @@ export default function Page({ params: { askId } }: Props) {
           >
             <FaChevronLeft />
           </ActionIcon>
-          {/* {ask.category && (
-            <span className="px-[8px] py-[4px] bg-primary rounded-[8px] text-[12px] font-bold text-white">
-              {ask.category}
-            </span>
-          )} */}
           <PageTitle>{ask.category}</PageTitle>
         </Group>
       </PageHeader>
@@ -77,8 +72,7 @@ export default function Page({ params: { askId } }: Props) {
           <div>
             <div className="text-[14px] text-[#4B4D4D]">{user?.nickname}</div>
             <div className="text-[14px] text-[#8B8C8D]">
-              {/* TODO: 날짜 정보 추가 필요 */}
-              {dayjs().format("YYYY.MM.DD")}
+              {dayjs(ask.created_at).format("YYYY.MM.DD")}
             </div>
           </div>
         </div>
@@ -104,13 +98,6 @@ export default function Page({ params: { askId } }: Props) {
         </LabelSection>
         <Text>{ask.category}</Text>
       </InputSection>
-
-      {/* <InputSection>
-        <LabelSection>
-          <Label>이메일</Label>
-        </LabelSection>
-        <Text>{ask.email}</Text>
-      </InputSection> */}
 
       <InputSection>
         <LabelSection>

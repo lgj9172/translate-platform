@@ -3,11 +3,17 @@ import { ClientWithAuth, Response } from "./clients";
 
 export const FileType = ["PPT", "WORD", "TEXT"] as const;
 
+export interface FileId {
+  file_id: string;
+}
+
 export interface FileInfo {
   file_id: string;
   name: string;
   extension: (typeof FileType)[number];
   url?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface PostFileRequest {

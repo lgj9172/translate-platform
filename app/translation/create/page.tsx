@@ -1,6 +1,6 @@
 "use client";
 
-import { FileType, postFile } from "@/apis/files";
+import { postFile } from "@/apis/files";
 import {
   Category,
   Language,
@@ -148,8 +148,6 @@ export default function Index() {
       ...input,
       source_files: filesInfo.map((file) => ({
         file_id: file.file_id,
-        name: file.name,
-        extension: file.extension as (typeof FileType)[number],
       })),
     });
   };

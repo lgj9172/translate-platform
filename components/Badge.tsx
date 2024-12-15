@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import Typography from "./Typography";
 
 interface BadgeProps {
-  color: "black" | "blue" | "red";
+  color: "primary" | "black" | "blue" | "red";
   children: ReactNode;
 }
 export default function Badge({ color, children }: BadgeProps) {
@@ -12,6 +12,7 @@ export default function Badge({ color, children }: BadgeProps) {
       className={classNames(
         "h-[26px] px-[12px] py-[4px] flex justify-center items-center rounded-[16px] text-nowrap",
         {
+          "bg-[#FFEAD0] text-primary": color === "primary",
           "bg-[#F0F0F0] text-[#000000]": color === "black",
           "bg-[#E7EFFF] text-[#2563EB]": color === "blue",
           "bg-[#FFE8E8] text-[#FF3232]": color === "red",

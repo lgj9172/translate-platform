@@ -25,11 +25,6 @@ export default function Page() {
       queryFn: () => getTranslationsResponse(),
     });
 
-  // const { data: translator, isLoading: isLoadingTranslator } = useQuery({
-  //   queryKey: ["translator"],
-  //   queryFn: () => getTranslationsResponse(),
-  // });
-
   return (
     <Stack>
       <PageHeader>
@@ -56,56 +51,85 @@ export default function Page() {
         </div>
       </Card>
 
-      <Link className="hover:cursor-pointer" href="/my/translation/request">
+      <Link href="/my/translation/request">
         <Card>
-          <div className="flex justify-between items-center">
-            <div>보낸 번역 요청</div>
-            {isLoadingTranslationRequest ? (
-              <Loader color="orange" type="bars" size="sm" />
-            ) : (
-              <div className="text-[#8B8C8D] font-bold">
-                <span className="text-primary">
-                  {translationRequest?.length}
-                </span>{" "}
-                건
-              </div>
-            )}
+          <div className="flex justify-between items-center py-2">
+            <div className="flex flex-col">
+              <span className="font-medium text-gray-800">보낸 번역 요청</span>
+              <span className="text-sm text-gray-500">
+                내가 요청한 번역 현황을 확인하세요
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isLoadingTranslationRequest ? (
+                <Loader color="orange" type="bars" size="sm" />
+              ) : (
+                <div className="text-gray-600 font-medium">
+                  <span className="text-orange-500">
+                    {translationRequest?.length}
+                  </span>{" "}
+                  건
+                </div>
+              )}
+              <FaChevronRight className="text-gray-400" />
+            </div>
           </div>
         </Card>
       </Link>
 
-      <Link className="hover:cursor-pointer" href="/my/translation/response">
+      <Link href="/my/translation/response">
         <Card>
-          <div className="flex justify-between items-center">
-            <div>받은 번역 요청</div>
-            {isLoadingTranslationResponse ? (
-              <Loader color="orange" type="bars" size="sm" />
-            ) : (
-              <div className="text-[#8B8C8D] font-bold">
-                <span className="text-primary">
-                  {translationResponse?.length}
-                </span>{" "}
-                건
-              </div>
-            )}
+          <div className="flex justify-between items-center py-2">
+            <div className="flex flex-col">
+              <span className="font-medium text-gray-800">받은 번역 요청</span>
+              <span className="text-sm text-gray-500">
+                나에게 요청된 번역을 확인하세요
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isLoadingTranslationResponse ? (
+                <Loader color="orange" type="bars" size="sm" />
+              ) : (
+                <div className="text-gray-600 font-medium">
+                  <span className="text-orange-500">
+                    {translationResponse?.length}
+                  </span>{" "}
+                  건
+                </div>
+              )}
+              <FaChevronRight className="text-gray-400" />
+            </div>
           </div>
         </Card>
       </Link>
 
-      <Link className="hover:cursor-pointer" href="/my/translator">
+      <Link href="/my/translator">
         <Card>
-          <div className="flex justify-between items-center">
-            <div>번역사 등록</div>
-            <div className="text-[#8B8C8D] font-bold">등록 필요</div>
+          <div className="flex justify-between items-center py-2">
+            <div className="flex flex-col">
+              <span className="font-medium text-gray-800">번역사 등록</span>
+              <span className="text-sm text-gray-500">
+                번역사로 활동하고 싶다면 등록해주세요
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="text-gray-600 font-medium">등록 필요</div>
+              <FaChevronRight className="text-gray-400" />
+            </div>
           </div>
         </Card>
       </Link>
 
-      <Link className="hover:cursor-pointer" href="/my/withdraw">
+      <Link href="/my/withdraw">
         <Card>
-          <div className="flex justify-between items-center">
-            <div>회원 탈퇴</div>
-            <FaChevronRight color="#8B8C8D" />
+          <div className="flex justify-between items-center py-2">
+            <div className="flex flex-col">
+              <span className="font-medium text-gray-800">회원 탈퇴</span>
+              <span className="text-sm text-gray-500">
+                회원 탈퇴를 진행합니다
+              </span>
+            </div>
+            <FaChevronRight className="text-gray-400" />
           </div>
         </Card>
       </Link>

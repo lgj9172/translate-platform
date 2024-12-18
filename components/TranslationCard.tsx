@@ -8,90 +8,84 @@ import { NumericFormat } from "react-number-format";
 import Badge from "./Badge";
 import Card from "./Card";
 
+const TRANSLATION_STATUS = {
+  QUOTE_SENT: { label: "견적 요청", step: 1 },
+  TRANSLATOR_SELECTED: { label: "번역사 선택 완료", step: 2 },
+  TRANSLATION_BEGAN: { label: "번역 시작", step: 3 },
+  TRANSLATION_SUBMITTED: { label: "번역 제출 완료", step: 4 },
+  TRANSLATION_EDIT_REQUESTED: { label: "번역 수정 요청", step: 5 },
+  TRANSLATION_RESOLVED: { label: "번역 확정", step: 6 },
+} as const;
+
+type TranslationStatus = keyof typeof TRANSLATION_STATUS;
+
 interface TranslationCardProps {
   translation: Translation;
   showStatus?: boolean;
 }
 
-const STEPS: (keyof typeof STATUS)[] = [
-  "QUOTE_SENT",
-  "TRANSLATOR_SELECTED",
-  "TRANSLATION_BEGAN",
-  "TRANSLATION_SUBMITTED",
-  "TRANSLATION_EDIT_REQUESTED",
-  "TRANSLATION_RESOLVED",
-];
+function StatusBadge({
+  status,
+  isCanceled,
+}: {
+  status: TranslationStatus;
+  isCanceled: boolean;
+}) {
+  if (isCanceled) {
+    return <div className="text-[14px] font-bold text-[#8B8C8D]">취소됨</div>;
+  }
 
-// const STATUS = {
-//   QUOTE_SENT: {
-//     label: "견적 요청",
-//     progress: 1,
-//     progressLabel: "번역 전",
-//   },
-//   TRANSLATION_CANCELLED: {
-//     label: "번역 취소",
-//     progress: 1,
-//     progressLabel: "번역 전",
-//   },
-//   TRANSLATOR_SELECTED: {
-//     label: "번역사 선택 완료",
-//     progress: 1,
-//     progressLabel: "번역 전",
-//   },
-//   TRANSLATION_BEGAN: {
-//     label: "번역 시작",
-//     progress: 2,
-//     progressLabel: "번역 중",
-//   },
-//   TRANSLATION_SUBMITTED: {
-//     label: "번역 제출 완료",
-//     progress: 2,
-//     progressLabel: "번역 중",
-//   },
-//   TRANSLATION_EDIT_REQUESTED: {
-//     label: "번역 수정 요청",
-//     progress: 2,
-//     progressLabel: "번역 중",
-//   },
-//   TRANSLATION_RESOLVED: {
-//     label: "번역 확정",
-//     progress: 3,
-//     progressLabel: "번역 완료",
-//   },
-// };
+  const { label, step } = TRANSLATION_STATUS[status];
 
-const STATUS = {
-  QUOTE_SENT: {
-    label: "견적 요청",
-    progress: 0,
-  },
-  TRANSLATION_CANCELLED: {
-    label: "번역 취소",
-    progress: 1,
-  },
-  TRANSLATOR_SELECTED: {
-    label: "번역사 선택 완료",
-    progress: 1,
-  },
-  TRANSLATION_BEGAN: {
-    label: "번역 시작",
-    progress: 2,
-  },
-  TRANSLATION_SUBMITTED: {
-    label: "번역 제출 완료",
-    progress: 3,
-  },
-  TRANSLATION_EDIT_REQUESTED: {
-    label: "번역 수정 요청",
-    progress: 4,
-  },
-  TRANSLATION_RESOLVED: {
-    label: "번역 확정",
-    progress: 5,
-  },
-};
+  return (
+    <div className="flex items-center gap-2">
+      <div className="text-[14px] font-bold text-[#8B8C8D]">{label}</div>
+      <div className="flex gap-1">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 
+              ${i < step ? "bg-primary" : "bg-[#E5E7EA]"}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
-function TranslationCard({
+function TranslationInfo({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex flex-col gap-[8px]">
+      <div className="text-[16px] font-bold truncate">{title}</div>
+      <div className="text-[#7E7F80] text-[14px] truncate">{description}</div>
+    </div>
+  );
+}
+
+function TranslationFee({ value, unit }: { value: number; unit: string }) {
+  const unitLabel = { KRW: "원", USD: "달러" }[unit] || "";
+
+  return (
+    <div className="flex text-primary font-bold text-[16px]">
+      <NumericFormat
+        displayType="text"
+        value={value}
+        thousandsGroupStyle="thousand"
+        thousandSeparator=","
+      />
+      <span>{unitLabel}</span>
+    </div>
+  );
+}
+
+export default function TranslationCard({
   translation: {
     categories,
     source_language,
@@ -106,12 +100,9 @@ function TranslationCard({
   },
   showStatus = false,
 }: TranslationCardProps) {
-  // const { progress, label, progressLabel } = STATUS[status];
-  const { progress, label } = STATUS[status];
-
   return (
     <Card>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-[16px]">
         <div className="flex justify-between items-center">
           <div className="flex gap-1">
             {categories.map((category) => (
@@ -124,84 +115,15 @@ function TranslationCard({
             </Badge>
             <Badge color="red">{getDday(deadline)}</Badge>
           </div>
-          <div className="flex text-primary font-bold text-[16px]">
-            <span>
-              <NumericFormat
-                displayType="text"
-                value={fee_value}
-                thousandsGroupStyle="thousand"
-                thousandSeparator=","
-              />
-            </span>
-            <span>
-              <span>
-                {{
-                  KRW: "원",
-                  USD: "달러",
-                }[fee_unit] || ""}
-              </span>
-            </span>
-          </div>
         </div>
-        <div>
-          <div className="mb-[4px] text-[16px] font-bold">{title}</div>
-          <div className="text-[#7E7F80] text-[14px]">{description}</div>
+        <TranslationInfo title={title} description={description} />
+        <div className="flex items-center justify-between">
+          <TranslationFee value={fee_value} unit={fee_unit} />
+          {showStatus && (
+            <StatusBadge status={status} isCanceled={is_canceled} />
+          )}
         </div>
-        {/* {showStatus && (
-          <div className="flex flex-col gap-1">
-            <div className="w-full h-1 rounded-full flex gap-[2px]">
-              {Array.from({ length: progress }, (_, i) => (
-                <div key={i} className="h-1 w-full rounded-full bg-primary" />
-              ))}
-              {Array.from({ length: 3 - progress }, (_, i) => (
-                <div key={i} className="h-1 w-full rounded-full bg-[#8B8C8D]" />
-              ))}
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[14px] font-bold text-primary">
-                {progressLabel}
-              </span>
-              <span className="text-[14px] font-bold text-[#7E7F80]">
-                {label}
-              </span>
-            </div>
-          </div>
-        )} */}
-        {showStatus && (
-          <div className="flex gap-[2px]">
-            {is_canceled && (
-              <div className="truncate text-center text-[14px] font-bold text-[#8B8C8D]">
-                {label}
-              </div>
-            )}
-            {!is_canceled &&
-              STEPS.map((step, i) => (
-                <div
-                  key={step}
-                  className={`w-1/6 rounded-full ${i !== progress && "opacity-30"}`}
-                >
-                  <div
-                    className={`h-1 rounded-full ${i <= progress ? "bg-primary" : "bg-[#8B8C8D]"}`}
-                  />
-                  <div
-                    className={`truncate text-center text-[14px] font-bold ${i <= progress ? "text-primary" : "text-[#8B8C8D]"}`}
-                  >
-                    {STATUS[step].label}
-                  </div>
-                </div>
-
-                // <div
-                //   key={step}
-                //   className={`w-1/6 p-1 rounded-md truncate text-center text-[14px] text-white ${i <= progress ? "bg-primary" : "bg-gray-300"}`}
-                // >
-                //   {STATUS[step].label}
-                // </div>
-              ))}
-          </div>
-        )}
       </div>
     </Card>
   );
 }
-
-export default TranslationCard;

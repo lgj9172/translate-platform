@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -106,7 +107,11 @@ export default function SubmitTranslation({ translation }: Props) {
         <div className="flex flex-col gap-2 mb-4">
           <div className="text-xl font-bold text-gray-800">번역 제출</div>
           <p className="text-sm text-gray-600">
-            번역 초안이 완료되었다면 제출해주세요.
+            번역 초안이 완료되었다면 제출해주세요. 번역은{" "}
+            {dayjs(translation.deadline)
+              .locale("ko")
+              .format("YYYY.MM.DD hh:mm")}
+            까지는 완료 되어야 합니다.
           </p>
         </div>
 

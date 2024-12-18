@@ -15,9 +15,7 @@ export default function WaitTranslationFinish({ translation }: Props) {
         <div className="text-xl font-bold text-gray-800">번역 진행중</div>
         <p className="text-sm text-gray-600">
           번역사가 번역을 진행중이에요. 번역이 완료되면 알려드릴게요. 번역은{" "}
-          {dayjs(translation.deadline)
-            .locale("ko")
-            .format("YYYY.MM.DD A hh:mm")}
+          {dayjs(translation.deadline).locale("ko").format("YYYY.MM.DD hh:mm")}
           까지는 완료 될 예정이에요.
         </p>
       </div>

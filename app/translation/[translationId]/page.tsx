@@ -28,6 +28,7 @@ import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
 import { useFileDownload } from "@/hooks/useFileDownload";
+import TranslationStatus from "@/components/TranslationStatus";
 import SendQuote from "./_component/SendQuote";
 import SelectQuote from "./_component/SelectQuote";
 import StartTranslation from "./_component/StartTranslation";
@@ -88,6 +89,7 @@ export default function Page({ params: { translationId } }: Props) {
             </Badge>
           ))}
         </Group>
+        <TranslationStatus translation={translation} />
       </Group>
 
       <Card>
@@ -115,7 +117,7 @@ export default function Page({ params: { translationId } }: Props) {
           <Text>
             {dayjs(translation.deadline)
               .locale("ko")
-              .format("YYYY.MM.DD A hh:mm")}
+              .format("YYYY.MM.DD hh:mm")}
           </Text>
         </InputSection>
 

@@ -104,7 +104,7 @@ export default function SubmitTranslation({ translation }: Props) {
     <form onSubmit={handleSubmit(handleSubmitValid)}>
       <Stack>
         <div className="text-lg font-bold">
-          번역사 님, 번역 초안이 완료되었다면 제출해주세요.
+          번역 초안이 완료되었다면 제출해주세요.
         </div>
 
         <InputSection>

@@ -1,4 +1,4 @@
-import { ClientWithAuth } from "./clients";
+import { ClientWithAuth, Response } from "./clients";
 
 export interface User {
   id: string;
@@ -16,6 +16,6 @@ export interface User {
 }
 
 export const getUser = async () => {
-  const response = await ClientWithAuth.get<User>("/users/me");
-  return response.data;
+  const response = await ClientWithAuth.get<Response<User>>("/users/me");
+  return response.data.data;
 };

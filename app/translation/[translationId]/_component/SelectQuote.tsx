@@ -18,6 +18,7 @@ import LabelSection from "@/components/LabelSection";
 import { Avatar, Center, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { NumericFormat } from "react-number-format";
 
 interface Props {
@@ -119,7 +120,7 @@ export default function SelectQuote({ translation }: Props) {
     return (
       <Stack>
         <div className="text-lg font-bold">
-          고객 님, 번역사가 견적을 보내면 알려드릴게요.
+          번역사가 견적을 보내면 알려드릴게요.
         </div>
         <div className="flex justify-end">
           <Button
@@ -136,25 +137,30 @@ export default function SelectQuote({ translation }: Props) {
   return (
     <Stack>
       <div className="text-lg font-bold">
-        고객 님, 번역을 진행할 번역사를 선택해주세요.
+        번역을 진행할 번역사를 선택해주세요.
       </div>
 
       {translationQuotes?.map((quote) => (
-        <Card>
+        <Card key={quote.quotation_id}>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div className="flex gap-[8px]">
                 <Avatar src="avatar.png" />
                 <div>
                   <div className="text-[14px] text-[#4B4D4D]">
-                    {quote.translator.translator_id}
+                    <Link
+                      href={`/translator/${quote.translator.translator_id}`}
+                      className="hover:underline"
+                    >
+                      {quote.translator.translator_id}
+                    </Link>
                   </div>
                   <div className="text-[14px] text-[#8B8C8D]">
                     경력 {quote.translator.experience}년
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end items-center">
                 <Button
                   size="sm"
                   variant="primary"

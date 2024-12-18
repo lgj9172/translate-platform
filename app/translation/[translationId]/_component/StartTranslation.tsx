@@ -58,7 +58,7 @@ export default function StartTranslation({ translation }: Props) {
   return (
     <Stack>
       <div className="text-lg font-bold">
-        번역사 님, 번역할 준비가 되었다면 번역 시작을 눌러주세요.
+        번역할 준비가 되었다면 번역 시작을 눌러주세요.
       </div>
 
       <div className="flex justify-end">

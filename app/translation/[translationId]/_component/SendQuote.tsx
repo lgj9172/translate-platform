@@ -151,7 +151,7 @@ export default function SendQuote({ translation }: Props) {
       <FormProvider {...methods}>
         <Stack>
           <div className="text-lg font-bold">
-            번역사 님, 이 번역 작업에 견적을 보내세요.
+            이 번역 작업에 견적을 보내세요.
           </div>
           <InputSection>
             <LabelSection>
@@ -217,7 +217,7 @@ export default function SendQuote({ translation }: Props) {
         {/* TODO: 견적을 보냈는지 여부에 따라 분기 */}
         <Stack>
           <div className="text-lg font-bold">
-            번역사 님, 이 번역 작업에 견적을 보냈어요.
+            이 번역 작업에 견적을 보냈어요.
           </div>
 
           <InputSection>

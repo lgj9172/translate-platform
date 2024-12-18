@@ -1,3 +1,5 @@
+import { ClientWithAuth, Response } from "./clients";
+
 export interface Education {
   name: string;
   major: string;
@@ -62,3 +64,10 @@ export interface Translator {
   experience: number;
   recent_translations: number;
 }
+
+export const getTranslator = async (translatorId: string) => {
+  const response = await ClientWithAuth.get<Response<Translator>>(
+    `/translators/${translatorId}`,
+  );
+  return response.data.data;
+};

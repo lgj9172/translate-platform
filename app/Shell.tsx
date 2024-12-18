@@ -62,7 +62,7 @@ export default function Shell({ children }: Props) {
               <button
                 type="button"
                 aria-label="사용자 메뉴"
-                className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary transition-all"
+                className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary focus:outline-none"
               >
                 <BsPersonFill className="w-5 h-5" />
               </button>
@@ -123,13 +123,35 @@ export default function Shell({ children }: Props) {
                     마이 페이지
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer">
-                  <LogIn className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                  로그인
+                <DropdownMenuItem
+                  asChild
+                  className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+                >
+                  <Link
+                    href="/signin"
+                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                  >
+                    <LogIn
+                      className="w-4 h-4 text-gray-400"
+                      strokeWidth={1.5}
+                    />
+                    로그인
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer">
-                  <LogOut className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                  로그아웃
+                <DropdownMenuItem
+                  asChild
+                  className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+                >
+                  <Link
+                    href="/signout"
+                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                  >
+                    <LogOut
+                      className="w-4 h-4 text-gray-400"
+                      strokeWidth={1.5}
+                    />
+                    로그아웃
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

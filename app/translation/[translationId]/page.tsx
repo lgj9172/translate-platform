@@ -15,6 +15,7 @@ import {
   ActionIcon,
   Avatar,
   Center,
+  Divider,
   Group,
   Loader,
   Stack,
@@ -211,6 +212,8 @@ export default function Page({ params: { translationId } }: Props) {
             <Payment translation={translation} />
           </>
         )}
+
+        <Divider />
 
         {/* 취소된 번역 */}
         {translation.is_canceled ? (

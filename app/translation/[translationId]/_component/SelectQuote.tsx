@@ -119,8 +119,11 @@ export default function SelectQuote({ translation }: Props) {
   if (translationQuotes.length === 0)
     return (
       <Stack>
-        <div className="text-lg font-bold">
-          번역사가 견적을 보내면 알려드릴게요.
+        <div className="flex flex-col gap-2 mb-4">
+          <div className="text-xl font-bold text-gray-800">번역사 대기중</div>
+          <p className="text-sm text-gray-600">
+            번역사들이 견적을 보내면 알려드릴게요.
+          </p>
         </div>
         <div className="flex justify-end">
           <Button
@@ -136,8 +139,11 @@ export default function SelectQuote({ translation }: Props) {
 
   return (
     <Stack>
-      <div className="text-lg font-bold">
-        번역을 진행할 번역사를 선택해주세요.
+      <div className="flex flex-col gap-2 mb-4">
+        <div className="text-xl font-bold text-gray-800">번역사 선택</div>
+        <p className="text-sm text-gray-600">
+          견적을 보낸 번역사 중에서 번역을 진행할 번역사를 선택해주세요.
+        </p>
       </div>
 
       {translationQuotes?.map((quote) => (

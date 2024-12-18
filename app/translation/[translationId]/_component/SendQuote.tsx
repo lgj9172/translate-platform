@@ -150,8 +150,12 @@ export default function SendQuote({ translation }: Props) {
     <form onSubmit={handleSubmit(handleClickCreateQuote)}>
       <FormProvider {...methods}>
         <Stack>
-          <div className="text-lg font-bold">
-            이 번역 작업에 견적을 보내세요.
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="text-xl font-bold text-gray-800">견적 보내기</div>
+            <p className="text-sm text-gray-600">
+              이 번역 작업을 진행하고 싶다면 희망 번역료를 참고해서 견적을
+              보내보세요.
+            </p>
           </div>
           <InputSection>
             <LabelSection>
@@ -216,8 +220,11 @@ export default function SendQuote({ translation }: Props) {
 
         {/* TODO: 견적을 보냈는지 여부에 따라 분기 */}
         <Stack>
-          <div className="text-lg font-bold">
-            이 번역 작업에 견적을 보냈어요.
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="text-xl font-bold text-gray-800">보낸 견적</div>
+            <p className="text-sm text-gray-600">
+              이 번역 작업에 보낸 견적 내용입니다.
+            </p>
           </div>
 
           <InputSection>

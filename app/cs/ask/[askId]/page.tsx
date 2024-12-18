@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
+import Badge from "@/components/Badge";
 import CSAnswer from "./_component/CSAnswer";
 
 interface Props {
@@ -62,7 +63,10 @@ export default function Page({ params: { askId } }: Props) {
           >
             <FaChevronLeft />
           </ActionIcon>
-          <PageTitle>{ask.category}</PageTitle>
+          <PageTitle>
+            <Badge>{ask.status}</Badge>
+            {ask.category}
+          </PageTitle>
         </Group>
       </PageHeader>
 
@@ -83,13 +87,6 @@ export default function Page({ params: { askId } }: Props) {
           <Label>문의 ID</Label>
         </LabelSection>
         <Text>{ask.counsel_id}</Text>
-      </InputSection>
-
-      <InputSection>
-        <LabelSection>
-          <Label>상태</Label>
-        </LabelSection>
-        <Text>{ask.status}</Text>
       </InputSection>
 
       <InputSection>

@@ -1,6 +1,7 @@
 "use client";
 
 import { getNotice } from "@/apis/cs";
+import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
@@ -48,12 +49,11 @@ export default function Page({ params: { noticeId } }: Props) {
           >
             <FaChevronLeft />
           </ActionIcon>
-          {notice.is_important && (
-            <span className="px-[8px] py-[4px] bg-primary rounded-[8px] text-[12px] font-bold text-white">
-              중요
-            </span>
-          )}
-          <PageTitle>{notice.title}</PageTitle>
+
+          <PageTitle>
+            {notice.is_important && <Badge>중요</Badge>}
+            {notice.title}
+          </PageTitle>
         </Group>
       </PageHeader>
 

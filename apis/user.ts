@@ -16,6 +16,6 @@ export interface User {
 }
 
 export const getUser = async () => {
-  const response = await ClientWithAuth.get<User>("/auth/me");
+  const response = await ClientWithAuth.get<User>("/users/me");
   return response.data;
 };

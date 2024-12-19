@@ -14,10 +14,11 @@ function Providers({ children }: React.PropsWithChildren) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 0,
-            gcTime: 0,
-            refetchOnMount: true,
-            refetchOnWindowFocus: true,
+            // staleTime: 0,
+            // gcTime: 0,
+            // refetchOnMount: true,
+            // refetchOnWindowFocus: true,
+            retry: 1,
           },
         },
       }),

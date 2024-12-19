@@ -5,7 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "next build",
-    "dev": "env-cmd -f .env.local next dev --turbo",
+    "dev": "env-cmd -f .env.local node server.js --turbo",
     "dev:postman": "env-cmd -f .env.postman next dev --turbo",
     "dev:development": "env-cmd -f .env.development next dev --turbo",
     "lint": "next lint",

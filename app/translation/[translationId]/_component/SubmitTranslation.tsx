@@ -107,7 +107,9 @@ export default function SubmitTranslation({ translation }: Props) {
         <div className="flex flex-col gap-2 mb-4">
           <div className="text-xl font-bold text-gray-800">번역 제출</div>
           <p className="text-sm text-gray-600">
-            번역 초안이 완료되었다면 제출해주세요. 번역은{" "}
+            번역 초안이 완료되었다면 제출해주세요.
+            <br />
+            번역은{" "}
             {dayjs(translation.deadline)
               .locale("ko")
               .format("YYYY.MM.DD hh:mm")}

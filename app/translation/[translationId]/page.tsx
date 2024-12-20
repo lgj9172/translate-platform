@@ -37,6 +37,8 @@ import Translator from "./_component/Translator";
 import Payment from "./_component/Payment";
 import WaitTranslationFinish from "./_component/WaitTranslationFinish";
 import SubmitTranslation from "./_component/SubmitTranslation";
+import ConfirmTranslation from "./_component/ConfirmTranslation";
+import WaitConfirm from "./_component/WaitConfirm";
 
 interface Props {
   params: { translationId: string };
@@ -256,36 +258,9 @@ export default function Page({ params: { translationId } }: Props) {
             {translation.status === "TRANSLATION_SUBMITTED" && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && (
-                  <Alert>
-                    번역이 완료되었습니다.
-                    <br />
-                    결과물을 확인하고 수정 요청 또는 확정 버튼을 눌러주세요.
-                    <br /> 최대 3번 수정 요청이 가능합니다.
-                  </Alert>
-                )}
+                {true && <ConfirmTranslation translation={translation} />}
                 {/* 내가 번역사인 경우 */}
-                {true && (
-                  <Alert>
-                    번역이 제출되었습니다.
-                    <br />
-                    번역 요청자의 수정 요청 또는 확정을 기다리는 중입니다.
-                  </Alert>
-                )}
-                <div className="flex justify-end gap-2">
-                  {/* 내가 작성자인 경우 수정 요청 버튼 */}
-                  {true && (
-                    <Button size="md" variant="secondary">
-                      수정 요청
-                    </Button>
-                  )}
-                  {/* 내가 작성자인 경우 확정 버튼 */}
-                  {true && (
-                    <Button size="md" variant="primary">
-                      확정
-                    </Button>
-                  )}
-                </div>
+                {true && <WaitConfirm translation={translation} />}
               </>
             )}
 

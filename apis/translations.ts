@@ -40,11 +40,6 @@ export interface SourceFileInfo {
   file: FileInfo;
 }
 
-export interface TargetFileInfo {
-  target_file_id: string;
-  file: FileInfo;
-}
-
 export const TranslationStatus = [
   "QUOTE_SENT",
   "TRANSLATOR_SELECTED",
@@ -62,7 +57,7 @@ export interface Translation {
   categories: (typeof Category)[number][];
   description: string;
   source_files: SourceFileInfo[];
-  target_files: TargetFileInfo[];
+  target_files: FileInfo[];
   deadline: string;
   fee_unit: string;
   fee_value: number;

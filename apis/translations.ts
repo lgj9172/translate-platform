@@ -162,3 +162,36 @@ export const getTranslationsResponse = async () => {
   );
   return response.data.data;
 };
+
+export interface Comment {
+  comment_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export const getTranslationComments = async ({
+  translationId,
+}: {
+  translationId: string;
+}) => {
+  const respose = await ClientWithAuth.get<Response<Comment[]>>(
+    `/translations/${translationId}/comments`,
+  );
+  return respose.data.data;
+};
+
+export const postTranslationComment = async ({
+  translationId,
+  content,
+}: {
+  translationId: string;
+  content: string;
+}) => {
+  const response = await ClientWithAuth.post<Response<Comment>>(
+    `/translations/${translationId}/comments`,
+    { content },
+  );
+  return response.data.data;
+};

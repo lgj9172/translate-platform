@@ -41,6 +41,7 @@ import WaitConfirm from "./_component/WaitConfirm";
 import WaitTranslationFinish from "./_component/WaitTranslationFinish";
 import WaitTranslationStart from "./_component/WaitTranslationStart";
 import WaitTranslationUpdate from "./_component/WaitTranslationUpdate";
+import Comments from "./_component/Comments";
 
 interface Props {
   params: { translationId: string };
@@ -217,6 +218,15 @@ export default function Page({ params: { translationId } }: Props) {
             <Translator translation={translation} />
             <Payment translation={translation} />
           </>
+        )}
+
+        {[
+          "TRANSLATION_BEGAN",
+          "TRANSLATION_SUBMITTED",
+          "TRANSLATION_EDIT_REQUESTED",
+          "TRANSLATION_RESOLVED",
+        ].includes(translation.status) && (
+          <Comments translation={translation} />
         )}
 
         <Divider />

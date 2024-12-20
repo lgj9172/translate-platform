@@ -103,7 +103,7 @@ export default function Page() {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="text-blue-600 font-medium">인증됨</div>
+                    <div className="text-green-600 font-medium">인증됨</div>
                     <FaChevronRight className="text-gray-400" />
                   </div>
                 </div>

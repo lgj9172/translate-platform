@@ -34,3 +34,10 @@ export const getLanguageLabel = (key: string) => language2label[key];
 
 export const getDday = (date: string) =>
   `D-${Math.max(0, dayjs(date).diff(dayjs(), "day"))}`;
+
+const askStatus2Label: KeyValueMap = {
+  PENDING: "답변중",
+  DONE: "답변완료",
+};
+
+export const getAskStatusLabel = (key: string) => askStatus2Label[key];

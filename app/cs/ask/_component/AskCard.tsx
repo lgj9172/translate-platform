@@ -1,6 +1,7 @@
 import { CSAsk } from "@/apis/cs";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
+import { getAskStatusLabel } from "@/utils/converter/label";
 import dayjs from "dayjs";
 
 interface Props {
@@ -13,7 +14,9 @@ export default function AskCard({ ask }: Props) {
       <div className="flex flex-col gap-2">
         {/* 태그 및 제목 */}
         <div className="flex gap-2 items-center">
-          {ask.status && <Badge color="primary">{ask.status}</Badge>}
+          {ask.status && (
+            <Badge color="primary">{getAskStatusLabel(ask.status)}</Badge>
+          )}
           <span className="text-[18px] font-bold">{ask.category}</span>
         </div>
         {/* 날짜 */}

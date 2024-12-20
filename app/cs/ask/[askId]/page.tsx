@@ -72,7 +72,7 @@ export default function Page({ params: { askId } }: Props) {
 
       <Card>
         <div className="flex gap-[8px]">
-          <Avatar src="avatar.png" />
+          <Avatar />
           <div>
             <div className="text-[14px] text-[#4B4D4D]">{user?.nickname}</div>
             <div className="text-[14px] text-[#8B8C8D]">

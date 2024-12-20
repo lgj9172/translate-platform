@@ -59,7 +59,7 @@ export default function Page({ params: { noticeId } }: Props) {
 
       <Card>
         <div className="flex gap-[8px]">
-          <Avatar src="avatar.png" />
+          <Avatar />
           <div>
             <div className="text-[14px] text-[#4B4D4D]">플루언스</div>
             <div className="text-[14px] text-[#8B8C8D]">

@@ -41,24 +41,24 @@ export default function Page() {
         </Group>
       </PageHeader>
 
-      <Card>
-        <div className="flex gap-[8px]">
-          <Avatar src="avatar.png" />
-          <div>
-            <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
-            <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
-          </div>
-        </div>
-      </Card>
-
       <div className="flex flex-col gap-16">
+        <Card>
+          <div className="flex gap-[8px]">
+            <Avatar />
+            <div>
+              <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
+              <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
+            </div>
+          </div>
+        </Card>
+
         <div className="flex flex-col gap-2">
           <div>
             <div className="text-xl font-bold text-gray-800">
               통번역사 서비스
             </div>
             <div className="text-sm text-gray-600">
-              통번역사 서비스를 제공하고 번역사 정보를 관리하세요.
+              진행중인 작업을 확인하고 통번역사 정보를 관리하세요.
             </div>
           </div>
 
@@ -169,6 +169,9 @@ export default function Page() {
         <div className="flex flex-col gap-2">
           <div>
             <div className="text-xl font-bold text-gray-800">통번역 서비스</div>
+            <div className="text-sm text-gray-600">
+              요청한 통번역 작업을 확인하세요.
+            </div>
           </div>
 
           <Link href="/my/translation/request">

@@ -20,7 +20,7 @@ export default function Translator({ translation }: Props) {
       <Card>
         <div className="flex flex-col gap-2">
           <div className="flex gap-[8px]">
-            <Avatar src="avatar.png" />
+            <Avatar />
             <div>
               <div className="text-[14px] text-[#4B4D4D]">번역사이름</div>
               <div className="text-[14px] text-[#8B8C8D]">경력 5년</div>

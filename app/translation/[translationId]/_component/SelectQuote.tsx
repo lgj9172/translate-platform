@@ -151,7 +151,7 @@ export default function SelectQuote({ translation }: Props) {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div className="flex gap-[8px]">
-                <Avatar src="avatar.png" />
+                <Avatar />
                 <div>
                   <div className="text-[14px] text-[#4B4D4D]">
                     <Link

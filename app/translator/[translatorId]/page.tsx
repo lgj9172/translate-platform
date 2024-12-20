@@ -58,7 +58,7 @@ export default function Page() {
       <div className="flex flex-col gap-[16px]">
         <Card>
           <div className="flex gap-[8px]">
-            <Avatar src="avatar.png" />
+            <Avatar />
             <div>
               <div className="text-[14px] text-[#4B4D4D]">
                 {translator?.user_id}

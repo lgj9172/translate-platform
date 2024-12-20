@@ -98,7 +98,7 @@ export default function Page({ params: { translationId } }: Props) {
 
       <Card>
         <div className="flex gap-[8px]">
-          <Avatar src="avatar.png" />
+          <Avatar />
           <div>
             <div className="text-[14px] text-[#4B4D4D]">작성자</div>
             <div className="text-[14px] text-[#8B8C8D]">작성일</div>

@@ -164,7 +164,9 @@ export default function Shell({ children }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* 왼쪽: 고객센터 섹션 */}
             <div>
-              <h3 className="text-lg font-bold text-gray-800">고객센터</h3>
+              <h3 className="text-lg font-bold text-gray-800">
+                플루언스 고객센터
+              </h3>
               <p className="mt-1 text-2xl font-bold text-orange-500">
                 070-8383-6353
               </p>

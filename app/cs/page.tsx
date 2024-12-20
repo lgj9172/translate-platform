@@ -38,7 +38,9 @@ export default function Page() {
 
         <div className="space-y-4">
           <div>
-            <h4 className="text-lg font-bold text-gray-800">고객센터</h4>
+            <h4 className="text-lg font-bold text-gray-800">
+              플루언스 고객센터
+            </h4>
             <p className="mt-1 text-2xl font-bold text-orange-500">
               070-8383-6353
             </p>
@@ -47,6 +49,10 @@ export default function Page() {
             <p className="grid grid-cols-[100px,1fr]">
               <span className="text-gray-500">운영시간</span>
               <span>09:00 - 18:00</span>
+            </p>
+            <p className="grid grid-cols-[100px,1fr]">
+              <span className="text-gray-500">점심시간</span>
+              <span>12:00 - 13:00</span>
             </p>
             <p className="grid grid-cols-[100px,1fr]">
               <span className="text-gray-500">휴무안내</span>

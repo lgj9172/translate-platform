@@ -3,13 +3,14 @@
 import { getTranslation } from "@/apis/translations";
 import Alert from "@/components/Alert";
 import Badge from "@/components/Badge";
-import Button from "@/components/Button";
 import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
+import TranslationStatus from "@/components/TranslationStatus";
+import { useFileDownload } from "@/hooks/useFileDownload";
 import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
   ActionIcon,
@@ -27,18 +28,19 @@ import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
-import { useFileDownload } from "@/hooks/useFileDownload";
-import TranslationStatus from "@/components/TranslationStatus";
-import SendQuote from "./_component/SendQuote";
-import SelectQuote from "./_component/SelectQuote";
-import StartTranslation from "./_component/StartTranslation";
-import WaitTranslationStart from "./_component/WaitTranslationStart";
-import Translator from "./_component/Translator";
-import Payment from "./_component/Payment";
-import WaitTranslationFinish from "./_component/WaitTranslationFinish";
-import SubmitTranslation from "./_component/SubmitTranslation";
 import ConfirmTranslation from "./_component/ConfirmTranslation";
+import Payment from "./_component/Payment";
+import ResubmitTranslation from "./_component/ResubmitTranslation";
+import SelectQuote from "./_component/SelectQuote";
+import SendQuote from "./_component/SendQuote";
+import StartTranslation from "./_component/StartTranslation";
+import SubmitTranslation from "./_component/SubmitTranslation";
+import TranslationResult from "./_component/TranslationResult";
+import Translator from "./_component/Translator";
 import WaitConfirm from "./_component/WaitConfirm";
+import WaitTranslationFinish from "./_component/WaitTranslationFinish";
+import WaitTranslationStart from "./_component/WaitTranslationStart";
+import WaitTranslationUpdate from "./_component/WaitTranslationUpdate";
 
 interface Props {
   params: { translationId: string };
@@ -223,7 +225,7 @@ export default function Page({ params: { translationId } }: Props) {
         {translation.is_canceled ? (
           <Alert>취소된 번역입니다.</Alert>
         ) : (
-          <div className="mt-4 flex flex-col gap-2">
+          <div className="mt-4 flex flex-col gap-16">
             {/* 번역 상태: 견적 요청 */}
             {translation.status === "QUOTE_SENT" && (
               <>
@@ -268,48 +270,15 @@ export default function Page({ params: { translationId } }: Props) {
             {translation.status === "TRANSLATION_EDIT_REQUESTED" && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && <Alert>번역사가 결과물을 수정 중 입니다.</Alert>}
+                {true && <WaitTranslationUpdate translation={translation} />}
                 {/* 내가 번역사인 경우 */}
-                {true && (
-                  <Alert>
-                    번역 수정을 요청받았습니다.
-                    <br />
-                    번역 결과물을 수정하고 다시 제출해주세요.
-                  </Alert>
-                )}
-                <div className="flex justify-end gap-2">
-                  {/* 내가 번역사인 경우 번역 제출 버튼 */}
-                  {true && (
-                    <Button size="md" variant="primary">
-                      번역 제출
-                    </Button>
-                  )}
-                </div>
+                {true && <ResubmitTranslation translation={translation} />}
               </>
             )}
 
             {/* 번역 상태: 번역 확정 */}
             {translation.status === "TRANSLATION_RESOLVED" && (
-              <>
-                {/* 내가 작성자인 경우 */}
-                {true && <Alert>번역이 완료되었습니다.</Alert>}
-                {/* 내가 번역사인 경우 */}
-                {true && <Alert>번역이 완료되었습니다.</Alert>}
-                <div className="flex justify-end gap-2">
-                  {/* 내가 작성자인 경우 리뷰 작성하기 버튼 */}
-                  {true && (
-                    <Button size="md" variant="primary">
-                      리뷰 작성하기
-                    </Button>
-                  )}
-                  {/* 내가 번역사인 경우 정산 버튼 */}
-                  {true && (
-                    <Button size="md" variant="primary">
-                      정산
-                    </Button>
-                  )}
-                </div>
-              </>
+              <TranslationResult translation={translation} />
             )}
           </div>
         )}

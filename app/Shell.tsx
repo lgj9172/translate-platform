@@ -39,24 +39,22 @@ export default function Shell({ children }: Props) {
           <FluenceBi />
         </Link>
         <div className="flex gap-2 items-center">
-          <button
-            type="button"
-            className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
-            onClick={() => {
-              window.open("/fluence", "_blank");
-            }}
-          >
-            플루언스
-          </button>
-          <button
-            type="button"
-            className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
-            onClick={() => {
-              window.open("/cs", "_blank");
-            }}
-          >
-            고객센터
-          </button>
+          <Link href="/fluence">
+            <button
+              type="button"
+              className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
+            >
+              플루언스
+            </button>
+          </Link>
+          <Link href="/cs">
+            <button
+              type="button"
+              className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
+            >
+              고객센터
+            </button>
+          </Link>
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <button
@@ -189,20 +187,20 @@ export default function Shell({ children }: Props) {
             {/* 오른쪽: 회사 정보 섹션 */}
             <div>
               <h4 className="text-lg font-bold text-gray-800">
-                (주) 와이준소프트
+                주식회사 어웨이크모먼트
               </h4>
               <div className="mt-4 space-y-2 text-sm">
                 <p className="grid grid-cols-[100px,1fr]">
                   <span className="text-gray-500">대표</span>
-                  <span>박윤경</span>
+                  <span>장영준</span>
                 </p>
                 <p className="grid grid-cols-[100px,1fr]">
                   <span className="text-gray-500">사업자등록번호</span>
-                  <span>888-81-01989</span>
+                  <span>155-88-02932</span>
                 </p>
                 <p className="grid grid-cols-[100px,1fr]">
                   <span className="text-gray-500">주소</span>
-                  <span>경기도 화성시 동탄대로시범길 192 1005-303</span>
+                  <span>경상북도 의성군 비안면 외남길 74</span>
                 </p>
               </div>
             </div>
@@ -231,7 +229,7 @@ export default function Shell({ children }: Props) {
               <div className="flex flex-col md:flex-row items-center gap-2 text-xs text-gray-400">
                 <span>Copyright</span>
                 <span className="hidden md:block">•</span>
-                <span>© 2024 YJSoft Inc.</span>
+                <span>© 2024 Awake Moment Inc.</span>
                 <span className="hidden md:block">•</span>
                 <span>All Rights Reserved.</span>
               </div>

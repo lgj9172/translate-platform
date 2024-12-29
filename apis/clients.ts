@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const ClientWithAuth = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export const ClientWithoutAuth = axios.create({

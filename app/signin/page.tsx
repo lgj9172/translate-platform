@@ -44,7 +44,7 @@ export default function Signin() {
       provider: "naver",
       url: `${process.env.NEXT_PUBLIC_NAVER_API}?${new URLSearchParams({
         client_id: `${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`,
-        redirect_uri: `${process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI}`,
+        redirect_uri: `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI}`,
         response_type: "code",
         state: "",
       }).toString()}`,
@@ -56,7 +56,7 @@ export default function Signin() {
       provider: "kakao",
       url: `${process.env.NEXT_PUBLIC_KAKAO_API}?${new URLSearchParams({
         client_id: `${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}`,
-        redirect_uri: `${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`,
+        redirect_uri: `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`,
         response_type: "code",
       }).toString()}`,
       icon: <KakaoLogo />,
@@ -68,7 +68,7 @@ export default function Signin() {
       provider: "google",
       url: `${process.env.NEXT_PUBLIC_GOOGLE_API}?${new URLSearchParams({
         client_id: `${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`,
-        redirect_uri: `${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
+        redirect_uri: `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
         response_type: "code",
         scope: "https://www.googleapis.com/auth/userinfo.email",
       }).toString()}`,

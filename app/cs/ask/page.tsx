@@ -8,10 +8,15 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import Button from "@/components/Button";
+import Alert from "@/components/Alert";
 import AskCard from "./_component/AskCard";
 
 export default function Page() {
-  const { data: asks, isLoading } = useQuery({
+  const {
+    data: asks,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["asks"],
     queryFn: () => getCounsels({ params: { start: 0, size: 10 } }),
   });
@@ -41,11 +46,14 @@ export default function Page() {
         </Group>
       </PageHeader>
 
-      {isLoading ? (
+      {isLoading && (
         <Center mih="320px">
           <Loader color="orange" type="bars" />
         </Center>
-      ) : (
+      )}
+      {isError && <Alert>문의 목록을 불러오는 중 오류가 발생했어요.</Alert>}
+      {asks?.length === 0 && <Alert>아직 문의가 없어요.</Alert>}
+      {asks?.length !== 0 && (
         <div className="flex flex-col gap-[8px]">
           {asks?.map((ask) => (
             <Link

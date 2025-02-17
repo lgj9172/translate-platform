@@ -39,14 +39,14 @@ export default function Shell({ children }: Props) {
           <FluenceBi />
         </Link>
         <div className="flex gap-2 items-center">
-          <Link href="/fluence">
+          {/* <Link href="/fluence">
             <button
               type="button"
               className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
             >
               플루언스
             </button>
-          </Link>
+          </Link> */}
           <Link href="/cs">
             <button
               type="button"

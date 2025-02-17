@@ -4,6 +4,8 @@ import {
   getTranslationsClient,
   getTranslationsTranslator,
 } from "@/apis/translations";
+import { getUser } from "@/apis/user";
+import Alert from "@/components/Alert";
 import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
@@ -13,6 +15,15 @@ import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 export default function Page() {
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(),
+  });
+
   const { data: translationRequest, isLoading: isLoadingTranslationRequest } =
     useQuery({
       queryKey: ["translation", "client"],
@@ -43,15 +54,23 @@ export default function Page() {
       </PageHeader>
 
       <div className="flex flex-col gap-16">
-        <Card>
-          <div className="flex gap-[8px]">
-            <Avatar />
-            <div>
-              <div className="text-[14px] text-[#4B4D4D]">회원이름</div>
-              <div className="text-[14px] text-[#8B8C8D]">고객 또는 번역사</div>
+        {isLoadingUser && <Loader color="orange" type="bars" />}
+        {isErrorUser && (
+          <Alert>회원 정보를 불러오는 중 오류가 발생했어요.</Alert>
+        )}
+        {user && (
+          <Card>
+            <div className="flex gap-[8px]">
+              <Avatar src={user?.avatar} />
+              <div>
+                <div className="text-[14px] text-[#4B4D4D]">{user?.name}</div>
+                <div className="text-[14px] text-[#8B8C8D]">
+                  {user?.authorization?.is_translator ? "번역사" : "고객"}
+                </div>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        )}
 
         <div className="flex flex-col gap-2">
           <div>

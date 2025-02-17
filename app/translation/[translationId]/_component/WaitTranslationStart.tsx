@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  postTranslationCancel,
-  PostTranslationCancelRequest,
-  Translation,
-} from "@/apis/translations";
+import { postTranslationCancel } from "@/apis/translations";
 import Button from "@/components/Button";
+import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
@@ -16,10 +13,7 @@ interface Props {
 
 export default function WaitTranslationStart({ translation }: Props) {
   const { mutate: mutatePostTranslationCancel } = useMutation({
-    mutationFn: ({ translationId }: PostTranslationCancelRequest) =>
-      postTranslationCancel({
-        translationId,
-      }),
+    mutationFn: postTranslationCancel,
     onSuccess: () => {},
   });
 

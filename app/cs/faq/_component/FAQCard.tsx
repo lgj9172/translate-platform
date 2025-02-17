@@ -1,10 +1,10 @@
-import { FAQ } from "@/apis/cs";
 import Card from "@/components/Card";
+import { Faq } from "@/types/entities";
 import { Collapse } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 interface Props {
-  faq: FAQ;
+  faq: Faq;
 }
 
 export default function FaqCard({ faq }: Props) {

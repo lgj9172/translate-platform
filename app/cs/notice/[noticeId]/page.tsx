@@ -1,6 +1,6 @@
 "use client";
 
-import { getNotice } from "@/apis/cs";
+import { getNotice } from "@/apis/notices";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";

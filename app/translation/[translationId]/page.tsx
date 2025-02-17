@@ -4,13 +4,17 @@ import { getTranslation } from "@/apis/translations";
 import Alert from "@/components/Alert";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
+import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
-import { useFileDownload } from "@/hooks/useFileDownload";
+import {
+  TRANSLATION_CURRENCY,
+  TRANSLATION_CURRENCY_LABEL,
+} from "@/types/entities";
 import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
   ActionIcon,
@@ -28,6 +32,7 @@ import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
+import Comments from "./_component/Comments";
 import ConfirmTranslation from "./_component/ConfirmTranslation";
 import Payment from "./_component/Payment";
 import ResubmitTranslation from "./_component/ResubmitTranslation";
@@ -41,7 +46,6 @@ import WaitConfirm from "./_component/WaitConfirm";
 import WaitTranslationFinish from "./_component/WaitTranslationFinish";
 import WaitTranslationStart from "./_component/WaitTranslationStart";
 import WaitTranslationUpdate from "./_component/WaitTranslationUpdate";
-import Comments from "./_component/Comments";
 
 interface Props {
   params: { translationId: string };
@@ -52,8 +56,6 @@ export default function Page({ params: { translationId } }: Props) {
     queryKey: ["translation", translationId],
     queryFn: () => getTranslation({ translationId }),
   });
-
-  const { downloadFile } = useFileDownload();
 
   if (isLoading) {
     return (
@@ -149,34 +151,22 @@ export default function Page({ params: { translationId } }: Props) {
             <Label>원문</Label>
           </LabelSection>
 
-          {translation.source_files.map(
-            ({ char_with_blank, file, source_file_id }) => (
-              <div key={source_file_id}>
-                <button
-                  type="button"
-                  className="text-[#3B82F6] font-bold"
-                  onClick={() => {
-                    if (file.url) {
-                      downloadFile(file.url, file.name);
-                    }
-                  }}
-                >
-                  <span>{file.name}</span>
-                </button>
-                <span className="text-[#8B8C8D]">
-                  {" "}
-                  (공백 포함{" "}
-                  <NumericFormat
-                    displayType="text"
-                    value={char_with_blank}
-                    thousandsGroupStyle="thousand"
-                    thousandSeparator=","
-                  />
-                  자)
-                </span>
-              </div>
-            ),
-          )}
+          {translation.source_files.map(({ char_with_blank, file_id }) => (
+            <div key={file_id}>
+              <FileDownload fileId={file_id} />
+              <span className="text-[#8B8C8D]">
+                {" "}
+                (공백 포함{" "}
+                <NumericFormat
+                  displayType="text"
+                  value={char_with_blank}
+                  thousandsGroupStyle="thousand"
+                  thousandSeparator=","
+                />
+                자)
+              </span>
+            </div>
+          ))}
         </InputSection>
 
         <InputSection>
@@ -195,14 +185,16 @@ export default function Page({ params: { translationId } }: Props) {
             <span>
               <NumericFormat
                 displayType="text"
-                value={translation.fee_value}
+                value={translation.fee.value}
                 thousandsGroupStyle="thousand"
                 thousandSeparator=","
               />
             </span>
             <span>
-              {translation.fee_unit === "KRW" && "원"}
-              {translation.fee_unit === "USD" && "달러"}
+              {translation.fee.unit === TRANSLATION_CURRENCY.KRW &&
+                TRANSLATION_CURRENCY_LABEL.KRW}
+              {translation.fee.unit === TRANSLATION_CURRENCY.USD &&
+                TRANSLATION_CURRENCY_LABEL.USD}
             </span>
           </div>
         </InputSection>

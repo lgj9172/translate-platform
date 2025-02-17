@@ -1,11 +1,7 @@
 "use client";
 
 import { postFile } from "@/apis/files";
-import {
-  postTranslationSubmit,
-  PostTranslationSubmitRequest,
-  Translation,
-} from "@/apis/translations";
+import { postTranslationSubmit } from "@/apis/translations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -13,6 +9,7 @@ import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -58,11 +55,7 @@ export default function SubmitTranslation({ translation }: Props) {
   const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const { mutate: mutatePostTranslationSubmit } = useMutation({
-    mutationFn: ({ translationId, fileId }: PostTranslationSubmitRequest) =>
-      postTranslationSubmit({
-        translationId,
-        fileId,
-      }),
+    mutationFn: postTranslationSubmit,
     onSuccess: () => {},
   });
 
@@ -79,10 +72,12 @@ export default function SubmitTranslation({ translation }: Props) {
             <Button
               variant="primary"
               onClick={async () => {
-                const res = await mutateAsync({ content: file });
+                const res = await mutateAsync({
+                  payload: { content: file },
+                });
                 mutatePostTranslationSubmit({
                   translationId: translation.translation_id,
-                  fileId: res.file_id,
+                  payload: { target_files: [res.file_id] },
                 });
                 modals.closeAll();
               }}

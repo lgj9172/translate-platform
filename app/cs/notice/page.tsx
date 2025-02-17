@@ -1,6 +1,6 @@
 "use client";
 
-import { getNotices } from "@/apis/cs";
+import { getNotices } from "@/apis/notices";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
@@ -12,7 +12,7 @@ import NoticeCard from "./_component/NoticeCard";
 export default function Page() {
   const { data: notices, isLoading } = useQuery({
     queryKey: ["notices"],
-    queryFn: getNotices,
+    queryFn: () => getNotices({ params: { start: 0, size: 10 } }),
   });
 
   return (

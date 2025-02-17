@@ -1,72 +1,104 @@
-import { ClientWithAuth, Response } from "./clients";
-import { Translator } from "./translator";
+import { Quotation } from "@/types/entities";
+import {
+  ClientWithAuth,
+  Response,
+  PaginatedResponse,
+  PaginationParams,
+} from "./clients";
 
-export interface TranslationQuote {
-  quotation_id: string;
-  translation_fee: number;
-  detail: string;
-  is_deleted: boolean;
-  is_selected: boolean;
-  is_canceled: boolean;
-  translation_id: string;
-  translator: Translator;
-}
-
-interface PostTranslationQuote {
-  translation_fee: number;
-  detail: string;
-  translation_id: string;
-}
-
-export const getTranslationQuotes = async ({
+export const getTranslationQuotations = async ({
   translationId,
+  params,
 }: {
   translationId: string;
+  params: PaginationParams;
 }) => {
-  const response = await ClientWithAuth.get<Response<TranslationQuote[]>>(
+  const response = await ClientWithAuth.get<PaginatedResponse<Quotation>>(
     `/translations/${translationId}/quotations`,
+    {
+      params,
+    },
   );
   return response.data.data;
 };
 
-export const postTranslationQuote = async (input: PostTranslationQuote) => {
-  const payload = {
-    translation_fee: input.translation_fee,
-    detail: input.detail,
+export const getTranslationQuotation = async ({
+  translationId,
+  quotationId,
+}: {
+  translationId: string;
+  quotationId: string;
+}) => {
+  const response = await ClientWithAuth.get<Response<Quotation>>(
+    `/translations/${translationId}/quotations/${quotationId}`,
+  );
+  return response.data.data;
+};
+
+export const getTranslatorQuotation = async ({
+  translationId,
+}: {
+  translationId: string;
+}) => {
+  const response = await ClientWithAuth.get<Response<Quotation>>(
+    `/translations/${translationId}/quotations/translator`,
+  );
+  return response.data.data;
+};
+
+export const getSelectedQuotation = async ({
+  translationId,
+}: {
+  translationId: string;
+}) => {
+  const response = await ClientWithAuth.get<Response<Quotation>>(
+    `/translations/${translationId}/selected-quotation`,
+  );
+  return response.data.data;
+};
+
+export const postTranslationQuotation = async ({
+  translationId,
+  payload,
+}: {
+  translationId: string;
+  payload: {
+    fee: {
+      unit: "KRW" | "USD";
+      value: number;
+    };
+    detail?: string;
   };
-  const response = await ClientWithAuth.post<Response<TranslationQuote>>(
-    `/translations/${input.translation_id}/quotations`,
+}) => {
+  const response = await ClientWithAuth.post<Response<Quotation>>(
+    `/translations/${translationId}/quotations`,
     payload,
   );
   return response.data.data;
 };
 
-export interface PostTranslationQuoteCancelRequest {
-  translationId: string;
-  quotationId: string;
-}
-
-export const postTranslationQuoteCancel = async ({
+export const postTranslationQuotationCancel = async ({
   translationId,
   quotationId,
-}: PostTranslationQuoteCancelRequest) => {
-  const response = await ClientWithAuth.post<Response<TranslationQuote>>(
+}: {
+  translationId: string;
+  quotationId: string;
+}) => {
+  const response = await ClientWithAuth.post<Response<Quotation>>(
     `/translations/${translationId}/quotations/${quotationId}/cancel`,
   );
   return response.data.data;
 };
 
-export interface PostTranslationQuoteSelectRequest {
-  translationId: string;
-  quotationId: string;
-}
-
-export const postTranslationQuoteSelect = async ({
+export const postTranslationQuotationSelect = async ({
   translationId,
   quotationId,
-}: PostTranslationQuoteSelectRequest) => {
-  const response = await ClientWithAuth.post<Response<TranslationQuote>>(
-    `/translations/${translationId}/quotations/${quotationId}/assign`,
+}: {
+  translationId: string;
+  quotationId: string;
+}) => {
+  const response = await ClientWithAuth.post<Response<Quotation>>(
+    `/translations/${translationId}/quotations/${quotationId}/select`,
   );
   return response.data.data;
 };

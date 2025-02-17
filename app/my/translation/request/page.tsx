@@ -1,6 +1,6 @@
 "use client";
 
-import { getTranslationsRequest } from "@/apis/translations";
+import { getTranslationsClient } from "@/apis/translations";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
@@ -11,8 +11,8 @@ import { FaChevronLeft } from "react-icons/fa6";
 
 export default function Page() {
   const { data: translationsRequest, isLoading } = useQuery({
-    queryKey: ["translations-request"],
-    queryFn: getTranslationsRequest,
+    queryKey: ["translation", "client"],
+    queryFn: () => getTranslationsClient({ params: { start: 0, size: 10 } }),
   });
 
   return (

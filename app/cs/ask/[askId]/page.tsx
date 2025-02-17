@@ -1,7 +1,8 @@
 "use client";
 
-import { getCSAsk } from "@/apis/cs";
+import { getCounsel } from "@/apis/counsels";
 import { getUser } from "@/apis/user";
+import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
@@ -22,7 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
-import Badge from "@/components/Badge";
+import { getFile } from "@/apis/files";
 import CSAnswer from "./_component/CSAnswer";
 
 interface Props {
@@ -37,7 +38,13 @@ export default function Page({ params: { askId } }: Props) {
 
   const { data: ask, isLoading } = useQuery({
     queryKey: ["ask", askId],
-    queryFn: () => getCSAsk({ counselId: askId }),
+    queryFn: () => getCounsel({ counselId: askId }),
+  });
+
+  const { data: file } = useQuery({
+    queryKey: ["file", ask?.file_id],
+    queryFn: () => getFile({ fileId: ask?.file_id ?? "" }),
+    enabled: !!ask?.file_id,
   });
 
   const { downloadFile } = useFileDownload();
@@ -64,7 +71,7 @@ export default function Page({ params: { askId } }: Props) {
             <FaChevronLeft />
           </ActionIcon>
           <PageTitle>
-            <Badge>{ask.status}</Badge>
+            <Badge>{ask.is_done ? "답변완료" : "답변대기"}</Badge>
             {ask.category}
           </PageTitle>
         </Group>
@@ -101,7 +108,7 @@ export default function Page({ params: { askId } }: Props) {
           <Label>내용</Label>
         </LabelSection>
         <div>
-          {ask.content.split("\n").map((line, index) => (
+          {ask.content.split("\n").map((line: string, index: number) => (
             // eslint-disable-next-line react/no-array-index-key
             <Text key={index}>{line}</Text>
           ))}
@@ -112,21 +119,23 @@ export default function Page({ params: { askId } }: Props) {
         <LabelSection>
           <Label>첨부파일</Label>
         </LabelSection>
-        {ask.files.map((file) => (
-          <div key={file.file_id}>
+        <div>
+          {file ? (
             <button
               type="button"
               className="inline text-[#3B82F6] font-bold"
               onClick={() => {
-                if (file.url) {
-                  downloadFile(file.url, file.name);
+                if (file?.presigned_url) {
+                  downloadFile(file.presigned_url, file.name);
                 }
               }}
             >
-              {file.name}
+              {file?.name}
             </button>
-          </div>
-        ))}
+          ) : (
+            <Text>첨부파일이 없습니다.</Text>
+          )}
+        </div>
       </InputSection>
 
       <CSAnswer askId={askId} />

@@ -1,11 +1,11 @@
-import { getCSAnswer } from "@/apis/cs";
+import { getCounselAnswer } from "@/apis/counsels";
 import Alert from "@/components/Alert";
 import { useQuery } from "@tanstack/react-query";
 
 export default function CSAnswer({ askId }: { askId: string }) {
   const { data: answer } = useQuery({
     queryKey: ["answer", askId],
-    queryFn: () => getCSAnswer({ counselId: askId }),
+    queryFn: () => getCounselAnswer({ counselId: askId }),
   });
 
   if (!answer)

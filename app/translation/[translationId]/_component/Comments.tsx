@@ -1,8 +1,6 @@
 import {
-  Comment as CommentType,
   getTranslationComments,
   postTranslationComment,
-  Translation,
 } from "@/apis/translations";
 import { getUser } from "@/apis/user";
 import Button from "@/components/Button";
@@ -11,6 +9,7 @@ import ErrorText from "@/components/ErrorText";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
+import { Translation, TranslationComment } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -18,13 +17,13 @@ import dayjs from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-function Message({ message }: { message: CommentType }) {
+function Message({ message }: { message: TranslationComment }) {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
 
-  const isCurrentUser = user?.id === message.user_id;
+  const isCurrentUser = user?.user_id === message.user_id;
 
   return (
     <div
@@ -78,7 +77,9 @@ export default function Comments({
     mutationFn: (data: CommentFormType) =>
       postTranslationComment({
         translationId: translation.translation_id,
-        content: data.content,
+        payload: {
+          content: data.content,
+        },
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({

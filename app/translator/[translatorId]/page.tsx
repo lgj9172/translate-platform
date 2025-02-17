@@ -28,7 +28,7 @@ export default function Page() {
 
   const { data: translator, isLoading } = useQuery({
     queryKey: ["translator", translatorId],
-    queryFn: () => getTranslator(translatorId),
+    queryFn: () => getTranslator({ translatorId }),
   });
 
   if (isLoading)
@@ -64,7 +64,7 @@ export default function Page() {
                 {translator?.user_id}
               </div>
               <div className="text-[14px] text-[#8B8C8D]">
-                {`경력 ${translator?.experience}년・최근 ${translator?.recent_translations}건`}
+                {`경력 ${translator?.total_career_duration}년・최근 ${translator?.recent_translations}건`}
               </div>
             </div>
           </div>

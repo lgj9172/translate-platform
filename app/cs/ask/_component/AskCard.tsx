@@ -1,11 +1,10 @@
-import { CSAsk } from "@/apis/cs";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
-import { getAskStatusLabel } from "@/utils/converter/label";
+import { Counsel } from "@/types/entities";
 import dayjs from "dayjs";
 
 interface Props {
-  ask: CSAsk;
+  ask: Counsel;
 }
 
 export default function AskCard({ ask }: Props) {
@@ -14,8 +13,10 @@ export default function AskCard({ ask }: Props) {
       <div className="flex flex-col gap-2">
         {/* 태그 및 제목 */}
         <div className="flex gap-2 items-center">
-          {ask.status && (
-            <Badge color="primary">{getAskStatusLabel(ask.status)}</Badge>
+          {ask.is_done && (
+            <Badge color="primary">
+              {ask.is_done ? "답변완료" : "답변대기"}
+            </Badge>
           )}
           <span className="text-[18px] font-bold">{ask.category}</span>
         </div>

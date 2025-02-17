@@ -1,12 +1,7 @@
 "use client";
 
 import { postFile } from "@/apis/files";
-import {
-  Category,
-  Language,
-  MoneyUnit,
-  postTranslation,
-} from "@/apis/translations";
+import { postTranslation } from "@/apis/translations";
 import Speciality from "@/app/my/translator/_component/Speciality";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
@@ -20,6 +15,13 @@ import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
 import TextInput from "@/components/TextInput";
+import {
+  TRANSLATION_CATEGORY,
+  TRANSLATION_CURRENCY,
+  TRANSLATION_LANGUAGE,
+  TRANSLATION_LANGUAGE_LABEL,
+  TranslationLanguage,
+} from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionIcon, Group, NumberInput, Stack } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
@@ -41,10 +43,10 @@ import { z } from "zod";
 const PostTranslationFormSchema = z
   .object({
     title: z.string().min(1, "제목을 입력해 주세요."),
-    source_language: z.enum(Language),
-    target_language: z.enum(Language),
+    source_language: z.nativeEnum(TRANSLATION_LANGUAGE),
+    target_language: z.nativeEnum(TRANSLATION_LANGUAGE),
     categories: z
-      .array(z.enum(Category))
+      .array(z.nativeEnum(TRANSLATION_CATEGORY))
       .refine((value) => value.length > 0, "분야를 1개 이상 선택해 주세요.")
       .refine(
         (value) => value.length <= 2,
@@ -69,7 +71,9 @@ const PostTranslationFormSchema = z
         (value) => dayjs().isBefore(value),
         "현재보다 이후 시간을 지정해 주세요.",
       ),
-    fee_unit: z.enum(MoneyUnit).describe("화폐 단위를 다시 확인해주세요."),
+    fee_unit: z
+      .nativeEnum(TRANSLATION_CURRENCY)
+      .describe("화폐 단위를 다시 확인해주세요."),
     fee_value: z
       .number()
       .min(0, "입력된 번역료를 다시 확인해주세요.")
@@ -104,12 +108,21 @@ export default function Index() {
   const router = useRouter();
 
   const languageOptions = useMemo<
-    { label: string; value: (typeof Language)[number] }[]
+    { label: string; value: TranslationLanguage }[]
   >(
     () => [
-      { label: "한국어", value: "ko-KR" },
-      { label: "영어", value: "en-US" },
-      { label: "일본어", value: "ja-JP" },
+      {
+        label: TRANSLATION_LANGUAGE_LABEL["ko-KR"],
+        value: TRANSLATION_LANGUAGE["ko-KR"],
+      },
+      {
+        label: TRANSLATION_LANGUAGE_LABEL["en-US"],
+        value: TRANSLATION_LANGUAGE["en-US"],
+      },
+      {
+        label: TRANSLATION_LANGUAGE_LABEL["ja-JP"],
+        value: TRANSLATION_LANGUAGE["ja-JP"],
+      },
     ],
     [],
   );
@@ -142,13 +155,23 @@ export default function Index() {
     input,
   ) => {
     const filesInfo = await Promise.all(
-      input.source_files.map((file) => mutatePostFile({ content: file })),
+      input.source_files.map((file) =>
+        mutatePostFile({
+          payload: {
+            content: file,
+          },
+        }),
+      ),
     );
     await mutatePostTranslation({
-      ...input,
-      source_files: filesInfo.map((file) => ({
-        file_id: file.file_id,
-      })),
+      payload: {
+        ...input,
+        source_files: filesInfo.map((file) => ({ file_id: file.file_id })),
+        fee: {
+          unit: input.fee_unit,
+          value: input.fee_value,
+        },
+      },
     });
   };
 
@@ -210,7 +233,7 @@ export default function Index() {
                     w={120}
                     data={languageOptions}
                     onChange={(v) => {
-                      onChange(v as (typeof Language)[0]);
+                      onChange(v as TranslationLanguage);
                       trigger(`source_language`);
                     }}
                     allowDeselect={false}
@@ -230,7 +253,7 @@ export default function Index() {
                     w={120}
                     data={languageOptions}
                     onChange={(v) => {
-                      onChange(v as (typeof Language)[0]);
+                      onChange(v as TranslationLanguage);
                       trigger(`target_language`);
                     }}
                     allowDeselect={false}

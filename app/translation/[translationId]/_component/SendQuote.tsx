@@ -1,10 +1,8 @@
 "use client";
 
-import { Translation } from "@/apis/translations";
 import {
-  postTranslationQuote,
-  postTranslationQuoteCancel,
-  PostTranslationQuoteCancelRequest,
+  postTranslationQuotation,
+  postTranslationQuotationCancel,
 } from "@/apis/translations-quotations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
@@ -13,6 +11,11 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
+import {
+  Translation,
+  TRANSLATION_CURRENCY,
+  TRANSLATION_CURRENCY_LABEL,
+} from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NumberInput, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -60,7 +63,7 @@ export default function SendQuote({ translation }: Props) {
   });
 
   const { mutate: mutatePostTranslationQuote } = useMutation({
-    mutationFn: postTranslationQuote,
+    mutationFn: postTranslationQuotation,
     onSuccess: () => {
       router.push(
         `/translation/${translation.translation_id}/quote/create/done`,
@@ -69,14 +72,7 @@ export default function SendQuote({ translation }: Props) {
   });
 
   const { mutate: mutatePostTranslationQuoteCancel } = useMutation({
-    mutationFn: ({
-      translationId,
-      quotationId,
-    }: PostTranslationQuoteCancelRequest) =>
-      postTranslationQuoteCancel({
-        translationId,
-        quotationId,
-      }),
+    mutationFn: postTranslationQuotationCancel,
     onSuccess: () => {
       router.refresh();
     },
@@ -105,9 +101,14 @@ export default function SendQuote({ translation }: Props) {
               variant="primary"
               onClick={() => {
                 mutatePostTranslationQuote({
-                  translation_fee,
-                  detail,
-                  translation_id: translation.translation_id,
+                  translationId: translation.translation_id,
+                  payload: {
+                    fee: {
+                      unit: translation.fee.unit,
+                      value: translation_fee,
+                    },
+                    detail,
+                  },
                 });
                 modals.closeAll();
               }}
@@ -243,8 +244,10 @@ export default function SendQuote({ translation }: Props) {
                 />
               </span>
               <span>
-                {translation.fee_unit === "KRW" && "원"}
-                {translation.fee_unit === "USD" && "달러"}
+                {translation.fee.unit === TRANSLATION_CURRENCY.KRW &&
+                  TRANSLATION_CURRENCY_LABEL.KRW}
+                {translation.fee.unit === TRANSLATION_CURRENCY.USD &&
+                  TRANSLATION_CURRENCY_LABEL.USD}
               </span>
             </div>
           </InputSection>

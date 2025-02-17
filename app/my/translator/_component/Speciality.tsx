@@ -1,4 +1,3 @@
-import { Category } from "@/apis/translations";
 import Chip from "@/components/Chip";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -6,24 +5,59 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { PostTranslatorFormSchema } from "@/model/translator";
+import {
+  TRANSLATION_CATEGORY,
+  TRANSLATION_CATEGORY_LABEL,
+  TranslationCategory,
+} from "@/types/entities";
 import { useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 export default function Speciality() {
-  const categoryOptions: { label: string; value: (typeof Category)[number] }[] =
+  const categoryOptions: { label: string; value: TranslationCategory }[] =
     useMemo(
       () => [
-        { label: "IT/기술", value: "IT" },
-        { label: "경제/금융", value: "FINANCE" },
-        { label: "콘텐츠 자막", value: "CONTENTS" },
-        { label: "게임", value: "GAME" },
-        { label: "법률/특허", value: "LAW" },
-        { label: "의료", value: "MEDICAL" },
-        { label: "건설", value: "CONSTRUCTION" },
-        { label: "마케팅", value: "MARKETING" },
-        { label: "문학", value: "LITERATURE" },
-        { label: "기타", value: "ETC" },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.IT,
+          value: TRANSLATION_CATEGORY.IT,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.FINANCE,
+          value: TRANSLATION_CATEGORY.FINANCE,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.CONTENTS,
+          value: TRANSLATION_CATEGORY.CONTENTS,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.GAME,
+          value: TRANSLATION_CATEGORY.GAME,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.LAW,
+          value: TRANSLATION_CATEGORY.LAW,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.MEDICAL,
+          value: TRANSLATION_CATEGORY.MEDICAL,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.CONSTRUCTION,
+          value: TRANSLATION_CATEGORY.CONSTRUCTION,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.MARKETING,
+          value: TRANSLATION_CATEGORY.MARKETING,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.LITERATURE,
+          value: TRANSLATION_CATEGORY.LITERATURE,
+        },
+        {
+          label: TRANSLATION_CATEGORY_LABEL.ETC,
+          value: TRANSLATION_CATEGORY.ETC,
+        },
       ],
       [],
     );

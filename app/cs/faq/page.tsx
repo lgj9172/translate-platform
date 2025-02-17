@@ -1,6 +1,6 @@
 "use client";
 
-import { getFAQs } from "@/apis/cs";
+import { getFaqs } from "@/apis/faqs";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
@@ -12,7 +12,7 @@ import FaqCard from "./_component/FAQCard";
 export default function Page() {
   const { data: faqs, isLoading } = useQuery({
     queryKey: ["faqs"],
-    queryFn: getFAQs,
+    queryFn: () => getFaqs({ params: { start: 0, size: 10 } }),
   });
 
   return (

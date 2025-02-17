@@ -1,4 +1,4 @@
-import { Translation } from "@/apis/translations";
+import { Translation, File } from "@/types/entities";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -20,13 +20,16 @@ export default function TranslationResult({
         <LabelSection>
           <Label>번역 결과물</Label>
         </LabelSection>
-        {translation.target_files.map((target_file) => (
-          <div key={target_file.file_id}>
-            <button type="button" className="text-[#3B82F6] font-bold">
-              <span>{target_file.name}</span>
-            </button>
-          </div>
-        ))}
+        {translation.target_files.map((target_file) => {
+          const file = target_file as unknown as File;
+          return (
+            <div key={file.file_id}>
+              <button type="button" className="text-[#3B82F6] font-bold">
+                <span>{file.name}</span>
+              </button>
+            </div>
+          );
+        })}
       </InputSection>
     </Stack>
   );

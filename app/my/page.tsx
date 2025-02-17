@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  getTranslationsRequest,
-  getTranslationsResponse,
+  getTranslationsClient,
+  getTranslationsTranslator,
 } from "@/apis/translations";
 import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
@@ -15,14 +15,15 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 export default function Page() {
   const { data: translationRequest, isLoading: isLoadingTranslationRequest } =
     useQuery({
-      queryKey: ["translation-request"],
-      queryFn: () => getTranslationsRequest(),
+      queryKey: ["translation", "client"],
+      queryFn: () => getTranslationsClient({ params: { start: 0, size: 10 } }),
     });
 
   const { data: translationResponse, isLoading: isLoadingTranslationResponse } =
     useQuery({
-      queryKey: ["translation-request"],
-      queryFn: () => getTranslationsResponse(),
+      queryKey: ["translation", "translator"],
+      queryFn: () =>
+        getTranslationsTranslator({ params: { start: 0, size: 10 } }),
     });
 
   return (

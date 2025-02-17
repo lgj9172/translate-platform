@@ -1,6 +1,6 @@
 "use client";
 
-import { Translation } from "@/apis/translations";
+import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import dayjs from "dayjs";
 

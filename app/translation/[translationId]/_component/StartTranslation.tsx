@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  postTranslationStart,
-  PostTranslationStartRequest,
-  Translation,
-} from "@/apis/translations";
+import { postTranslationStart } from "@/apis/translations";
 import Button from "@/components/Button";
+import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
@@ -16,10 +13,7 @@ interface Props {
 
 export default function StartTranslation({ translation }: Props) {
   const { mutate: mutatePostTranslationStart } = useMutation({
-    mutationFn: ({ translationId }: PostTranslationStartRequest) =>
-      postTranslationStart({
-        translationId,
-      }),
+    mutationFn: postTranslationStart,
     onSuccess: () => {},
   });
 

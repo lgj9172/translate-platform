@@ -1,4 +1,4 @@
-import { Notice } from "@/apis/cs";
+import { Notice } from "@/types/entities";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import dayjs from "dayjs";

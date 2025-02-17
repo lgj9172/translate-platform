@@ -1,4 +1,3 @@
-import { Language } from "@/apis/translations";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
@@ -8,6 +7,11 @@ import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
 import { TranslationSampleDefaultValue } from "@/model/translationSample";
 import { PostTranslatorFormSchema } from "@/model/translator";
+import {
+  TRANSLATION_LANGUAGE,
+  TRANSLATION_LANGUAGE_LABEL,
+  TranslationLanguage,
+} from "@/types/entities";
 import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -16,12 +20,21 @@ import { z } from "zod";
 
 export default function Samples() {
   const languageOptions = useMemo<
-    { label: string; value: (typeof Language)[number] }[]
+    { label: string; value: TranslationLanguage }[]
   >(
     () => [
-      { label: "한국어", value: "ko-KR" },
-      { label: "영어", value: "en-US" },
-      { label: "일본어", value: "ja-JP" },
+      {
+        label: TRANSLATION_LANGUAGE_LABEL["ko-KR"],
+        value: TRANSLATION_LANGUAGE["ko-KR"],
+      },
+      {
+        label: TRANSLATION_LANGUAGE_LABEL["en-US"],
+        value: TRANSLATION_LANGUAGE["en-US"],
+      },
+      {
+        label: TRANSLATION_LANGUAGE_LABEL["ja-JP"],
+        value: TRANSLATION_LANGUAGE["ja-JP"],
+      },
     ],
     [],
   );
@@ -97,7 +110,7 @@ export default function Samples() {
                     w={120}
                     data={languageOptions}
                     onChange={(v) => {
-                      onChange(v as (typeof Language)[0]);
+                      onChange(v as TranslationLanguage);
                       trigger(`translation_samples.${index}.source_language`);
                     }}
                     allowDeselect={false}
@@ -144,7 +157,7 @@ export default function Samples() {
                     w={120}
                     data={languageOptions}
                     onChange={(v) => {
-                      onChange(v as (typeof Language)[0]);
+                      onChange(v as TranslationLanguage);
                       trigger(`translation_samples.${index}.target_language`);
                     }}
                     allowDeselect={false}

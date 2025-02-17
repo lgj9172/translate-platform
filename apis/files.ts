@@ -1,30 +1,48 @@
+import { File } from "@/types/entities";
 import { objectToFormData } from "@/utils/converter/form";
-import { ClientWithAuth, Response } from "./clients";
+import {
+  ClientWithAuth,
+  PaginatedResponse,
+  PaginationParams,
+  Response,
+} from "./clients";
 
-export const FileType = ["PPT", "WORD", "TEXT"] as const;
+export const getFiles = async ({ params }: { params: PaginationParams }) => {
+  const response = await ClientWithAuth.get<PaginatedResponse<File>>(`/files`, {
+    params,
+  });
+  return response.data.data;
+};
 
-export interface FileId {
-  file_id: string;
-}
+export const getFile = async ({ fileId }: { fileId: string }) => {
+  const response = await ClientWithAuth.get<Response<File>>(`/files/${fileId}`);
+  return response.data.data;
+};
 
-export interface FileInfo {
-  file_id: string;
-  name: string;
-  extension: (typeof FileType)[number];
-  url?: string;
-  created_at: string;
-  updated_at: string;
-}
+export const postFile = async ({
+  payload,
+}: {
+  payload: {
+    content: globalThis.File | Blob;
+  };
+}) => {
+  const formData = objectToFormData(payload);
 
-interface PostFileRequest {
-  content: File;
-}
-
-export const postFile = async (input: PostFileRequest) => {
-  const payload = objectToFormData(input);
-  const response = await ClientWithAuth.post<Response<FileInfo>>(
+  const response = await ClientWithAuth.post<Response<File>>(
     "/files",
-    payload,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return response.data.data;
+};
+
+export const deleteFile = async ({ fileId }: { fileId: string }) => {
+  const response = await ClientWithAuth.delete<Response<File>>(
+    `/files/${fileId}`,
   );
   return response.data.data;
 };

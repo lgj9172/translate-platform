@@ -1,7 +1,7 @@
 "use client";
 
 import { getTranslation } from "@/apis/translations";
-import { postTranslationQuote } from "@/apis/translations-quotations";
+import { postTranslationQuotation } from "@/apis/translations-quotations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -12,6 +12,7 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TextArea from "@/components/TextArea";
 import TranslationCard from "@/components/TranslationCard";
+import { TRANSLATION_CURRENCY } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ActionIcon,
@@ -69,7 +70,7 @@ export default function Page({ params: { translationId } }: Props) {
   });
 
   const { mutate: mutatePostTranslationQuote } = useMutation({
-    mutationFn: postTranslationQuote,
+    mutationFn: postTranslationQuotation,
     onSuccess: () => {
       router.push(`/translation/${translationId}/quote/create/done`);
     },
@@ -85,9 +86,14 @@ export default function Page({ params: { translationId } }: Props) {
     PostTranslationQuoteFormType
   > = async ({ translation_fee, detail }) => {
     await mutatePostTranslationQuote({
-      translation_fee,
-      detail,
-      translation_id: translationId,
+      translationId,
+      payload: {
+        fee: {
+          unit: translation?.fee.unit ?? TRANSLATION_CURRENCY.KRW,
+          value: translation_fee,
+        },
+        detail,
+      },
     });
   };
 

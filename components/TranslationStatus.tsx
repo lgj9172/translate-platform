@@ -1,4 +1,4 @@
-import { Translation } from "@/apis/translations";
+import { Translation } from "@/types/entities";
 
 export const TRANSLATION_STATUS = {
   QUOTE_SENT: { label: "견적 확인중", step: 1 },

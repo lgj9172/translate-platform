@@ -1,8 +1,9 @@
-import { Translation } from "@/apis/translations";
 import Button from "@/components/Button";
+import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 
@@ -79,11 +80,10 @@ export default function ConfirmTranslation({
           <Label>번역 결과물</Label>
         </LabelSection>
         {translation.target_files.map((target_file) => (
-          <div key={target_file.file_id}>
-            <button type="button" className="text-[#3B82F6] font-bold">
-              <span>{target_file.name}</span>
-            </button>
-          </div>
+          <FileDownload
+            key={target_file.file_id}
+            fileId={target_file.file_id}
+          />
         ))}
       </InputSection>
 

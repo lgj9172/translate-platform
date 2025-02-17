@@ -12,7 +12,7 @@ import Link from "next/link";
 export default function Page() {
   const { data: translations, isLoading } = useQuery({
     queryKey: ["translations"],
-    queryFn: getTranslations,
+    queryFn: () => getTranslations({ params: { start: 1, size: 100 } }),
   });
 
   return (

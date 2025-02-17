@@ -1,4 +1,4 @@
-import { Translation } from "@/apis/translations";
+import { Translation, TranslationCategory } from "@/types/entities";
 import {
   getCategoryLabel,
   getDday,
@@ -54,7 +54,7 @@ export default function TranslationCard({
       <div className="flex flex-col gap-[16px]">
         <div className="flex justify-between items-center">
           <div className="flex gap-1">
-            {translation.categories.map((category) => (
+            {translation.categories.map((category: TranslationCategory) => (
               <Badge key={category} color="blue">
                 {getCategoryLabel(category)}
               </Badge>
@@ -73,8 +73,8 @@ export default function TranslationCard({
         />
         <div className="flex items-center justify-between">
           <TranslationFee
-            value={translation.fee_value}
-            unit={translation.fee_unit}
+            value={translation.fee.value}
+            unit={translation.fee.unit}
           />
           {showStatus && <TranslationStatus translation={translation} />}
         </div>

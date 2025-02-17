@@ -1,11 +1,11 @@
-import { Category } from "@/apis/translations";
+import { TRANSLATION_CATEGORY, TranslationCategory } from "@/types/entities";
 import { z } from "zod";
-import { EducationDefaultValue, EducationSchema } from "./education";
 import { CareerDefaultValue, CareerSchema } from "./career";
 import {
   CertificationDefaultValue,
   CertificationSchema,
 } from "./certification";
+import { EducationDefaultValue, EducationSchema } from "./education";
 import {
   TranslationSampleDefaultValue,
   TranslationSampleSchema,
@@ -13,7 +13,20 @@ import {
 
 export const PostTranslatorFormSchema = z.object({
   categories: z
-    .array(z.enum(Category))
+    .array(
+      z.union([
+        z.literal(TRANSLATION_CATEGORY.IT),
+        z.literal(TRANSLATION_CATEGORY.FINANCE),
+        z.literal(TRANSLATION_CATEGORY.CONTENTS),
+        z.literal(TRANSLATION_CATEGORY.GAME),
+        z.literal(TRANSLATION_CATEGORY.LAW),
+        z.literal(TRANSLATION_CATEGORY.MEDICAL),
+        z.literal(TRANSLATION_CATEGORY.CONSTRUCTION),
+        z.literal(TRANSLATION_CATEGORY.MARKETING),
+        z.literal(TRANSLATION_CATEGORY.LITERATURE),
+        z.literal(TRANSLATION_CATEGORY.ETC),
+      ]),
+    )
     .refine((value) => value.length > 0, "전문 분야를 선택해주세요.")
     .refine(
       (value) => value.length <= 3,
@@ -27,7 +40,7 @@ export const PostTranslatorFormSchema = z.object({
 });
 
 export const PostTranslatorFormDefaultValue = {
-  categories: [] as (typeof Category)[number][],
+  categories: [] as TranslationCategory[],
   description: "",
   educations: [EducationDefaultValue],
   careers: [CareerDefaultValue],

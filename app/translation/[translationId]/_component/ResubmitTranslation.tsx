@@ -1,13 +1,14 @@
 "use client";
 
-import { Translation } from "@/apis/translations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
+import FileDownload from "@/components/FileDownload";
 import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mantine/core";
 // import dayjs from "dayjs";
@@ -109,11 +110,10 @@ export default function ResubmitTranslation({ translation }: Props) {
             <Label>기존 번역 결과물</Label>
           </LabelSection>
           {translation.target_files.map((target_file) => (
-            <div key={target_file.file_id}>
-              <button type="button" className="text-[#3B82F6] font-bold">
-                <span>{target_file.name}</span>
-              </button>
-            </div>
+            <FileDownload
+              key={target_file.file_id}
+              fileId={target_file.file_id}
+            />
           ))}
         </InputSection>
 

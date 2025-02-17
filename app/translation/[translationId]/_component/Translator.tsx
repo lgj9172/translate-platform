@@ -1,6 +1,10 @@
 "use client";
 
-import { Translation } from "@/apis/translations";
+import {
+  Translation,
+  TRANSLATION_CURRENCY,
+  TRANSLATION_CURRENCY_LABEL,
+} from "@/types/entities";
 import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
@@ -42,8 +46,10 @@ export default function Translator({ translation }: Props) {
                 />
               </span>
               <span>
-                {translation.fee_unit === "KRW" && "원"}
-                {translation.fee_unit === "USD" && "달러"}
+                {translation.fee.unit === TRANSLATION_CURRENCY.KRW &&
+                  TRANSLATION_CURRENCY_LABEL.KRW}
+                {translation.fee.unit === TRANSLATION_CURRENCY.USD &&
+                  TRANSLATION_CURRENCY_LABEL.USD}
               </span>
             </div>
           </InputSection>

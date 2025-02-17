@@ -87,7 +87,9 @@ export default function Educations() {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      const res = await mutateAsync({ content: file });
+      const res = await mutateAsync({
+        payload: { content: file },
+      });
       setValue(`educations.${index}.file_id`, res.file_id, {
         shouldValidate: true,
       });

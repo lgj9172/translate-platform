@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 export default function Profile({ translatorId }: { translatorId: string }) {
   const { data: translator } = useQuery({
     queryKey: ["translator", translatorId],
-    queryFn: () => getTranslator(translatorId),
+    queryFn: () => getTranslator({ translatorId }),
   });
 
   return (

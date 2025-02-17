@@ -9,7 +9,7 @@ export const FileSchema = z.object({
 });
 
 export const FileDefaultValue = {
-  file_id: 0,
+  file_id: "",
   name: "",
   extension: "",
   created_at: "",

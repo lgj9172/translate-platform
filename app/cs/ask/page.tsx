@@ -1,6 +1,6 @@
 "use client";
 
-import { getCSAsks } from "@/apis/cs";
+import { getCounsels } from "@/apis/counsels";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
@@ -13,7 +13,7 @@ import AskCard from "./_component/AskCard";
 export default function Page() {
   const { data: asks, isLoading } = useQuery({
     queryKey: ["asks"],
-    queryFn: getCSAsks,
+    queryFn: () => getCounsels({ params: { start: 0, size: 10 } }),
   });
 
   return (

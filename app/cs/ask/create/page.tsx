@@ -1,6 +1,5 @@
 "use client";
 
-import { postCSAsk } from "@/apis/cs";
 import { postFile } from "@/apis/files";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
@@ -28,40 +27,43 @@ import {
 } from "react-hook-form";
 import { FaChevronLeft } from "react-icons/fa6";
 import { z } from "zod";
+import { Counsel, COUNSEL_CATEGORY, CounselCategory } from "@/types/entities";
+import { postCounsel } from "@/apis/counsels";
 
 const PostCSAskFormSchema = z.object({
-  category: z.string().min(1, "종류를 선택해 주세요."),
+  category: z.nativeEnum(COUNSEL_CATEGORY, {
+    errorMap: () => ({ message: "종류를 선택해 주세요." }),
+  }),
   content: z.string().min(1, "내용을 입력해 주세요."),
-  files: z.array(
-    z
-      .instanceof(File, {
-        message: "파일이 선택되지 않았어요.",
-      })
-      .refine(
-        (file) => file.size <= 10 * 1024 * 1024,
-        "파일은 최대 10MB까지 업로드 할 수 있어요.",
-      ),
-  ),
-  // .refine((files) => files.length > 0, "파일을 선택해 주세요."),
+  file: z
+    .instanceof(globalThis.File, {
+      message: "파일이 선택되지 않았어요.",
+    })
+    .refine(
+      (file) => file.size <= 10 * 1024 * 1024,
+      "파일은 최대 10MB까지 업로드 할 수 있어요.",
+    ),
 });
 
 export type PostCSAskFormType = z.infer<typeof PostCSAskFormSchema>;
 
 const PostCSAskFormDefaultValue = {
-  category: "의견",
+  category: COUNSEL_CATEGORY.SUGGESTION,
   content: "",
-  files: [],
+  files: [] as globalThis.File[],
 };
 
 export default function Index() {
   const router = useRouter();
 
-  // TODO: 카테고리 value 수정 필요
-  const askCategoryOptions = useMemo<{ label: string; value: string }[]>(
-    () => [
-      { label: "의견", value: "의견" },
-      { label: "요청 취소", value: "요청 취소" },
-    ],
+  const askCategoryOptions = useMemo<
+    { label: string; value: CounselCategory }[]
+  >(
+    () =>
+      Object.entries(COUNSEL_CATEGORY).map(([value, label]) => ({
+        label,
+        value: value as CounselCategory,
+      })),
     [],
   );
 
@@ -77,9 +79,9 @@ export default function Index() {
     formState: { isSubmitting },
   } = methods;
 
-  const { mutate: mutatePostCSAsk } = useMutation({
-    mutationFn: postCSAsk,
-    onSuccess: (res) => {
+  const { mutate: mutatePostCounsel } = useMutation({
+    mutationFn: postCounsel,
+    onSuccess: (res: Counsel) => {
       router.push(`/cs/ask/${res.counsel_id}`);
     },
   });
@@ -91,12 +93,18 @@ export default function Index() {
   const handlSubmitSuccess: SubmitHandler<PostCSAskFormType> = async (
     input,
   ) => {
-    const filesInfo = await Promise.all(
-      input.files.map((file) => mutatePostFile({ content: file })),
-    );
-    await mutatePostCSAsk({
-      ...input,
-      files: filesInfo.map((file) => ({ file_id: file.file_id })),
+    const fileInfo = await mutatePostFile({
+      payload: { content: input.file },
+    });
+    if (!fileInfo) {
+      throw new Error("파일 업로드에 실패했습니다.");
+    }
+    mutatePostCounsel({
+      payload: {
+        category: input.category,
+        content: input.content,
+        fileId: fileInfo.file_id,
+      },
     });
   };
 
@@ -169,7 +177,7 @@ export default function Index() {
               <Label>첨부파일</Label>
             </LabelSection>
             <Controller
-              name="files"
+              name="file"
               control={control}
               render={({
                 field: { onChange, value },
@@ -181,12 +189,12 @@ export default function Index() {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        onChange([file]);
+                        onChange(file);
                         e.target.value = "";
                       }
                     }}
-                    onRemove={() => onChange([])}
-                    text={value?.[0]?.name}
+                    onRemove={() => onChange(null)}
+                    text={value?.name}
                   />
                   <ErrorText>{error?.message}</ErrorText>
                 </ControllerSection>

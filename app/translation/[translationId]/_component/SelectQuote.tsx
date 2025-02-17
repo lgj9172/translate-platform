@@ -1,25 +1,52 @@
 "use client";
 
+import { postTranslationCancel } from "@/apis/translations";
 import {
-  postTranslationCancel,
-  PostTranslationCancelRequest,
-  Translation,
-} from "@/apis/translations";
-import {
-  getTranslationQuotes,
-  postTranslationQuoteSelect,
-  PostTranslationQuoteSelectRequest,
+  getTranslationQuotations,
+  postTranslationQuotationSelect,
 } from "@/apis/translations-quotations";
+import { getTranslator } from "@/apis/translator";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import {
+  Translation,
+  TRANSLATION_CURRENCY,
+  TRANSLATION_CURRENCY_LABEL,
+} from "@/types/entities";
 import { Avatar, Center, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { NumericFormat } from "react-number-format";
+
+function TranslatorProfile({ translatorId }: { translatorId: string }) {
+  const { data: translator } = useQuery({
+    queryKey: ["translator", translatorId],
+    queryFn: () => getTranslator({ translatorId }),
+  });
+
+  return (
+    <div className="flex gap-[8px]">
+      <Avatar />
+      <div>
+        <div className="text-[14px] text-[#4B4D4D]">
+          <Link
+            href={`/translator/${translatorId}`}
+            className="hover:underline"
+          >
+            {translatorId}
+          </Link>
+        </div>
+        <div className="text-[14px] text-[#8B8C8D]">
+          경력 {translator?.total_career_duration}년
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface Props {
   translation: Translation;
@@ -29,28 +56,22 @@ export default function SelectQuote({ translation }: Props) {
   const { data: translationQuotes, isLoading } = useQuery({
     queryKey: ["translations", translation.translation_id, "quotes"],
     queryFn: () =>
-      getTranslationQuotes({
+      getTranslationQuotations({
         translationId: translation.translation_id,
+        params: {
+          start: 0,
+          size: 10,
+        },
       }),
   });
 
   const { mutate: mutatePostTranslationQuoteSelect } = useMutation({
-    mutationFn: ({
-      translationId,
-      quotationId,
-    }: PostTranslationQuoteSelectRequest) =>
-      postTranslationQuoteSelect({
-        translationId,
-        quotationId,
-      }),
+    mutationFn: postTranslationQuotationSelect,
     onSuccess: () => {},
   });
 
   const { mutate: mutatePostTranslationCancel } = useMutation({
-    mutationFn: ({ translationId }: PostTranslationCancelRequest) =>
-      postTranslationCancel({
-        translationId,
-      }),
+    mutationFn: postTranslationCancel,
     onSuccess: () => {},
   });
 
@@ -150,22 +171,7 @@ export default function SelectQuote({ translation }: Props) {
         <Card key={quote.quotation_id}>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
-              <div className="flex gap-[8px]">
-                <Avatar />
-                <div>
-                  <div className="text-[14px] text-[#4B4D4D]">
-                    <Link
-                      href={`/translator/${quote.translator.translator_id}`}
-                      className="hover:underline"
-                    >
-                      {quote.translator.translator_id}
-                    </Link>
-                  </div>
-                  <div className="text-[14px] text-[#8B8C8D]">
-                    경력 {quote.translator.experience}년
-                  </div>
-                </div>
-              </div>
+              <TranslatorProfile translatorId={quote.translator_id} />
               <div className="flex justify-end items-center">
                 <Button
                   size="sm"
@@ -186,14 +192,16 @@ export default function SelectQuote({ translation }: Props) {
                 <span>
                   <NumericFormat
                     displayType="text"
-                    value={quote.translation_fee}
+                    value={quote.fee.value}
                     thousandsGroupStyle="thousand"
                     thousandSeparator=","
                   />
                 </span>
                 <span>
-                  {translation.fee_unit === "KRW" && "원"}
-                  {translation.fee_unit === "USD" && "달러"}
+                  {quote.fee.unit === TRANSLATION_CURRENCY.KRW &&
+                    TRANSLATION_CURRENCY_LABEL.KRW}
+                  {quote.fee.unit === TRANSLATION_CURRENCY.USD &&
+                    TRANSLATION_CURRENCY_LABEL.USD}
                 </span>
               </div>
             </InputSection>

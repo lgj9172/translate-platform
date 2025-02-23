@@ -17,7 +17,7 @@ export default function Page() {
     isError,
   } = useQuery({
     queryKey: ["translations"],
-    queryFn: () => getTranslations({ params: { start: 1, size: 100 } }),
+    queryFn: () => getTranslations({ params: { start: 0, size: 100 } }),
   });
 
   return (

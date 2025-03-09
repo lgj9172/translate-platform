@@ -23,6 +23,7 @@ import {
 import { BsPersonFill } from "react-icons/bs";
 import Link from "next/link";
 import { ReactNode } from "react";
+import CustomerSupport from "./components/CustomerSupport";
 
 interface Props {
   children: ReactNode;
@@ -159,51 +160,8 @@ export default function Shell({ children }: Props) {
       <div className="p-[20px]">
         {children}
         <footer className="mt-12 border-t border-gray-200 pt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* 왼쪽: 고객센터 섹션 */}
-            <div>
-              <h3 className="text-lg font-bold text-gray-800">
-                플루언스 고객센터
-              </h3>
-              <p className="mt-1 text-2xl font-bold text-orange-500">
-                070-8383-6353
-              </p>
-              <div className="mt-4 space-y-2 text-sm text-gray-600">
-                <p className="grid grid-cols-[100px,1fr]">
-                  <span className="text-gray-500">운영시간</span>
-                  <span>09:00 - 18:00</span>
-                </p>
-                <p className="grid grid-cols-[100px,1fr]">
-                  <span className="text-gray-500">점심시간</span>
-                  <span>12:00 - 13:00</span>
-                </p>
-                <p className="grid grid-cols-[100px,1fr]">
-                  <span className="text-gray-500">휴무안내</span>
-                  <span>주말 및 공휴일</span>
-                </p>
-              </div>
-            </div>
-
-            {/* 오른쪽: 회사 정보 섹션 */}
-            <div>
-              <h4 className="text-lg font-bold text-gray-800">
-                주식회사 어웨이크모먼트
-              </h4>
-              <div className="mt-4 space-y-2 text-sm">
-                <p className="grid grid-cols-[100px,1fr]">
-                  <span className="text-gray-500">대표</span>
-                  <span>장영준</span>
-                </p>
-                <p className="grid grid-cols-[100px,1fr]">
-                  <span className="text-gray-500">사업자등록번호</span>
-                  <span>155-88-02932</span>
-                </p>
-                <p className="grid grid-cols-[100px,1fr]">
-                  <span className="text-gray-500">주소</span>
-                  <span>경상북도 의성군 비안면 외남길 74</span>
-                </p>
-              </div>
-            </div>
+          <div className="w-full">
+            <CustomerSupport />
           </div>
 
           {/* 하단: 약관 링크 및 저작권 섹션 */}

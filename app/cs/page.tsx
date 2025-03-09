@@ -6,6 +6,7 @@ import PageTitle from "@/components/PageTitle";
 import { ActionIcon, Group, Stack } from "@mantine/core";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import CustomerSupport from "../components/CustomerSupport";
 
 export default function Page() {
   return (
@@ -37,28 +38,7 @@ export default function Page() {
         </div>
 
         <div className="space-y-4">
-          <div>
-            <h4 className="text-lg font-bold text-gray-800">
-              플루언스 고객센터
-            </h4>
-            <p className="mt-1 text-2xl font-bold text-orange-500">
-              070-8383-6353
-            </p>
-          </div>
-          <div className="mt-4 space-y-2 text-sm">
-            <p className="grid grid-cols-[100px,1fr]">
-              <span className="text-gray-500">운영시간</span>
-              <span>09:00 - 18:00</span>
-            </p>
-            <p className="grid grid-cols-[100px,1fr]">
-              <span className="text-gray-500">점심시간</span>
-              <span>12:00 - 13:00</span>
-            </p>
-            <p className="grid grid-cols-[100px,1fr]">
-              <span className="text-gray-500">휴무안내</span>
-              <span>주말 및 공휴일</span>
-            </p>
-          </div>
+          <CustomerSupport />
         </div>
       </div>
 

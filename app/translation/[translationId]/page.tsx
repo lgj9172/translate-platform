@@ -130,7 +130,7 @@ export default function Page({ params: { translationId } }: Props) {
 
         <InputSection>
           <LabelSection>
-            <Label>분량</Label>
+            <Label>전체 분량</Label>
           </LabelSection>
           <div>
             <NumericFormat
@@ -151,20 +151,16 @@ export default function Page({ params: { translationId } }: Props) {
             <Label>원문</Label>
           </LabelSection>
 
-          {translation.source_files.map(({ char_with_blank, file_id }) => (
-            <div key={file_id}>
-              <FileDownload fileId={file_id} />
-              <span className="text-[#8B8C8D]">
-                {" "}
-                (공백 포함{" "}
-                <NumericFormat
-                  displayType="text"
-                  value={char_with_blank}
-                  thousandsGroupStyle="thousand"
-                  thousandSeparator=","
-                />
-                자)
-              </span>
+          {translation.source_files.map(({ file_id }, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index} className="flex gap-2">
+              {file_id ? (
+                <FileDownload fileId={file_id} />
+              ) : (
+                <span className="text-[#8B8C8D]">
+                  원문 파일은 선택된 번역가만 다운로드 가능해요.
+                </span>
+              )}
             </div>
           ))}
         </InputSection>

@@ -178,7 +178,7 @@ export interface TranslationSourceFile {
   char_with_blank: number;
   char_without_blank: number;
   word: number;
-  file_id: string;
+  file_id?: string;
 }
 
 export interface TranslationTargetFile {

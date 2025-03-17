@@ -3,5 +3,5 @@ interface Props {
 }
 
 export default function InputSection({ children }: Props) {
-  return <div className="flex flex-col gap-2">{children}</div>;
+  return <div className="flex flex-col gap-1">{children}</div>;
 }

@@ -1,6 +1,11 @@
 "use client";
 
-import { postTranslator } from "@/apis/translator";
+import {
+  getMyTranslator,
+  postTranslator,
+  putTranslator,
+} from "@/apis/translator";
+import { getUser } from "@/apis/user";
 import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
@@ -9,10 +14,11 @@ import {
   PostTranslatorFormSchema,
 } from "@/model/translator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon, Group, Stack } from "@mantine/core";
-import { useMutation } from "@tanstack/react-query";
+import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import {
   FormProvider,
   SubmitErrorHandler,
@@ -20,8 +26,8 @@ import {
   useForm,
 } from "react-hook-form";
 import { FaChevronLeft } from "react-icons/fa6";
-import { z } from "zod";
 import { toast } from "sonner";
+import { z } from "zod";
 import Careers from "./_component/Careers";
 import Certifications from "./_component/Certifications";
 import Educations from "./_component/Educations";
@@ -32,13 +38,30 @@ import Speciality from "./_component/Speciality";
 export default function Page() {
   const router = useRouter();
 
+  const { data: user, isLoading: isLoadingUser } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(),
+  });
+
+  const { data: myTranslator, isSuccess: isSuccessMyTranslator } = useQuery({
+    queryKey: ["myTranslator"],
+    queryFn: () => getMyTranslator(),
+    enabled: user?.authorization?.is_translator,
+  });
+
   const methods = useForm({
     resolver: zodResolver(PostTranslatorFormSchema),
     defaultValues: PostTranslatorFormDefaultValue,
     mode: "onChange",
   });
 
-  const { mutate, isPending } = useMutation({
+  useEffect(() => {
+    if (isSuccessMyTranslator && myTranslator) {
+      methods.reset(myTranslator);
+    }
+  }, [isSuccessMyTranslator, myTranslator, methods]);
+
+  const { mutate: createTranslator, isPending: isPendingCreate } = useMutation({
     mutationFn: postTranslator,
     onSuccess: () => {
       toast.success("번역사 등록이 완료되었어요.", {
@@ -49,10 +72,30 @@ export default function Page() {
     },
   });
 
+  const { mutate: updateTranslator, isPending: isPendingUpdate } = useMutation({
+    mutationFn: putTranslator,
+    onSuccess: () => {
+      toast.success("번역사 정보 수정이 완료되었어요.", {
+        richColors: true,
+        position: "top-center",
+      });
+      router.push("/my");
+    },
+  });
+
+  const isPending = isPendingCreate || isPendingUpdate;
+
   const handleSubmitSuccess: SubmitHandler<
     z.infer<typeof PostTranslatorFormSchema>
   > = (data) => {
-    mutate({ payload: data });
+    if (user?.authorization?.is_translator && myTranslator?.translator_id) {
+      updateTranslator({
+        translatorId: myTranslator?.translator_id,
+        payload: data,
+      });
+    } else {
+      createTranslator({ payload: data });
+    }
   };
 
   const handleSubmitError: SubmitErrorHandler<
@@ -63,6 +106,14 @@ export default function Page() {
       position: "top-center",
     });
   };
+
+  if (isLoadingUser) {
+    return (
+      <Center mih="320px">
+        <Loader color="orange" type="bars" />
+      </Center>
+    );
+  }
 
   return (
     <form
@@ -80,7 +131,10 @@ export default function Page() {
               >
                 <FaChevronLeft />
               </ActionIcon>
-              <PageTitle>번역사 등록</PageTitle>
+              <PageTitle>
+                번역사{" "}
+                {user?.authorization?.is_translator ? "정보 수정" : "등록"}
+              </PageTitle>
             </Group>
           </PageHeader>
 

@@ -95,6 +95,27 @@ export default function Page() {
             </div>
 
             <div className="flex flex-col gap-2">
+              <Link href="/my/translator">
+                <Card>
+                  <div className="flex justify-between items-center py-2">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800">
+                        번역사 정보 수정
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        번역사 정보를 수정해주세요
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-green-600 font-medium">
+                        번역사로 인증되었어요.
+                      </div>
+                      <FaChevronRight className="text-gray-400" />
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+
               <Link href="/my/translation/response">
                 <Card>
                   <div className="flex justify-between items-center py-2">
@@ -117,25 +138,6 @@ export default function Page() {
                           건
                         </div>
                       )}
-                      <FaChevronRight className="text-gray-400" />
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-
-              <Link href="/my/translator">
-                <Card>
-                  <div className="flex justify-between items-center py-2">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-gray-800">
-                        번역사 정보 수정
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        번역사 정보를 수정해주세요
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-green-600 font-medium">인증됨</div>
                       <FaChevronRight className="text-gray-400" />
                     </div>
                   </div>

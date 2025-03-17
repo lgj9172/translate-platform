@@ -1,3 +1,5 @@
+import { postFile } from "@/apis/files";
+import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
@@ -8,6 +10,7 @@ import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
 import { DatePickerInput, DateValue } from "@mantine/dates";
+import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -27,7 +30,7 @@ export default function Certifications() {
     name: "certifications",
   });
 
-  // const { mutateAsync } = useMutation({ mutationFn: postFile });
+  const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const handleClickAppend = () => {
     append(CertificationDefaultValue);
@@ -50,8 +53,10 @@ export default function Certifications() {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      // const res = await mutateAsync({ content: file });
-      // setValue(`certifications.${index}.file`, res, { shouldValidate: true });
+      const res = await mutateAsync({ payload: { content: file } });
+      setValue(`certifications.${index}.file_id`, res.file_id, {
+        shouldValidate: true,
+      });
     }
   };
 
@@ -86,7 +91,7 @@ export default function Certifications() {
           gap="xs"
           pos="relative"
         >
-          <div className="flex justify-end">
+          <ControllerSection>
             <ActionIcon
               color="dark"
               variant="transparent"
@@ -95,8 +100,8 @@ export default function Certifications() {
             >
               <CloseIcon />
             </ActionIcon>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <DatePickerInput
               type="default"
               valueFormat="YYYY년 MM월 DD일"
@@ -119,8 +124,8 @@ export default function Certifications() {
             <ErrorText>
               {errors?.certifications?.[index]?.started_at?.message}
             </ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`certifications.${index}.name`}
@@ -131,8 +136,8 @@ export default function Certifications() {
             <ErrorText>
               {errors?.certifications?.[index]?.name?.message}
             </ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`certifications.${index}.organization`}
@@ -143,8 +148,8 @@ export default function Certifications() {
             <ErrorText>
               {errors?.certifications?.[index]?.organization?.message}
             </ErrorText>
-          </div>
-          <div>
+          </ControllerSection>
+          <ControllerSection>
             <FileInput
               placeholder="자격증 사본 추가 (10MB, PDF)"
               onChange={(e) => handleChangeFile(index, e)}
@@ -153,7 +158,7 @@ export default function Certifications() {
             <ErrorText>
               {errors?.certifications?.[index]?.file_id?.message}
             </ErrorText>
-          </div>
+          </ControllerSection>
         </Card>
       ))}
     </InputSection>

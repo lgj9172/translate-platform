@@ -18,7 +18,7 @@ export default function SelfIntroduction() {
         <Label>자기소개</Label>
       </LabelSection>
       <Controller
-        name="description"
+        name="introduction"
         control={control}
         render={({ field, fieldState: { error } }) => (
           <ControllerSection>

@@ -9,7 +9,7 @@ export const EducationSchema = z.object({
   major: z.string().min(1, "전공을 입력해주세요."),
   degree: DegreeSchema,
   graduation_status: EducationStatusSchema,
-  file_id: z.string(),
+  file_id: z.string().min(1, "졸업/수료 증명서를 업로드해주세요."),
 });
 
 export const EducationDefaultValue: z.infer<typeof EducationSchema> = {

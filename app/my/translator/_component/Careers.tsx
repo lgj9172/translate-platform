@@ -1,5 +1,8 @@
+import { postFile } from "@/apis/files";
 import CheckButton from "@/components/CheckButton";
+import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
+import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -8,7 +11,9 @@ import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon, Card, CloseIcon, Stack } from "@mantine/core";
 import { DatePickerInput, DatesRangeValue } from "@mantine/dates";
+import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { FaRegCalendar } from "react-icons/fa6";
 import { z } from "zod";
@@ -27,6 +32,8 @@ export default function Careers() {
     control,
     name: "careers",
   });
+
+  const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const handleClickAppend = () => {
     append(CareerDefaultValue);
@@ -47,6 +54,21 @@ export default function Careers() {
     setValue(`careers.${index}.ended_at`, isEmployed ? currentDate : endedAt, {
       shouldValidate: true,
     });
+  };
+
+  const handleChangeFile = async (
+    index: number,
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const res = await mutateAsync({
+        payload: { content: file },
+      });
+      setValue(`careers.${index}.file_id`, res.file_id, {
+        shouldValidate: true,
+      });
+    }
   };
 
   return (
@@ -82,7 +104,7 @@ export default function Careers() {
               <CloseIcon />
             </ActionIcon>
           </div>
-          <div className="flex flex-col gap-1">
+          <ControllerSection>
             <DatePickerInput
               type="range"
               valueFormat="YYYY년 MM월 DD일"
@@ -114,7 +136,7 @@ export default function Careers() {
               {errors?.careers?.[index]?.started_at?.message}
             </ErrorText>
             <ErrorText>{errors?.careers?.[index]?.ended_at?.message}</ErrorText>
-          </div>
+          </ControllerSection>
           <Controller
             control={control}
             name={`careers.${index}.is_employed`}
@@ -136,7 +158,7 @@ export default function Careers() {
               />
             )}
           />
-          <div className="flex flex-col gap-1">
+          <ControllerSection>
             <Controller
               control={control}
               name={`careers.${index}.name`}
@@ -145,8 +167,8 @@ export default function Careers() {
               )}
             />
             <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`careers.${index}.position`}
@@ -155,8 +177,8 @@ export default function Careers() {
               )}
             />
             <ErrorText>{errors?.careers?.[index]?.position?.message}</ErrorText>
-          </div>
-          <div className="flex flex-col gap-1">
+          </ControllerSection>
+          <ControllerSection>
             <Controller
               control={control}
               name={`careers.${index}.achievement`}
@@ -167,7 +189,15 @@ export default function Careers() {
             <ErrorText>
               {errors?.careers?.[index]?.achievement?.message}
             </ErrorText>
-          </div>
+          </ControllerSection>
+          <ControllerSection>
+            <FileInput
+              placeholder="경력 증명서 (10MB, PDF)"
+              onChange={(e) => handleChangeFile(index, e)}
+              text={`${watch(`careers.${index}.file_id`)}`}
+            />
+            <ErrorText>{errors?.careers?.[index]?.file_id?.message}</ErrorText>
+          </ControllerSection>
         </Card>
       ))}
     </InputSection>

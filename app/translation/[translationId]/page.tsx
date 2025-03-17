@@ -165,12 +165,14 @@ export default function Page({ params: { translationId } }: Props) {
           ))}
         </InputSection>
 
-        <InputSection>
-          <LabelSection>
-            <Label>원문 샘플</Label>
-          </LabelSection>
-          <div>{translation.sample}</div>
-        </InputSection>
+        {translation.sample && (
+          <InputSection>
+            <LabelSection>
+              <Label>원문 샘플</Label>
+            </LabelSection>
+            <div>{translation.sample}</div>
+          </InputSection>
+        )}
 
         <InputSection>
           <LabelSection>

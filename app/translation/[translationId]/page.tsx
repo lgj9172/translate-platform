@@ -1,6 +1,7 @@
 "use client";
 
 import { getTranslation } from "@/apis/translations";
+import { getOtherUser } from "@/apis/user";
 import Alert from "@/components/Alert";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
@@ -52,12 +53,18 @@ interface Props {
 }
 
 export default function Page({ params: { translationId } }: Props) {
-  const { data: translation, isLoading } = useQuery({
+  const { data: translation, isLoading: isTranslationLoading } = useQuery({
     queryKey: ["translation", translationId],
     queryFn: () => getTranslation({ translationId }),
   });
 
-  if (isLoading) {
+  const { data: writer, isLoading: isWriterLoading } = useQuery({
+    queryKey: ["user", translation?.user_id],
+    queryFn: () => getOtherUser({ userId: translation?.user_id ?? "" }),
+    enabled: !!translation?.user_id,
+  });
+
+  if (isTranslationLoading || isWriterLoading) {
     return (
       <Center mih="320px">
         <Loader color="orange" type="bars" />
@@ -103,8 +110,10 @@ export default function Page({ params: { translationId } }: Props) {
         <div className="flex gap-[8px]">
           <Avatar />
           <div>
-            <div className="text-[14px] text-[#4B4D4D]">작성자</div>
-            <div className="text-[14px] text-[#8B8C8D]">작성일</div>
+            <div className="text-[14px] text-[#4B4D4D]">{writer?.nickname}</div>
+            <div className="text-[14px] text-[#8B8C8D]">
+              {dayjs(translation.created_at).locale("ko").format("YYYY.MM.DD")}
+            </div>
           </div>
         </div>
       </Card>

@@ -15,6 +15,7 @@ import TranslationStatus from "@/components/TranslationStatus";
 import {
   TRANSLATION_CURRENCY,
   TRANSLATION_CURRENCY_LABEL,
+  TRANSLATION_STATUS,
 } from "@/types/entities";
 import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
@@ -207,12 +208,12 @@ export default function Page({ params: { translationId } }: Props) {
         </InputSection>
 
         {[
-          "TRANSLATOR_SELECTED",
-          "TRANSLATION_BEGAN",
-          "TRANSLATION_SUBMITTED",
-          "TRANSLATION_EDIT_REQUESTED",
-          "TRANSLATION_RESOLVED",
-        ].includes(translation.status) && (
+          TRANSLATION_STATUS.TRANSLATOR_SELECTED,
+          TRANSLATION_STATUS.TRANSLATION_BEGAN,
+          TRANSLATION_STATUS.TRANSLATION_SUBMITTED,
+          TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED,
+          TRANSLATION_STATUS.TRANSLATION_RESOLVED,
+        ].find((status) => status === translation.status) && (
           <>
             <Translator translation={translation} />
             <Payment translation={translation} />
@@ -220,11 +221,11 @@ export default function Page({ params: { translationId } }: Props) {
         )}
 
         {[
-          "TRANSLATION_BEGAN",
-          "TRANSLATION_SUBMITTED",
-          "TRANSLATION_EDIT_REQUESTED",
-          "TRANSLATION_RESOLVED",
-        ].includes(translation.status) && (
+          TRANSLATION_STATUS.TRANSLATION_BEGAN,
+          TRANSLATION_STATUS.TRANSLATION_SUBMITTED,
+          TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED,
+          TRANSLATION_STATUS.TRANSLATION_RESOLVED,
+        ].find((status) => status === translation.status) && (
           <Comments translation={translation} />
         )}
 
@@ -236,7 +237,7 @@ export default function Page({ params: { translationId } }: Props) {
         ) : (
           <div className="mt-4 flex flex-col gap-16">
             {/* 번역 상태: 견적 요청 */}
-            {translation.status === "QUOTE_SENT" && (
+            {translation.status === TRANSLATION_STATUS.QUOTE_SENT && (
               <>
                 {/* 내가 작성자인 경우 */}
                 {true && <SelectQuote translation={translation} />}
@@ -246,7 +247,7 @@ export default function Page({ params: { translationId } }: Props) {
             )}
 
             {/* 번역 상태: 번역사 선택 완료 */}
-            {translation.status === "TRANSLATOR_SELECTED" && (
+            {translation.status === TRANSLATION_STATUS.TRANSLATOR_SELECTED && (
               <>
                 {/* 내가 작성자인 경우 */}
                 {true && <WaitTranslationStart translation={translation} />}
@@ -256,7 +257,7 @@ export default function Page({ params: { translationId } }: Props) {
             )}
 
             {/* 번역 상태: 번역 시작 */}
-            {translation.status === "TRANSLATION_BEGAN" && (
+            {translation.status === TRANSLATION_STATUS.TRANSLATION_BEGAN && (
               <>
                 {/* 내가 작성자인 경우 */}
                 {true && <WaitTranslationFinish translation={translation} />}
@@ -266,7 +267,8 @@ export default function Page({ params: { translationId } }: Props) {
             )}
 
             {/* 번역 상태: 번역 제출 완료 */}
-            {translation.status === "TRANSLATION_SUBMITTED" && (
+            {translation.status ===
+              TRANSLATION_STATUS.TRANSLATION_SUBMITTED && (
               <>
                 {/* 내가 작성자인 경우 */}
                 {true && <ConfirmTranslation translation={translation} />}
@@ -276,7 +278,8 @@ export default function Page({ params: { translationId } }: Props) {
             )}
 
             {/* 번역 상태: 번역 수정 요청 */}
-            {translation.status === "TRANSLATION_EDIT_REQUESTED" && (
+            {translation.status ===
+              TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED && (
               <>
                 {/* 내가 작성자인 경우 */}
                 {true && <WaitTranslationUpdate translation={translation} />}
@@ -286,7 +289,7 @@ export default function Page({ params: { translationId } }: Props) {
             )}
 
             {/* 번역 상태: 번역 확정 */}
-            {translation.status === "TRANSLATION_RESOLVED" && (
+            {translation.status === TRANSLATION_STATUS.TRANSLATION_RESOLVED && (
               <TranslationResult translation={translation} />
             )}
           </div>

@@ -64,7 +64,17 @@ export default function Page() {
                 {translator?.user_id}
               </div>
               <div className="text-[14px] text-[#8B8C8D]">
-                {`경력 ${translator?.total_career_duration}년・최근 ${translator?.recent_translations}건`}
+                {`${
+                  translator?.total_career_duration
+                    ? `경력${translator.total_career_duration / 12}년 ${
+                        translator.total_career_duration % 12
+                      }개월`
+                    : "경력 없음"
+                } ・ ${
+                  translator?.recent_translations
+                    ? `최근 ${translator?.recent_translations}건`
+                    : "최근 번역 없음"
+                }`}
               </div>
             </div>
           </div>

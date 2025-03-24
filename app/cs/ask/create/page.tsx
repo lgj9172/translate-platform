@@ -29,6 +29,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { z } from "zod";
 import { Counsel, COUNSEL_CATEGORY, CounselCategory } from "@/types/entities";
 import { postCounsel } from "@/apis/counsels";
+import { toast } from "sonner";
 
 const PostCSAskFormSchema = z.object({
   category: z.nativeEnum(COUNSEL_CATEGORY, {
@@ -108,10 +109,11 @@ export default function Index() {
     });
   };
 
-  const handleSubmitError: SubmitErrorHandler<PostCSAskFormType> = async (
-    error,
-  ) => {
-    console.log(error);
+  const handleSubmitError: SubmitErrorHandler<PostCSAskFormType> = async () => {
+    toast.error("잘못 입력되었거나 입력되지 않은 항목이 있어요.", {
+      richColors: true,
+      position: "top-center",
+    });
   };
 
   return (

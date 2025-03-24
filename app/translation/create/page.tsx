@@ -140,16 +140,18 @@ export default function Index() {
     formState: { errors, isSubmitting },
   } = methods;
 
-  const { mutate: mutatePostTranslation } = useMutation({
-    mutationFn: postTranslation,
-    onSuccess: () => {
-      router.push("/translation/create/done");
-    },
-  });
+  const { mutate: mutatePostTranslation, isPending: isPostTranslationPending } =
+    useMutation({
+      mutationFn: postTranslation,
+      onSuccess: () => {
+        router.push("/translation/create/done");
+      },
+    });
 
-  const { mutateAsync: mutatePostFile } = useMutation({
-    mutationFn: postFile,
-  });
+  const { mutateAsync: mutatePostFile, isPending: isPostFilePending } =
+    useMutation({
+      mutationFn: postFile,
+    });
 
   const handlSubmitSuccess: SubmitHandler<PostTranslationFormType> = async (
     input,
@@ -409,7 +411,13 @@ export default function Index() {
           </InputSection>
 
           <div className="flex justify-end">
-            <Button type="submit" variant="primary" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={
+                isSubmitting || isPostTranslationPending || isPostFilePending
+              }
+            >
               등록
             </Button>
           </div>

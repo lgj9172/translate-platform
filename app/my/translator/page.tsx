@@ -101,7 +101,7 @@ export default function Page() {
   const handleSubmitError: SubmitErrorHandler<
     z.infer<typeof PostTranslatorFormSchema>
   > = () => {
-    toast.error("입력되지 않은 항목이 있어요.", {
+    toast.error("잘못 입력되었거나 입력되지 않은 항목이 있어요.", {
       richColors: true,
       position: "top-center",
     });

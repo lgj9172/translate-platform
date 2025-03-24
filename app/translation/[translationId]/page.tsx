@@ -1,7 +1,7 @@
 "use client";
 
 import { getTranslation } from "@/apis/translations";
-import { getOtherUser } from "@/apis/user";
+import { getOtherUser, getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
@@ -65,7 +65,12 @@ export default function Page({ params: { translationId } }: Props) {
     enabled: !!translation?.user_id,
   });
 
-  if (isTranslationLoading || isWriterLoading) {
+  const { data: user, isLoading: isUserLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(),
+  });
+
+  if (isTranslationLoading || isWriterLoading || isUserLoading) {
     return (
       <Center mih="320px">
         <Loader color="orange" type="bars" />
@@ -240,9 +245,13 @@ export default function Page({ params: { translationId } }: Props) {
             {translation.status === TRANSLATION_STATUS.QUOTE_SENT && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && <SelectQuote translation={translation} />}
+                {translation.user_id === user?.user_id && (
+                  <SelectQuote translation={translation} />
+                )}
                 {/* 내가 번역사인 경우 */}
-                {true && <SendQuote translation={translation} />}
+                {user?.authorization?.is_translator && (
+                  <SendQuote translation={translation} />
+                )}
               </>
             )}
 

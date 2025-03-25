@@ -165,8 +165,8 @@ export default function Shell({ children }: Props) {
           </div>
 
           {/* 하단: 약관 링크 및 저작권 섹션 */}
-          <div className="mt-12 pt-8 border-t border-gray-100">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-6">
               <div className="flex items-center gap-6 text-sm">
                 <button
                   type="button"
@@ -184,13 +184,13 @@ export default function Shell({ children }: Props) {
                   환불규정
                 </button>
               </div>
-              <div className="flex flex-col md:flex-row items-center gap-2 text-xs text-gray-400">
+              {/* <div className="flex flex-col md:flex-row items-center gap-2 text-xs text-gray-400">
                 <span>Copyright</span>
                 <span className="hidden md:block">•</span>
                 <span>© 2024 Awake Moment Inc.</span>
                 <span className="hidden md:block">•</span>
                 <span>All Rights Reserved.</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </footer>

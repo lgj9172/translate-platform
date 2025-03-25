@@ -1,6 +1,5 @@
 "use client";
 
-import FluenceBi from "@assets/icons/fluence-bi.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,19 +9,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/DropdownMenu";
+import FluenceBi from "@assets/icons/fluence-bi.svg";
 import { Modal, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   Bell,
-  HelpCircle,
   HeadphonesIcon,
-  User,
+  HelpCircle,
   LogIn,
   LogOut,
+  User,
 } from "lucide-react";
-import { BsPersonFill } from "react-icons/bs";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { BsPersonFill } from "react-icons/bs";
 import CustomerSupport from "./components/CustomerSupport";
 
 interface Props {

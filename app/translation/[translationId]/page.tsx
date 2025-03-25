@@ -173,7 +173,7 @@ export default function Page({ params: { translationId } }: Props) {
                 <FileDownload fileId={file_id} />
               ) : (
                 <span className="text-[#8B8C8D]">
-                  원문 파일은 선택된 번역가만 다운로드 가능해요.
+                  원문 파일은 선택된 번역사만 다운로드 가능해요.
                 </span>
               )}
             </div>

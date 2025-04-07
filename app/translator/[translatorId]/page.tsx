@@ -1,20 +1,14 @@
 "use client";
 
 import { getTranslator } from "@/apis/translator";
+import TranslatorProfile from "@/app/translation/[translationId]/_component/TranslatorProfile";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import { getCategoryLabel } from "@/utils/converter/label";
-import {
-  ActionIcon,
-  Avatar,
-  Center,
-  Group,
-  Loader,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -57,30 +51,8 @@ export default function Page() {
 
       <div className="flex flex-col gap-[16px]">
         <Card>
-          <div className="flex gap-[8px]">
-            <Avatar />
-            <div>
-              <div className="text-[14px] text-[#4B4D4D]">
-                {translator?.user_id}
-              </div>
-              <div className="text-[14px] text-[#8B8C8D]">
-                {`${
-                  translator?.total_career_duration
-                    ? `경력${translator.total_career_duration / 12}년 ${
-                        translator.total_career_duration % 12
-                      }개월`
-                    : "경력 없음"
-                } ・ ${
-                  translator?.recent_translations
-                    ? `최근 ${translator?.recent_translations}건`
-                    : "최근 번역 없음"
-                }`}
-              </div>
-            </div>
-          </div>
+          <TranslatorProfile translatorId={translatorId} />
         </Card>
-
-        <div>{translator?.introduction}</div>
 
         <Group justify="space-between">
           <Group gap={4}>
@@ -89,6 +61,8 @@ export default function Page() {
             ))}
           </Group>
         </Group>
+
+        <div className="text-sm">{translator?.introduction}</div>
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
@@ -100,7 +74,7 @@ export default function Page() {
           <Profile translatorId={translatorId} />
         </TabsContent>
         <TabsContent value="review">
-          <div>리뷰</div>
+          <div className="text-sm">리뷰</div>
         </TabsContent>
       </Tabs>
     </Stack>

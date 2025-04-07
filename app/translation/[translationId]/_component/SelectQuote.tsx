@@ -5,7 +5,6 @@ import {
   getTranslationQuotations,
   postTranslationQuotationSelect,
 } from "@/apis/translations-quotations";
-import { getTranslator } from "@/apis/translator";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
@@ -16,47 +15,11 @@ import {
   TRANSLATION_CURRENCY,
   TRANSLATION_CURRENCY_LABEL,
 } from "@/types/entities";
-import { Avatar, Center, Loader, Stack } from "@mantine/core";
+import { Center, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { NumericFormat } from "react-number-format";
-
-function TranslatorProfile({ translatorId }: { translatorId: string }) {
-  const { data: translator } = useQuery({
-    queryKey: ["translator", translatorId],
-    queryFn: () => getTranslator({ translatorId }),
-  });
-
-  return (
-    <div className="flex gap-[8px]">
-      <Avatar />
-      <div>
-        <div className="text-[14px] text-[#4B4D4D]">
-          <Link
-            href={`/translator/${translatorId}`}
-            className="hover:underline"
-          >
-            {translatorId}
-          </Link>
-        </div>
-        <div className="text-[14px] text-[#8B8C8D]">
-          {`${
-            translator?.total_career_duration
-              ? `경력${translator.total_career_duration / 12}년 ${
-                  translator.total_career_duration % 12
-                }개월`
-              : "경력 없음"
-          } ・ ${
-            translator?.recent_translations
-              ? `최근 ${translator?.recent_translations}건`
-              : "최근 번역 없음"
-          }`}
-        </div>
-      </div>
-    </div>
-  );
-}
+import TranslatorProfile from "./TranslatorProfile";
 
 interface Props {
   translation: Translation;

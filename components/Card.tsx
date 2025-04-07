@@ -8,7 +8,7 @@ interface Props {
 export default function Card({ children, className }: Props) {
   return (
     <div
-      className={`p-[20px] border-[1px] border-gray-100 rounded-[16px] ${className}`}
+      className={`p-[20px] border-[1px] border-gray-100 rounded-[16px] ${className} hover:bg-gray-50`}
     >
       {children}
     </div>

@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/DropdownMenu";
+import useUser from "@/hooks/useUser";
 import FluenceBi from "@assets/icons/fluence-bi.svg";
 import { Modal, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -33,6 +34,12 @@ export default function Shell({ children }: Props) {
   const [opendTOU, { open: openTOU, close: closeTOU }] = useDisclosure(false);
   const [openedRP, { open: openRP, close: closeRP }] = useDisclosure(false);
 
+  const { user, signOut } = useUser();
+
+  const handleClickSignout = () => {
+    signOut();
+  };
+
   return (
     <div className="min-w-[360px] max-w-[768px] container mx-auto">
       <div className="h-[48px] px-[20px] flex justify-between items-center sticky z-10 top-0 bg-white">
@@ -40,14 +47,6 @@ export default function Shell({ children }: Props) {
           <FluenceBi />
         </Link>
         <div className="flex gap-2 items-center">
-          {/* <Link href="/fluence">
-            <button
-              type="button"
-              className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
-            >
-              플루언스
-            </button>
-          </Link> */}
           <Link href="/cs">
             <button
               type="button"
@@ -122,36 +121,34 @@ export default function Shell({ children }: Props) {
                     마이 페이지
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  asChild
-                  className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
-                >
-                  <Link
-                    href="/signin"
-                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                {!user ? (
+                  <DropdownMenuItem
+                    asChild
+                    className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
                   >
-                    <LogIn
-                      className="w-4 h-4 text-gray-400"
-                      strokeWidth={1.5}
-                    />
-                    로그인
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  asChild
-                  className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
-                >
-                  <Link
-                    href="/signout"
-                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                    <Link
+                      href="/signin"
+                      className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                    >
+                      <LogIn
+                        className="w-4 h-4 text-gray-400"
+                        strokeWidth={1.5}
+                      />
+                      로그인
+                    </Link>
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem
+                    onClick={handleClickSignout}
+                    className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
                   >
                     <LogOut
                       className="w-4 h-4 text-gray-400"
                       strokeWidth={1.5}
                     />
                     로그아웃
-                  </Link>
-                </DropdownMenuItem>
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -184,13 +181,6 @@ export default function Shell({ children }: Props) {
                   환불규정
                 </button>
               </div>
-              {/* <div className="flex flex-col md:flex-row items-center gap-2 text-xs text-gray-400">
-                <span>Copyright</span>
-                <span className="hidden md:block">•</span>
-                <span>© 2024 Awake Moment Inc.</span>
-                <span className="hidden md:block">•</span>
-                <span>All Rights Reserved.</span>
-              </div> */}
             </div>
           </div>
         </footer>

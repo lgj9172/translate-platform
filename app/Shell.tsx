@@ -112,15 +112,6 @@ export default function Shell({ children }: Props) {
                 개인
               </DropdownMenuLabel>
               <DropdownMenuGroup className="px-1">
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link
-                    href="/my"
-                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                  >
-                    <User className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                    마이 페이지
-                  </Link>
-                </DropdownMenuItem>
                 {!user ? (
                   <DropdownMenuItem
                     asChild
@@ -138,16 +129,30 @@ export default function Shell({ children }: Props) {
                     </Link>
                   </DropdownMenuItem>
                 ) : (
-                  <DropdownMenuItem
-                    onClick={handleClickSignout}
-                    className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
-                  >
-                    <LogOut
-                      className="w-4 h-4 text-gray-400"
-                      strokeWidth={1.5}
-                    />
-                    로그아웃
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem asChild className="rounded-md">
+                      <Link
+                        href="/my"
+                        className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                      >
+                        <User
+                          className="w-4 h-4 text-gray-400"
+                          strokeWidth={1.5}
+                        />
+                        마이 페이지
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleClickSignout}
+                      className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+                    >
+                      <LogOut
+                        className="w-4 h-4 text-gray-400"
+                        strokeWidth={1.5}
+                      />
+                      로그아웃
+                    </DropdownMenuItem>
+                  </>
                 )}
               </DropdownMenuGroup>
             </DropdownMenuContent>

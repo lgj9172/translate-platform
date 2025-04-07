@@ -1,12 +1,10 @@
-import { Translation, TranslationCategory } from "@/types/entities";
-import {
-  getCategoryLabel,
-  getDday,
-  getLanguageLabel,
-} from "@/utils/converter/label";
+import { Translation } from "@/types/entities";
+import { getDday } from "@/utils/converter/label";
 import { NumericFormat } from "react-number-format";
 import Badge from "./Badge";
 import Card from "./Card";
+import CategoryBadges from "./CatagoryBadges";
+import LanguageBadge from "./LangaugeBadge";
 import TranslationStatus from "./TranslationStatus";
 
 interface TranslationCardProps {
@@ -54,16 +52,11 @@ export default function TranslationCard({
       <div className="flex flex-col gap-[16px]">
         <div className="flex justify-between items-center">
           <div className="flex gap-1">
-            {translation.categories.map((category: TranslationCategory) => (
-              <Badge key={category} color="blue">
-                {getCategoryLabel(category)}
-              </Badge>
-            ))}
-            <Badge color="black">
-              {`${getLanguageLabel(translation.source_language)[0]}${
-                getLanguageLabel(translation.target_language)[0]
-              }`}
-            </Badge>
+            <LanguageBadge
+              sourceLanguage={translation.source_language}
+              targetLanguage={translation.target_language}
+            />
+            <CategoryBadges categories={translation.categories} />
             <Badge color="red">{getDday(translation.deadline)}</Badge>
           </div>
         </div>

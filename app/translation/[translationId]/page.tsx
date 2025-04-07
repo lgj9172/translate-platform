@@ -3,12 +3,13 @@
 import { getTranslation } from "@/apis/translations";
 import { getOtherUser, getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
-import Badge from "@/components/Badge";
 import Card from "@/components/Card";
+import CategoryBadges from "@/components/CatagoryBadges";
 import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import LanguageBadge from "@/components/LangaugeBadge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
@@ -17,7 +18,6 @@ import {
   TRANSLATION_CURRENCY_LABEL,
   TRANSLATION_STATUS,
 } from "@/types/entities";
-import { getCategoryLabel, getLanguageLabel } from "@/utils/converter/label";
 import {
   ActionIcon,
   Avatar,
@@ -98,16 +98,11 @@ export default function Page({ params: { translationId } }: Props) {
 
       <Group justify="space-between">
         <Group gap={4}>
-          <Badge color="black">
-            {`${getLanguageLabel(translation.source_language)[0]}${
-              getLanguageLabel(translation.target_language)[0]
-            }`}
-          </Badge>
-          {translation.categories.map((category) => (
-            <Badge key={category} color="blue">
-              {getCategoryLabel(category)}
-            </Badge>
-          ))}
+          <LanguageBadge
+            sourceLanguage={translation.source_language}
+            targetLanguage={translation.target_language}
+          />
+          <CategoryBadges categories={translation.categories} />
         </Group>
         <TranslationStatus translation={translation} />
       </Group>

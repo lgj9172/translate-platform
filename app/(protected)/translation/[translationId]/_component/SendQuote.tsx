@@ -87,6 +87,7 @@ export default function SendQuote({ translation }: Props) {
         richColors: true,
         position: "top-center",
       });
+      modals.closeAll();
     },
   });
 
@@ -106,6 +107,7 @@ export default function SendQuote({ translation }: Props) {
         richColors: true,
         position: "top-center",
       });
+      modals.closeAll();
     },
   });
 
@@ -141,7 +143,6 @@ export default function SendQuote({ translation }: Props) {
                     detail,
                   },
                 });
-                modals.closeAll();
               }}
             >
               견적 보내기
@@ -168,7 +169,6 @@ export default function SendQuote({ translation }: Props) {
                   translationId,
                   quotationId,
                 });
-                modals.closeAll();
               }}
             >
               견적 보내기 취소

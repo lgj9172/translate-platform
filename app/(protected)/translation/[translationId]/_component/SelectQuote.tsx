@@ -17,8 +17,9 @@ import {
 } from "@/types/entities";
 import { Center, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 import TranslatorProfile from "./TranslatorProfile";
 
 interface Props {
@@ -26,6 +27,8 @@ interface Props {
 }
 
 export default function SelectQuote({ translation }: Props) {
+  const queryClient = useQueryClient();
+
   const { data: translationQuotes, isLoading } = useQuery({
     queryKey: ["translations", translation.translation_id, "quotes"],
     queryFn: () =>
@@ -40,12 +43,30 @@ export default function SelectQuote({ translation }: Props) {
 
   const { mutate: mutatePostTranslationQuoteSelect } = useMutation({
     mutationFn: postTranslationQuotationSelect,
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translation.translation_id],
+      });
+      toast.success("번역사를 선택했어요.", {
+        richColors: true,
+        position: "top-center",
+      });
+      modals.closeAll();
+    },
   });
 
   const { mutate: mutatePostTranslationCancel } = useMutation({
     mutationFn: postTranslationCancel,
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translation.translation_id],
+      });
+      toast.success("번역 요청이 취소되었어요.", {
+        richColors: true,
+        position: "top-center",
+      });
+      modals.closeAll();
+    },
   });
 
   const handleClickSelectQuote = (quotationId: string) =>
@@ -65,7 +86,6 @@ export default function SelectQuote({ translation }: Props) {
                   translationId: translation.translation_id,
                   quotationId,
                 });
-                modals.closeAll();
               }}
             >
               번역사 선택
@@ -91,7 +111,6 @@ export default function SelectQuote({ translation }: Props) {
                 mutatePostTranslationCancel({
                   translationId: translation.translation_id,
                 });
-                modals.closeAll();
               }}
             >
               번역 요청 취소

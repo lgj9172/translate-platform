@@ -143,8 +143,8 @@ export default function Index() {
   const { mutate: mutatePostTranslation, isPending: isPostTranslationPending } =
     useMutation({
       mutationFn: postTranslation,
-      onSuccess: () => {
-        router.push("/translation/create/done");
+      onSuccess: (res) => {
+        router.push(`/translation/${res.translation_id}`);
       },
     });
 

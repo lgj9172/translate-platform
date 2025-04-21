@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 import { ReactNode } from "react";
 import { BsPersonFill } from "react-icons/bs";
-import CustomerSupport from "./components/CustomerSupport";
+import CustomerSupport from "../components/CustomerSupport";
 
 interface Props {
   children: ReactNode;

@@ -1,7 +1,7 @@
 "use client";
 
 import { getTranslator } from "@/apis/translator";
-import TranslatorProfile from "@/app/translation/[translationId]/_component/TranslatorProfile";
+import TranslatorProfile from "@/app/(protected)/translation/[translationId]/_component/TranslatorProfile";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";

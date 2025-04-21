@@ -7,7 +7,11 @@ export default function useUser() {
 
   const queryClient = useQueryClient();
 
-  const { data: user } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["users", "me"],
     queryFn: getUser,
   });
@@ -22,5 +26,5 @@ export default function useUser() {
     },
   });
 
-  return { user, signOut };
+  return { user, isLoading, isError, signOut };
 }

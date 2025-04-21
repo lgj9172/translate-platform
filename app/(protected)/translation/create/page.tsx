@@ -2,7 +2,7 @@
 
 import { postFile } from "@/apis/files";
 import { postTranslation } from "@/apis/translations";
-import Speciality from "@/app/my/translator/_component/Speciality";
+import Speciality from "@/app/(protected)/my/translator/_component/Speciality";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";

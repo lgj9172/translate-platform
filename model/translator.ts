@@ -1,15 +1,14 @@
-import { TRANSLATION_CATEGORY, TranslationCategory } from "@/types/entities";
+import {
+  TRANSLATION_CATEGORY,
+  TranslationCategory,
+  TranslationSample,
+  TranslatorCertification,
+} from "@/types/entities";
 import { z } from "zod";
 import { CareerDefaultValue, CareerSchema } from "./career";
-import {
-  CertificationDefaultValue,
-  CertificationSchema,
-} from "./certification";
+import { CertificationSchema } from "./certification";
 import { EducationDefaultValue, EducationSchema } from "./education";
-import {
-  TranslationSampleDefaultValue,
-  TranslationSampleSchema,
-} from "./translationSample";
+import { TranslationSampleSchema } from "./translationSample";
 
 export const PostTranslatorFormSchema = z.object({
   categories: z
@@ -44,6 +43,6 @@ export const PostTranslatorFormDefaultValue = {
   introduction: "",
   educations: [EducationDefaultValue],
   careers: [CareerDefaultValue],
-  certifications: [CertificationDefaultValue],
-  translation_samples: [TranslationSampleDefaultValue],
+  certifications: [] as TranslatorCertification[],
+  translation_samples: [] as TranslationSample[],
 };

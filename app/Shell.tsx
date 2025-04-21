@@ -11,7 +11,7 @@ import {
 } from "@/components/DropdownMenu";
 import useUser from "@/hooks/useUser";
 import FluenceBi from "@assets/icons/fluence-bi.svg";
-import { Modal, Title } from "@mantine/core";
+import { Avatar, Modal, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   Bell,
@@ -23,22 +23,112 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { BsPersonFill } from "react-icons/bs";
 import CustomerSupport from "../components/CustomerSupport";
 
-interface Props {
-  children: ReactNode;
-}
-
-export default function Shell({ children }: Props) {
-  const [opendTOU, { open: openTOU, close: closeTOU }] = useDisclosure(false);
-  const [openedRP, { open: openRP, close: closeRP }] = useDisclosure(false);
-
+function HeaderMenu() {
   const { user, signOut } = useUser();
 
   const handleClickSignout = () => {
     signOut();
   };
+
+  return (
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          aria-label="사용자 메뉴"
+          className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary focus:outline-none"
+        >
+          <Avatar size="sm" src={user?.avatar} alt={user?.name} />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className="w-48 bg-white shadow-lg rounded-lg border-gray-100"
+      >
+        <DropdownMenuLabel className="text-xs font-medium text-gray-400 px-2 py-1.5">
+          고객센터
+        </DropdownMenuLabel>
+        <DropdownMenuGroup className="px-1">
+          <DropdownMenuItem asChild className="rounded-md">
+            <Link
+              href="/cs/notice"
+              className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+            >
+              <Bell className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+              공지사항
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild className="rounded-md">
+            <Link
+              href="/cs/faq"
+              className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+            >
+              <HelpCircle className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+              자주하는 질문(FAQ)
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild className="rounded-md">
+            <Link
+              href="/cs/ask"
+              className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+            >
+              <HeadphonesIcon
+                className="w-4 h-4 text-gray-400"
+                strokeWidth={1.5}
+              />
+              1:1 문의
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator className="my-1" />
+        <DropdownMenuLabel className="text-xs font-medium text-gray-400 px-2 py-1.5">
+          개인
+        </DropdownMenuLabel>
+        <DropdownMenuGroup className="px-1">
+          {!user ? (
+            <DropdownMenuItem
+              asChild
+              className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+            >
+              <Link
+                href="/signin"
+                className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+              >
+                <LogIn className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+                로그인
+              </Link>
+            </DropdownMenuItem>
+          ) : (
+            <>
+              <DropdownMenuItem asChild className="rounded-md">
+                <Link
+                  href="/my"
+                  className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
+                >
+                  <User className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+                  마이 페이지
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleClickSignout}
+                className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+              >
+                <LogOut className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+                로그아웃
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export default function Shell({ children }: { children: ReactNode }) {
+  const [openedTOU, { open: openTOU, close: closeTOU }] = useDisclosure(false);
+  const [openedRP, { open: openRP, close: closeRP }] = useDisclosure(false);
 
   return (
     <div className="min-w-[360px] max-w-[768px] container mx-auto">
@@ -55,108 +145,7 @@ export default function Shell({ children }: Props) {
               고객센터
             </button>
           </Link>
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                aria-label="사용자 메뉴"
-                className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary focus:outline-none"
-              >
-                <BsPersonFill className="w-5 h-5" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-48 bg-white shadow-lg rounded-lg border-gray-100"
-            >
-              <DropdownMenuLabel className="text-xs font-medium text-gray-400 px-2 py-1.5">
-                고객센터
-              </DropdownMenuLabel>
-              <DropdownMenuGroup className="px-1">
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link
-                    href="/cs/notice"
-                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                  >
-                    <Bell className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                    공지사항
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link
-                    href="/cs/faq"
-                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                  >
-                    <HelpCircle
-                      className="w-4 h-4 text-gray-400"
-                      strokeWidth={1.5}
-                    />
-                    자주하는 질문(FAQ)
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link
-                    href="/cs/ask"
-                    className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                  >
-                    <HeadphonesIcon
-                      className="w-4 h-4 text-gray-400"
-                      strokeWidth={1.5}
-                    />
-                    1:1 문의
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator className="my-1" />
-              <DropdownMenuLabel className="text-xs font-medium text-gray-400 px-2 py-1.5">
-                개인
-              </DropdownMenuLabel>
-              <DropdownMenuGroup className="px-1">
-                {!user ? (
-                  <DropdownMenuItem
-                    asChild
-                    className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
-                  >
-                    <Link
-                      href="/signin"
-                      className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                    >
-                      <LogIn
-                        className="w-4 h-4 text-gray-400"
-                        strokeWidth={1.5}
-                      />
-                      로그인
-                    </Link>
-                  </DropdownMenuItem>
-                ) : (
-                  <>
-                    <DropdownMenuItem asChild className="rounded-md">
-                      <Link
-                        href="/my"
-                        className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                      >
-                        <User
-                          className="w-4 h-4 text-gray-400"
-                          strokeWidth={1.5}
-                        />
-                        마이 페이지
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={handleClickSignout}
-                      className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
-                    >
-                      <LogOut
-                        className="w-4 h-4 text-gray-400"
-                        strokeWidth={1.5}
-                      />
-                      로그아웃
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <HeaderMenu />
         </div>
       </div>
       <div className="p-[20px]">
@@ -192,7 +181,7 @@ export default function Shell({ children }: Props) {
 
         {/* Modal 부분은 유지 */}
         <Modal
-          opened={opendTOU}
+          opened={openedTOU}
           onClose={closeTOU}
           title={<Title order={3}>이용약관</Title>}
           centered

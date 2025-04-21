@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  getTranslatorQuotation,
-  postTranslationQuotation,
-  postTranslationQuotationCancel,
-} from "@/apis/translations-quotations";
+import { getTranslatorQuotation } from "@/apis/translations-quotations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -12,6 +8,8 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
+import CancelQuoteModal from "@/modals/CancelQuoteModal";
+import SendQuoteModal from "@/modals/SendQuoteModal";
 import {
   Translation,
   TRANSLATION_CURRENCY,
@@ -19,9 +17,9 @@ import {
 } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Center, NumberInput, Stack } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
+import { useState } from "react";
 import {
   Controller,
   FormProvider,
@@ -29,7 +27,6 @@ import {
   useForm,
 } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
-import { toast } from "sonner";
 import { z } from "zod";
 
 const PostTranslationQuoteFormSchema = z.object({
@@ -54,8 +51,8 @@ interface Props {
 }
 
 export default function SendQuote({ translation }: Props) {
-  const queryClient = useQueryClient();
-
+  const [openSendQuoteModal, setOpenSendQuoteModal] = useState(false);
+  const [openCancelQuoteModal, setOpenCancelQuoteModal] = useState(false);
   const { data: translatorQuotation, isLoading: isTranslatorQuotationLoading } =
     useQuery({
       queryKey: ["quotations", translation.translation_id],
@@ -71,112 +68,21 @@ export default function SendQuote({ translation }: Props) {
     mode: "onChange",
   });
 
-  const { mutate: mutatePostTranslationQuote } = useMutation({
-    mutationFn: postTranslationQuotation,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["translations", translation.translation_id],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["translations", translation.translation_id, "quotes"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["quotations", translation.translation_id],
-      });
-      toast.success("견적을 보냈어요.", {
-        richColors: true,
-        position: "top-center",
-      });
-      modals.closeAll();
-    },
-  });
-
-  const { mutate: mutatePostTranslationQuoteCancel } = useMutation({
-    mutationFn: postTranslationQuotationCancel,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["translations", translation.translation_id],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["translations", translation.translation_id, "quotes"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["quotations", translation.translation_id],
-      });
-      toast.success("견적을 취소했어요.", {
-        richColors: true,
-        position: "top-center",
-      });
-      modals.closeAll();
-    },
-  });
-
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const handleClickCreateQuote: SubmitHandler<PostTranslationQuoteFormType> = ({
-    translation_fee,
-    detail,
-  }) =>
-    modals.open({
-      title: <div className="text-lg font-bold">견적 보내기</div>,
-      children: (
-        <div className="flex flex-col gap-2">
-          <div>견적을 보내시겠어요?</div>
-          <div className="flex justify-end gap-2">
-            <Button variant="secondary" onClick={() => modals.closeAll()}>
-              닫기
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => {
-                mutatePostTranslationQuote({
-                  translationId: translation.translation_id,
-                  payload: {
-                    fee: {
-                      unit: translation.fee.unit,
-                      value: translation_fee,
-                    },
-                    detail,
-                  },
-                });
-              }}
-            >
-              견적 보내기
-            </Button>
-          </div>
-        </div>
-      ),
-    });
+  const handleClickCreateQuote: SubmitHandler<
+    PostTranslationQuoteFormType
+  > = () => {
+    setOpenSendQuoteModal(true);
+  };
 
-  const handleClickCancelQuote = (translationId: string, quotationId: string) =>
-    modals.open({
-      title: <div className="text-lg font-bold">견적 보내기 취소</div>,
-      children: (
-        <div className="flex flex-col gap-2">
-          <div>보내신 견적을 취소하시겠어요?</div>
-          <div className="flex justify-end gap-2">
-            <Button variant="secondary" onClick={() => modals.closeAll()}>
-              닫기
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => {
-                mutatePostTranslationQuoteCancel({
-                  translationId,
-                  quotationId,
-                });
-              }}
-            >
-              견적 보내기 취소
-            </Button>
-          </div>
-        </div>
-      ),
-    });
+  const handleClickCancelQuote = () => {
+    setOpenCancelQuoteModal(true);
+  };
 
   if (isTranslatorQuotationLoading) {
     return (
@@ -276,7 +182,6 @@ export default function SendQuote({ translation }: Props) {
                 <span>
                   <NumericFormat
                     displayType="text"
-                    // TODO: 견적 아이디 추가
                     value={translatorQuotation.fee.value}
                     thousandsGroupStyle="thousand"
                     thousandSeparator=","
@@ -302,13 +207,7 @@ export default function SendQuote({ translation }: Props) {
               <Button
                 size="md"
                 variant="secondary"
-                onClick={() =>
-                  // TODO: 견적 아이디 추가
-                  handleClickCancelQuote(
-                    translation.translation_id,
-                    translatorQuotation.quotation_id,
-                  )
-                }
+                onClick={handleClickCancelQuote}
               >
                 견적 보내기 취소
               </Button>
@@ -316,6 +215,22 @@ export default function SendQuote({ translation }: Props) {
           </Stack>
         )}
       </FormProvider>
+      <SendQuoteModal
+        open={openSendQuoteModal}
+        onOpenChange={setOpenSendQuoteModal}
+        translationId={translation.translation_id}
+        fee={{
+          unit: translation.fee.unit,
+          value: methods.getValues("translation_fee"),
+        }}
+        detail={methods.getValues("detail")}
+      />
+      <CancelQuoteModal
+        open={openCancelQuoteModal}
+        onOpenChange={setOpenCancelQuoteModal}
+        translationId={translation.translation_id}
+        quotationId={translatorQuotation?.quotation_id || ""}
+      />
     </form>
   );
 }

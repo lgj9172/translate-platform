@@ -59,7 +59,7 @@ export default function Page({ params: { translationId } }: Props) {
   const router = useRouter();
 
   const { data: translation, isLoading } = useQuery({
-    queryKey: ["translation", translationId],
+    queryKey: ["translations", translationId],
     queryFn: () => getTranslation({ translationId }),
   });
 

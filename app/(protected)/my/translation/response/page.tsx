@@ -16,7 +16,7 @@ export default function Page() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["translation", "translator"],
+    queryKey: ["translations", "translator"],
     queryFn: () =>
       getTranslationsTranslator({ params: { start: 0, size: 10 } }),
   });

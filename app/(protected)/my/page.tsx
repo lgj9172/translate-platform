@@ -33,13 +33,13 @@ export default function Page() {
 
   const { data: translationRequest, isLoading: isLoadingTranslationRequest } =
     useQuery({
-      queryKey: ["translation", "client"],
+      queryKey: ["translations", "client"],
       queryFn: () => getTranslationsClient({ params: { start: 0, size: 10 } }),
     });
 
   const { data: translationResponse, isLoading: isLoadingTranslationResponse } =
     useQuery({
-      queryKey: ["translation", "translator"],
+      queryKey: ["translations", "translator"],
       queryFn: () =>
         getTranslationsTranslator({ params: { start: 0, size: 10 } }),
     });

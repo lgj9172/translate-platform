@@ -20,9 +20,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Center, NumberInput, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
 import {
   Controller,
   FormProvider,
@@ -30,6 +29,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const PostTranslationQuoteFormSchema = z.object({
@@ -54,11 +54,11 @@ interface Props {
 }
 
 export default function SendQuote({ translation }: Props) {
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data: translatorQuotation, isLoading: isTranslatorQuotationLoading } =
     useQuery({
-      queryKey: ["quotation", translation.translation_id],
+      queryKey: ["quotations", translation.translation_id],
       queryFn: () =>
         getTranslatorQuotation({
           translationId: translation.translation_id,
@@ -74,16 +74,38 @@ export default function SendQuote({ translation }: Props) {
   const { mutate: mutatePostTranslationQuote } = useMutation({
     mutationFn: postTranslationQuotation,
     onSuccess: () => {
-      router.push(
-        `/translation/${translation.translation_id}/quote/create/done`,
-      );
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translation.translation_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translation.translation_id, "quotes"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["quotations", translation.translation_id],
+      });
+      toast.success("견적을 보냈어요.", {
+        richColors: true,
+        position: "top-center",
+      });
     },
   });
 
   const { mutate: mutatePostTranslationQuoteCancel } = useMutation({
     mutationFn: postTranslationQuotationCancel,
     onSuccess: () => {
-      router.refresh();
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translation.translation_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translation.translation_id, "quotes"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["quotations", translation.translation_id],
+      });
+      toast.success("견적을 취소했어요.", {
+        richColors: true,
+        position: "top-center",
+      });
     },
   });
 

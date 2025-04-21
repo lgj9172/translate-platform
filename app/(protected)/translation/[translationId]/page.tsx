@@ -55,7 +55,7 @@ interface Props {
 
 export default function Page({ params: { translationId } }: Props) {
   const { data: translation, isLoading: isTranslationLoading } = useQuery({
-    queryKey: ["translation", translationId],
+    queryKey: ["translations", translationId],
     queryFn: () => getTranslation({ translationId }),
   });
 

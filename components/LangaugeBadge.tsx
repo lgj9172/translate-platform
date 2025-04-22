@@ -1,6 +1,7 @@
-import { memo } from "react";
 import { TranslationLanguage } from "@/types/entities";
 import { getLanguageLabel } from "@/utils/converter/label";
+import { memo } from "react";
+import { FaArrowRight } from "react-icons/fa6";
 import Badge from "./Badge";
 
 const LanguageBadge = memo(
@@ -12,7 +13,9 @@ const LanguageBadge = memo(
     targetLanguage: TranslationLanguage;
   }) => (
     <Badge color="black">
-      {`${getLanguageLabel(sourceLanguage)} → ${getLanguageLabel(targetLanguage)}`}
+      {getLanguageLabel(sourceLanguage)}
+      <FaArrowRight className="w-2 h-2" />
+      {getLanguageLabel(targetLanguage)}
     </Badge>
   ),
 );

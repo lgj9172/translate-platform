@@ -4,17 +4,14 @@ import { getTranslatorQuotation } from "@/apis/translations-quotations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
+import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
 import CancelQuoteModal from "@/modals/CancelQuoteModal";
 import SendQuoteModal from "@/modals/SendQuoteModal";
-import {
-  Translation,
-  TRANSLATION_CURRENCY,
-  TRANSLATION_CURRENCY_LABEL,
-} from "@/types/entities";
+import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Center, NumberInput, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
@@ -26,7 +23,6 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { NumericFormat } from "react-number-format";
 import { z } from "zod";
 
 const PostTranslationQuoteFormSchema = z.object({
@@ -177,23 +173,10 @@ export default function SendQuote({ translation }: Props) {
               <LabelSection>
                 <Label>번역료</Label>
               </LabelSection>
-
-              <div className="flex text-primary font-bold text-[16px]">
-                <span>
-                  <NumericFormat
-                    displayType="text"
-                    value={translatorQuotation.fee.value}
-                    thousandsGroupStyle="thousand"
-                    thousandSeparator=","
-                  />
-                </span>
-                <span>
-                  {translatorQuotation.fee.unit === TRANSLATION_CURRENCY.KRW &&
-                    TRANSLATION_CURRENCY_LABEL.KRW}
-                  {translatorQuotation.fee.unit === TRANSLATION_CURRENCY.USD &&
-                    TRANSLATION_CURRENCY_LABEL.USD}
-                </span>
-              </div>
+              <Fee
+                value={translatorQuotation.fee.value}
+                unit={translatorQuotation.fee.unit}
+              />
             </InputSection>
 
             <InputSection>

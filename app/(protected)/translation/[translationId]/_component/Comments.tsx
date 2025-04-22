@@ -6,6 +6,7 @@ import { getUser } from "@/apis/user";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
+import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
@@ -96,7 +97,7 @@ export default function Comments({
   if (isLoading) return <Loader color="orange" type="bars" />;
 
   return (
-    <div className="flex flex-col gap-4">
+    <InputSection>
       <LabelSection>
         <Label>댓글</Label>
       </LabelSection>
@@ -133,6 +134,6 @@ export default function Comments({
           </div>
         </div>
       </form>
-    </div>
+    </InputSection>
   );
 }

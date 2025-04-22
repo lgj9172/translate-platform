@@ -1,12 +1,11 @@
 "use client";
 
-import { Translation } from "@/types/entities";
 import Card from "@/components/Card";
+import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import { Stack } from "@mantine/core";
-import { NumericFormat } from "react-number-format";
+import { Translation } from "@/types/entities";
 
 interface Props {
   translation: Translation;
@@ -14,10 +13,10 @@ interface Props {
 
 export default function Payment({ translation }: Props) {
   return (
-    <Stack>
-      <Label>결제 정보</Label>
-
-      {/* TODO: 이 번역에 결제된 정보를 가져와서 보여주어야 함 */}
+    <InputSection>
+      <LabelSection>
+        <Label>결제 정보</Label>
+      </LabelSection>
       <Card>
         <div className="flex flex-col gap-2">
           <InputSection>
@@ -31,24 +30,10 @@ export default function Payment({ translation }: Props) {
             <LabelSection>
               <Label>결제 금액</Label>
             </LabelSection>
-
-            <div className="flex text-primary font-bold text-[16px]">
-              <span>
-                <NumericFormat
-                  displayType="text"
-                  value={12345}
-                  thousandsGroupStyle="thousand"
-                  thousandSeparator=","
-                />
-              </span>
-              <span>
-                {translation.fee.unit === "KRW" && "원"}
-                {translation.fee.unit === "USD" && "달러"}
-              </span>
-            </div>
+            <Fee value={translation.fee.value} unit={translation.fee.unit} />
           </InputSection>
         </div>
       </Card>
-    </Stack>
+    </InputSection>
   );
 }

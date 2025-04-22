@@ -3,20 +3,16 @@
 import { getTranslationQuotations } from "@/apis/translations-quotations";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import SelectQuoteModal from "@/modals/SelectQuoteModal";
-import {
-  Translation,
-  TRANSLATION_CURRENCY,
-  TRANSLATION_CURRENCY_LABEL,
-} from "@/types/entities";
+import { Translation } from "@/types/entities";
 import { Center, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { NumericFormat } from "react-number-format";
 import TranslatorProfile from "./TranslatorProfile";
 
 export default function SelectQuote({
@@ -98,23 +94,7 @@ export default function SelectQuote({
                   <LabelSection>
                     <Label>번역료</Label>
                   </LabelSection>
-
-                  <div className="flex text-primary font-bold text-[16px]">
-                    <span>
-                      <NumericFormat
-                        displayType="text"
-                        value={quote.fee.value}
-                        thousandsGroupStyle="thousand"
-                        thousandSeparator=","
-                      />
-                    </span>
-                    <span>
-                      {quote.fee.unit === TRANSLATION_CURRENCY.KRW &&
-                        TRANSLATION_CURRENCY_LABEL.KRW}
-                      {quote.fee.unit === TRANSLATION_CURRENCY.USD &&
-                        TRANSLATION_CURRENCY_LABEL.USD}
-                    </span>
-                  </div>
+                  <Fee value={quote.fee.value} unit={quote.fee.unit} />
                 </InputSection>
 
                 <InputSection>

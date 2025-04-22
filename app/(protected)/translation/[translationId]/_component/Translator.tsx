@@ -7,7 +7,6 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Translation } from "@/types/entities";
-import { Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import TranslatorProfile from "./TranslatorProfile";
 
@@ -27,8 +26,10 @@ export default function Translator({ translation }: Props) {
   });
 
   return (
-    <Stack>
-      <Label>담당 번역사</Label>
+    <InputSection>
+      <LabelSection>
+        <Label>담당 번역사</Label>
+      </LabelSection>
       <Card>
         <div className="flex flex-col gap-2">
           {selectedQuotation && (
@@ -49,6 +50,6 @@ export default function Translator({ translation }: Props) {
           </InputSection>
         </div>
       </Card>
-    </Stack>
+    </InputSection>
   );
 }

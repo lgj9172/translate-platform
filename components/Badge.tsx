@@ -8,6 +8,7 @@ const badge = cva(
     "flex",
     "justify-center",
     "items-center",
+    "gap-[4px]",
     "rounded-[16px]",
     "text-nowrap",
     "text-[12px]",

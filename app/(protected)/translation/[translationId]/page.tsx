@@ -5,6 +5,7 @@ import { getOtherUser, getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
 import Card from "@/components/Card";
 import CategoryBadges from "@/components/CatagoryBadges";
+import Fee from "@/components/Fee";
 import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
@@ -13,11 +14,7 @@ import LanguageBadge from "@/components/LangaugeBadge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
-import {
-  TRANSLATION_CURRENCY,
-  TRANSLATION_CURRENCY_LABEL,
-  TRANSLATION_STATUS,
-} from "@/types/entities";
+import { TRANSLATION_STATUS } from "@/types/entities";
 import {
   ActionIcon,
   Avatar,
@@ -188,23 +185,7 @@ export default function Page({ params: { translationId } }: Props) {
           <LabelSection>
             <Label>희망 번역료</Label>
           </LabelSection>
-
-          <div className="flex text-primary font-bold text-[16px]">
-            <span>
-              <NumericFormat
-                displayType="text"
-                value={translation.fee.value}
-                thousandsGroupStyle="thousand"
-                thousandSeparator=","
-              />
-            </span>
-            <span>
-              {translation.fee.unit === TRANSLATION_CURRENCY.KRW &&
-                TRANSLATION_CURRENCY_LABEL.KRW}
-              {translation.fee.unit === TRANSLATION_CURRENCY.USD &&
-                TRANSLATION_CURRENCY_LABEL.USD}
-            </span>
-          </div>
+          <Fee value={translation.fee.value} unit={translation.fee.unit} />
         </InputSection>
 
         {[

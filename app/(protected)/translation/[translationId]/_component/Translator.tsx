@@ -1,32 +1,39 @@
 "use client";
 
+import { getSelectedQuotation } from "@/apis/translations-quotations";
 import Card from "@/components/Card";
 import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Translation } from "@/types/entities";
-import { Avatar, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+import TranslatorProfile from "./TranslatorProfile";
 
 interface Props {
   translation: Translation;
 }
 
 export default function Translator({ translation }: Props) {
+  const { data: selectedQuotation } = useQuery({
+    queryKey: [
+      "translations",
+      translation.translation_id,
+      "selected-quotation",
+    ],
+    queryFn: () =>
+      getSelectedQuotation({ translationId: translation.translation_id }),
+  });
+
   return (
     <Stack>
       <Label>담당 번역사</Label>
-      {/* TODO: 이 번역에 선택된 견적을 가져와서 보여주어야 함 */}
       <Card>
         <div className="flex flex-col gap-2">
-          <div className="flex gap-[8px]">
-            <Avatar />
-            <div>
-              <div className="text-[14px] text-[#4B4D4D]">번역사이름</div>
-              <div className="text-[14px] text-[#8B8C8D]">경력 5년</div>
-            </div>
-          </div>
-
+          {selectedQuotation && (
+            <TranslatorProfile translatorId={selectedQuotation.translator_id} />
+          )}
           <InputSection>
             <LabelSection>
               <Label>번역료</Label>
@@ -38,7 +45,7 @@ export default function Translator({ translation }: Props) {
             <LabelSection>
               <Label>세부사항</Label>
             </LabelSection>
-            <div>세부사항입니다.</div>
+            <div>{translation.description || "-"}</div>
           </InputSection>
         </div>
       </Card>

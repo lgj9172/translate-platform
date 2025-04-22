@@ -26,7 +26,7 @@ const TranslatorProfile = memo(({ translatorId }: { translatorId: string }) => {
             href={`/translator/${translatorId}`}
             className="hover:underline"
           >
-            {user?.nickname}
+            {user?.name}
           </Link>
         </div>
         <div className="text-[14px] text-[#8B8C8D]">

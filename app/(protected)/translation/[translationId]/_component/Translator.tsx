@@ -1,16 +1,12 @@
 "use client";
 
-import {
-  Translation,
-  TRANSLATION_CURRENCY,
-  TRANSLATION_CURRENCY_LABEL,
-} from "@/types/entities";
 import Card from "@/components/Card";
+import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Translation } from "@/types/entities";
 import { Avatar, Stack } from "@mantine/core";
-import { NumericFormat } from "react-number-format";
 
 interface Props {
   translation: Translation;
@@ -35,23 +31,7 @@ export default function Translator({ translation }: Props) {
             <LabelSection>
               <Label>번역료</Label>
             </LabelSection>
-
-            <div className="flex text-primary font-bold text-[16px]">
-              <span>
-                <NumericFormat
-                  displayType="text"
-                  value={12345}
-                  thousandsGroupStyle="thousand"
-                  thousandSeparator=","
-                />
-              </span>
-              <span>
-                {translation.fee.unit === TRANSLATION_CURRENCY.KRW &&
-                  TRANSLATION_CURRENCY_LABEL.KRW}
-                {translation.fee.unit === TRANSLATION_CURRENCY.USD &&
-                  TRANSLATION_CURRENCY_LABEL.USD}
-              </span>
-            </div>
+            <Fee value={translation.fee.value} unit={translation.fee.unit} />
           </InputSection>
 
           <InputSection>

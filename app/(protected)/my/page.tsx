@@ -4,6 +4,7 @@ import {
   getTranslationsClient,
   getTranslationsTranslator,
 } from "@/apis/translations";
+import { getTranslatorQuotations } from "@/apis/translator";
 import { getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
 import Card from "@/components/Card";
@@ -43,6 +44,14 @@ export default function Page() {
       queryFn: () =>
         getTranslationsTranslator({ params: { start: 0, size: 10 } }),
     });
+
+  const {
+    data: translatorQuotations,
+    isLoading: isLoadingTranslatorQuotations,
+  } = useQuery({
+    queryKey: ["quotations"],
+    queryFn: () => getTranslatorQuotations({ params: { start: 0, size: 10 } }),
+  });
 
   return (
     <Stack>
@@ -110,6 +119,34 @@ export default function Page() {
                       <div className="text-green-600 font-medium">
                         번역사로 인증되었어요.
                       </div>
+                      <FaChevronRight className="text-gray-400" />
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+
+              <Link href="/my/translator/quotations">
+                <Card>
+                  <div className="flex justify-between items-center py-2">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800">
+                        보낸 견적 요청
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        내가 보낸 견적을 확인하세요
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {isLoadingTranslatorQuotations ? (
+                        <Loader color="orange" type="bars" size="sm" />
+                      ) : (
+                        <div className="text-gray-600 font-medium">
+                          <span className="text-orange-500">
+                            {translatorQuotations?.length}
+                          </span>{" "}
+                          건
+                        </div>
+                      )}
                       <FaChevronRight className="text-gray-400" />
                     </div>
                   </div>

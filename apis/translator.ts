@@ -1,4 +1,6 @@
 import {
+  PaginationParams,
+  Quotation,
   TranslationCategory,
   TranslationLanguage,
   Translator,
@@ -112,6 +114,20 @@ export const putTranslator = async ({
   const response = await ClientWithAuth.put<Response<Translator>>(
     `/translators/${translatorId}`,
     payload,
+  );
+  return response.data.data;
+};
+
+export const getTranslatorQuotations = async ({
+  params,
+}: {
+  params: PaginationParams;
+}) => {
+  const response = await ClientWithAuth.get<Response<Quotation[]>>(
+    `/translator/quotations`,
+    {
+      params,
+    },
   );
   return response.data.data;
 };

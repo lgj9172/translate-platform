@@ -20,6 +20,9 @@ const badge = cva(
         black: ["bg-[#F0F0F0]", "text-[#000000]"],
         blue: ["bg-[#E7EFFF]", "text-[#2563EB]"],
         red: ["bg-[#FFE8E8]", "text-[#FF3232]"],
+        green: ["bg-[#E8FFE8]", "text-[#008000]"],
+        yellow: ["bg-[#FFF8E8]", "text-[#FF9F1C]"],
+        gray: ["bg-[#F0F0F0]", "text-[#7E7F80]"],
       },
     },
     defaultVariants: {

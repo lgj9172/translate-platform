@@ -20,7 +20,7 @@ const ResubmitTranslationFormSchema = z.object({
     .custom<File>((file) => file instanceof File, {
       message: "유효한 파일을 선택하세요.",
     })
-    .refine((file) => file.size <= 2 * 1024 * 1024, {
+    .refine((file) => file.size <= 10 * 1024 * 1024, {
       // 파일 크기 제한 (2MB)
       message: "파일 크기가 2MB를 초과할 수 없습니다.",
     })

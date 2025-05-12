@@ -235,9 +235,13 @@ export default function Page({ params: { translationId } }: Props) {
             {translation.status === TRANSLATION_STATUS.TRANSLATOR_SELECTED && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && <WaitTranslationStart translation={translation} />}
-                {/* 내가 번역사인 경우 */}
-                {true && <StartTranslation translation={translation} />}
+                {translation.user_id === user?.user_id && (
+                  <WaitTranslationStart translation={translation} />
+                )}
+                {/* 내가 담당 번역사인 경우 */}
+                {user?.authorization?.is_translator && (
+                  <StartTranslation translation={translation} />
+                )}
               </>
             )}
 

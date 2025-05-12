@@ -1,53 +1,55 @@
 "use client";
 
-import { postTranslationStart } from "@/apis/translations";
+import { getSelectedQuotation } from "@/apis/translations-quotations";
+import { getMyTranslator } from "@/apis/translator";
 import Button from "@/components/Button";
+import StartTranslationModal from "@/modals/StartTranslationModal";
 import { Translation } from "@/types/entities";
-import { Stack } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { useMutation } from "@tanstack/react-query";
+import { Center, Stack } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
+import { useState } from "react";
 
-interface Props {
+export default function StartTranslation({
+  translation,
+}: {
   translation: Translation;
-}
+}) {
+  const [openStartTranslationModal, setOpenStartTranslationModal] =
+    useState(false);
 
-export default function StartTranslation({ translation }: Props) {
-  const { mutate: mutatePostTranslationStart } = useMutation({
-    mutationFn: postTranslationStart,
-    onSuccess: () => {},
+  const { data: selectedQuotation, isLoading: isSelectedQuotationLoading } =
+    useQuery({
+      queryKey: [
+        "translations",
+        translation.translation_id,
+        "selected-quotation",
+      ],
+      queryFn: () =>
+        getSelectedQuotation({ translationId: translation.translation_id }),
+    });
+
+  const { data: myTranslator, isLoading: isMyTranslatorLoading } = useQuery({
+    queryKey: ["translators", "me"],
+    queryFn: () => getMyTranslator(),
   });
 
+  const isSelectedTranslator =
+    selectedQuotation?.translator_id === myTranslator?.translator_id;
+
   const handleClickStartTranslation = () => {
-    modals.open({
-      title: <div className="text-lg font-bold">번역 시작</div>,
-      children: (
-        <div className="flex flex-col gap-2">
-          <div>
-            번역이 시작되었나요?
-            <br />
-            번역 시작 버튼을 눌러 번역 요청자에게 번역이 시작되었음을
-            알려주세요.
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="secondary" onClick={() => modals.closeAll()}>
-              닫기
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => {
-                mutatePostTranslationStart({
-                  translationId: translation.translation_id,
-                });
-                modals.closeAll();
-              }}
-            >
-              번역 시작
-            </Button>
-          </div>
-        </div>
-      ),
-    });
+    setOpenStartTranslationModal(true);
   };
+
+  if (isSelectedQuotationLoading || isMyTranslatorLoading) {
+    return (
+      <Center mih="320px">
+        <Loader color="orange" type="bars" />
+      </Center>
+    );
+  }
+
+  if (!isSelectedTranslator) return null;
 
   return (
     <Stack>
@@ -67,6 +69,11 @@ export default function StartTranslation({ translation }: Props) {
           번역 시작
         </Button>
       </div>
+      <StartTranslationModal
+        open={openStartTranslationModal}
+        onOpenChange={setOpenStartTranslationModal}
+        translationId={translation.translation_id}
+      />
     </Stack>
   );
 }

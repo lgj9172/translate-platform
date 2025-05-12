@@ -21,8 +21,8 @@ const ResubmitTranslationFormSchema = z.object({
       message: "유효한 파일을 선택하세요.",
     })
     .refine((file) => file.size <= 10 * 1024 * 1024, {
-      // 파일 크기 제한 (2MB)
-      message: "파일 크기가 2MB를 초과할 수 없습니다.",
+      // 파일 크기 제한 (10MB)
+      message: "파일 크기가 10MB를 초과할 수 없습니다.",
     })
     .refine((file) => file.type === "application/pdf", {
       // 파일 유형 제한 (PDF)

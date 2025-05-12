@@ -12,7 +12,7 @@ import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
 import { Translation, TranslationComment } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "@mantine/core";
+import { Center, Loader } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -94,7 +94,12 @@ export default function Comments({
     postComment(data);
   };
 
-  if (isLoading) return <Loader color="orange" type="bars" />;
+  if (isLoading)
+    return (
+      <Center mih="320px">
+        <Loader color="orange" type="bars" />
+      </Center>
+    );
 
   return (
     <InputSection>

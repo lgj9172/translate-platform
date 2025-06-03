@@ -8,7 +8,7 @@ export default function Chip({
   return (
     <label
       htmlFor={id}
-      className="px-5 py-1 bg-white rounded-2xl border border-zinc-300 justify-center items-center gap-2.5 inline-flex has-[:checked]:bg-orange-50 has-[:checked]:border-orange-400 hover:cursor-pointer"
+      className="px-5 py-1 bg-white rounded-2xl border border-zinc-300 justify-center items-center gap-2.5 inline-flex has-checked:bg-orange-50 has-checked:border-orange-400 hover:cursor-pointer"
     >
       <input {...props} id={id} type="checkbox" className="peer" hidden />
       <div className="text-neutral-400 text-sm font-normal leading-normal peer-checked:text-orange-400">

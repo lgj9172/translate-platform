@@ -177,11 +177,9 @@ export default function Index() {
     });
   };
 
-  const handleSubmitError: SubmitErrorHandler<PostTranslationFormType> = async (
-    error,
-  ) => {
-    console.log(error);
-  };
+  const handleSubmitError: SubmitErrorHandler<
+    PostTranslationFormType
+  > = async () => {};
 
   return (
     <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>

@@ -15,7 +15,7 @@ const Checkbox = forwardRef(
           ref={ref}
           type="checkbox"
           id={uniqueId}
-          className="peer appearance-none w-3.5 h-3.5 m-0.5 bg-gray-100 rounded-sm checked:bg-orange-400 disabled:bg-zinc-300"
+          className="peer appearance-none w-3.5 h-3.5 m-0.5 bg-gray-100 rounded-xs checked:bg-orange-400 disabled:bg-zinc-300"
         />
         <svg
           width="10"

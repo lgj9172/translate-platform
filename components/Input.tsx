@@ -9,7 +9,7 @@ const Input = forwardRef<
     ref={ref}
     {...props}
     className={classNames(
-      "px-3 py-2 rounded border border-slate-200 text-sm placeholder:text-neutral-400 focus:border-primary focus:outline-none",
+      "px-3 py-2 rounded-sm border border-slate-200 text-sm placeholder:text-neutral-400 focus:border-primary focus:outline-hidden",
       props.className,
     )}
   />

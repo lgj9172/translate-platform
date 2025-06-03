@@ -38,7 +38,7 @@ function HeaderMenu() {
         <button
           type="button"
           aria-label="사용자 메뉴"
-          className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary focus:outline-none"
+          className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary focus:outline-hidden"
         >
           <Avatar size="sm" src={user?.avatar} alt={user?.name} />
         </button>
@@ -166,7 +166,7 @@ export default function Shell({ children }: { children: ReactNode }) {
                 >
                   이용약관
                 </button>
-                <div className="w-[1px] h-3 bg-gray-300" />
+                <div className="w-px h-3 bg-gray-300" />
                 <button
                   type="button"
                   onClick={openRP}

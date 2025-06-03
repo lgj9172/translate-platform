@@ -28,8 +28,8 @@ export default function Typography({
   return (
     <div
       className={classNames({
-        "font-[400]": !bold,
-        "font-[700]": bold,
+        "font-normal": !bold,
+        "font-bold": bold,
         "text-left": align === "left",
         "text-center": align === "center",
         "text-right": align === "right",

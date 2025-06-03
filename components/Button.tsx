@@ -7,7 +7,7 @@ const button = cva(
     "font-bold",
     "rounded-[8px]",
     "transition-colors",
-    "focus:outline-none",
+    "focus:outline-hidden",
     "disabled:bg-gray-200",
     "disabled:text-gray-300",
     "disabled:cursor-not-allowed",

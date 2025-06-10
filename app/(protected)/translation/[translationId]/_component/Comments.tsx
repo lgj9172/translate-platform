@@ -2,7 +2,7 @@ import {
   getTranslationComments,
   postTranslationComment,
 } from "@/apis/translations";
-import { getUser } from "@/apis/user";
+import { getOtherUser, getUser } from "@/apis/user";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -24,6 +24,12 @@ function Message({ message }: { message: TranslationComment }) {
     queryFn: () => getUser(),
   });
 
+  const { data: writer } = useQuery({
+    queryKey: ["user", message.user_id],
+    queryFn: () => getOtherUser({ userId: message.user_id ?? "" }),
+    enabled: !!message.user_id,
+  });
+
   const isCurrentUser = user?.user_id === message.user_id;
 
   return (
@@ -31,16 +37,20 @@ function Message({ message }: { message: TranslationComment }) {
       className={`flex flex-col gap-2 ${isCurrentUser ? "items-end" : "items-start"}`}
     >
       <div
-        className={`p-2 rounded-[16px] ${isCurrentUser ? "bg-[#FFF7ED] text-right rounded-br-none" : "bg-[#F9FAFB] text-left rounded-bl-none"}`}
+        className={`p-2 rounded-[16px] gap-2 ${isCurrentUser ? "bg-[#FFF7ED] text-right rounded-br-none" : "bg-[#F9FAFB] text-left rounded-bl-none"}`}
       >
-        <div className="text-[14px] text-[#8B8C8D]">{message.user_id}</div>
+        <div
+          className={`text-[14px] text-[#8B8C8D] flex items-center justify-end gap-2 ${
+            isCurrentUser ? "flex-row" : "flex-row-reverse"
+          }`}
+        >
+          <span>{dayjs(message.created_at).format("YYYY.MM.DD HH:mm")}</span>
+          <span className="font-bold">{writer?.nickname}</span>
+        </div>
         {message.content.split("\n").map((line, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={index}>{line}</div>
         ))}
-        <div className="text-[14px] text-[#8B8C8D]">
-          {dayjs(message.created_at).format("YYYY.MM.DD HH:mm")}
-        </div>
       </div>
     </div>
   );
@@ -106,39 +116,45 @@ export default function Comments({
       <LabelSection>
         <Label>댓글</Label>
       </LabelSection>
-      <div className="flex flex-col gap-4">
-        {comments?.map((comment) => (
-          <Message key={comment.comment_id} message={comment} />
-        ))}
-      </div>
-      <form onSubmit={handleSubmit(handleSubmitSuccess)}>
+      <ControllerSection>
         <div className="flex flex-col gap-2">
-          <Controller
-            name="content"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <ControllerSection>
-                <TextArea
-                  {...field}
-                  maxLength={100}
-                  placeholder="댓글을 입력해주세요."
-                />
-                <ErrorText>{error?.message}</ErrorText>
-              </ControllerSection>
-            )}
-          />
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              variant="secondary"
-              size="sm"
-              disabled={isPending}
-            >
-              등록
-            </Button>
-          </div>
+          {comments
+            ?.sort((a, b) =>
+              (a.created_at || "").localeCompare(b.created_at || ""),
+            )
+            .map((comment) => (
+              <Message key={comment.comment_id} message={comment} />
+            ))}
         </div>
-      </form>
+        <form onSubmit={handleSubmit(handleSubmitSuccess)}>
+          <div className="flex flex-col gap-2">
+            <Controller
+              name="content"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <ControllerSection>
+                  <TextArea
+                    {...field}
+                    maxLength={100}
+                    placeholder="댓글을 입력해주세요."
+                  />
+                  <ErrorText>{error?.message}</ErrorText>
+                </ControllerSection>
+              )}
+            />
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                variant="secondary"
+                size="sm"
+                disabled={isPending}
+              >
+                등록
+              </Button>
+            </div>
+          </div>
+        </form>
+      </ControllerSection>
     </InputSection>
   );
 }

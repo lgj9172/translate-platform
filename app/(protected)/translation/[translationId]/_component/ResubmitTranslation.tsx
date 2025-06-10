@@ -66,7 +66,7 @@ export default function ResubmitTranslation({ translation }: Props) {
   //   modals.open({
   //     title: <div className="text-lg font-bold">번역 제출</div>,
   //     children: (
-  //       <div className="flex flex-col gap-2">
+  //       <div className="flex flex-col gap-8">
   //         <div>번역을 제출하시겠어요?</div>
   //         <div className="flex justify-end gap-2">
   //           <Button variant="secondary" onClick={() => modals.closeAll()}>

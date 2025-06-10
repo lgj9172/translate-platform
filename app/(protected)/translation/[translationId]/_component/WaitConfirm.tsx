@@ -18,13 +18,11 @@ export default function WaitConfirm({
     modals.open({
       title: <div className="text-lg font-bold">번역 결과물 수정</div>,
       children: (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-8">
           <p>
-            번역 결과물을 수정하셔야 하나요?
+            번역 결과물에 수정이 필요한가요?
             <br />
             번역을 진행중인 상태로 변경하고 번역 결과물을 다시 올릴 수 있어요.
-            <br />
-            번역 진행중 상태로 변경하시겠어요?
           </p>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => modals.closeAll()}>

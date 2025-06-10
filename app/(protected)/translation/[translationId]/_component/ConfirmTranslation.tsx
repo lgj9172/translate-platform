@@ -19,7 +19,7 @@ export default function ConfirmTranslation({
     modals.open({
       title: <div className="text-lg font-bold">번역 수정 요청</div>,
       children: (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-8">
           <p>
             번역 수정을 요청하시겠어요?
             <br />
@@ -47,7 +47,7 @@ export default function ConfirmTranslation({
     modals.open({
       title: <div className="text-lg font-bold">번역 확정</div>,
       children: (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-8">
           <p>번역이 만족스러우셨나요?</p>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => modals.closeAll()}>

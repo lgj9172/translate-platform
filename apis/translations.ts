@@ -18,7 +18,7 @@ export const getTranslations = async ({
 }: {
   params: PaginationParams;
 }) => {
-  const response = await ClientWithoutAuth.get<PaginatedResponse<Translation>>(
+  const response = await ClientWithAuth.get<PaginatedResponse<Translation>>(
     `/translations`,
     {
       params,
@@ -96,7 +96,7 @@ export const getTranslationComments = async ({
 }: {
   translationId: string;
 }) => {
-  const response = await ClientWithoutAuth.get<Response<TranslationComment[]>>(
+  const response = await ClientWithAuth.get<Response<TranslationComment[]>>(
     `/translations/${translationId}/comments`,
   );
   return response.data.data;

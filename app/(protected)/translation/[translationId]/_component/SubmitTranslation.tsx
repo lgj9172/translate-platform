@@ -1,7 +1,5 @@
 "use client";
 
-import { postFile } from "@/apis/files";
-import { postTranslationSubmit } from "@/apis/translations";
 import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -9,12 +7,12 @@ import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import SubmitTranslationModal from "@/modals/SubmitTranslationModal";
 import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -39,11 +37,14 @@ const SubmitTranslationFormDefaultValue = {
   file: undefined,
 };
 
-interface Props {
+export default function SubmitTranslation({
+  translation,
+}: {
   translation: Translation;
-}
+}) {
+  const [openSubmitTranslationModal, setOpenSubmitTranslationModal] =
+    useState(false);
 
-export default function SubmitTranslation({ translation }: Props) {
   const methods = useForm<SubmitTranslationFormType>({
     resolver: zodResolver(SubmitTranslationFormSchema),
     defaultValues: SubmitTranslationFormDefaultValue,
@@ -52,48 +53,12 @@ export default function SubmitTranslation({ translation }: Props) {
 
   const { control, handleSubmit } = methods;
 
-  const { mutateAsync } = useMutation({ mutationFn: postFile });
-
-  const { mutate: mutatePostTranslationSubmit } = useMutation({
-    mutationFn: postTranslationSubmit,
-    onSuccess: () => {},
-  });
-
-  const handleSubmitTranslation = (file: File) => {
-    modals.open({
-      title: <div className="text-lg font-bold">번역 제출</div>,
-      children: (
-        <div className="flex flex-col gap-8">
-          <div>번역을 제출하시겠어요?</div>
-          <div className="flex justify-end gap-2">
-            <Button variant="secondary" onClick={() => modals.closeAll()}>
-              닫기
-            </Button>
-            <Button
-              variant="primary"
-              onClick={async () => {
-                const res = await mutateAsync({
-                  payload: { content: file },
-                });
-                mutatePostTranslationSubmit({
-                  translationId: translation.translation_id,
-                  payload: { target_files: [res.file_id] },
-                });
-                modals.closeAll();
-              }}
-            >
-              번역 제출
-            </Button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
   const handleSubmitValid: SubmitHandler<SubmitTranslationFormType> = ({
     file,
   }) => {
-    if (file) handleSubmitTranslation(file);
+    if (file) {
+      setOpenSubmitTranslationModal(true);
+    }
   };
 
   return (
@@ -128,6 +93,9 @@ export default function SubmitTranslation({ translation }: Props) {
                         field.onChange(e.target.files[0]); // React Hook Form의 상태 업데이트
                       }
                     }}
+                    onRemove={() => {
+                      field.onChange(undefined);
+                    }}
                     placeholder="번역 파일 (10MB, PDF)"
                     text={field.value?.name}
                   />
@@ -148,6 +116,12 @@ export default function SubmitTranslation({ translation }: Props) {
             번역 제출
           </Button>
         </div>
+        <SubmitTranslationModal
+          open={openSubmitTranslationModal}
+          onOpenChange={setOpenSubmitTranslationModal}
+          translationId={translation.translation_id}
+          file={methods.getValues("file")}
+        />
       </Stack>
     </form>
   );

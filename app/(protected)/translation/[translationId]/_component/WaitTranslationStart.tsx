@@ -6,11 +6,11 @@ import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import { useState } from "react";
 
-interface Props {
+export default function WaitTranslationStart({
+  translation,
+}: {
   translation: Translation;
-}
-
-export default function WaitTranslationStart({ translation }: Props) {
+}) {
   const [openCancelTranslationModal, setOpenCancelTranslationModal] =
     useState(false);
 

@@ -1,13 +1,9 @@
 "use client";
 
-import { getSelectedQuotation } from "@/apis/translations-quotations";
-import { getMyTranslator } from "@/apis/translator";
 import Button from "@/components/Button";
 import StartTranslationModal from "@/modals/StartTranslationModal";
 import { Translation } from "@/types/entities";
-import { Center, Stack } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
-import { Loader } from "lucide-react";
+import { Stack } from "@mantine/core";
 import { useState } from "react";
 
 export default function StartTranslation({
@@ -18,38 +14,9 @@ export default function StartTranslation({
   const [openStartTranslationModal, setOpenStartTranslationModal] =
     useState(false);
 
-  const { data: selectedQuotation, isLoading: isSelectedQuotationLoading } =
-    useQuery({
-      queryKey: [
-        "translations",
-        translation.translation_id,
-        "selected-quotation",
-      ],
-      queryFn: () =>
-        getSelectedQuotation({ translationId: translation.translation_id }),
-    });
-
-  const { data: myTranslator, isLoading: isMyTranslatorLoading } = useQuery({
-    queryKey: ["translators", "me"],
-    queryFn: () => getMyTranslator(),
-  });
-
-  const isSelectedTranslator =
-    selectedQuotation?.translator_id === myTranslator?.translator_id;
-
   const handleClickStartTranslation = () => {
     setOpenStartTranslationModal(true);
   };
-
-  if (isSelectedQuotationLoading || isMyTranslatorLoading) {
-    return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
-      </Center>
-    );
-  }
-
-  if (!isSelectedTranslator) return null;
 
   return (
     <Stack>

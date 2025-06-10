@@ -31,6 +31,8 @@ import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
+import { getSelectedQuotation } from "@/apis/translations-quotations";
+import { getMyTranslator } from "@/apis/translator";
 import Comments from "./_component/Comments";
 import ConfirmTranslation from "./_component/ConfirmTranslation";
 import Payment from "./_component/Payment";
@@ -65,6 +67,16 @@ export default function Page({ params: { translationId } }: Props) {
   const { data: user, isLoading: isUserLoading } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),
+  });
+
+  const { data: selectedQuotation } = useQuery({
+    queryKey: ["translations", translationId, "selected-quotation"],
+    queryFn: () => getSelectedQuotation({ translationId }),
+  });
+
+  const { data: myTranslator } = useQuery({
+    queryKey: ["translators", "me"],
+    queryFn: () => getMyTranslator(),
   });
 
   if (isTranslationLoading || isWriterLoading || isUserLoading) {
@@ -239,9 +251,11 @@ export default function Page({ params: { translationId } }: Props) {
                   <WaitTranslationStart translation={translation} />
                 )}
                 {/* 내가 담당 번역사인 경우 */}
-                {user?.authorization?.is_translator && (
-                  <StartTranslation translation={translation} />
-                )}
+                {user?.authorization?.is_translator &&
+                  selectedQuotation?.translator_id ===
+                    myTranslator?.translator_id && (
+                    <StartTranslation translation={translation} />
+                  )}
               </>
             )}
 
@@ -249,9 +263,15 @@ export default function Page({ params: { translationId } }: Props) {
             {translation.status === TRANSLATION_STATUS.TRANSLATION_BEGAN && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && <WaitTranslationFinish translation={translation} />}
-                {/* 내가 번역사인 경우 */}
-                {true && <SubmitTranslation translation={translation} />}
+                {translation.user_id === user?.user_id && (
+                  <WaitTranslationFinish translation={translation} />
+                )}
+                {/* 내가 담당 번역사인 경우 */}
+                {user?.authorization?.is_translator &&
+                  selectedQuotation?.translator_id ===
+                    myTranslator?.translator_id && (
+                    <SubmitTranslation translation={translation} />
+                  )}
               </>
             )}
 
@@ -260,9 +280,15 @@ export default function Page({ params: { translationId } }: Props) {
               TRANSLATION_STATUS.TRANSLATION_SUBMITTED && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && <ConfirmTranslation translation={translation} />}
-                {/* 내가 번역사인 경우 */}
-                {true && <WaitConfirm translation={translation} />}
+                {translation.user_id === user?.user_id && (
+                  <ConfirmTranslation translation={translation} />
+                )}
+                {/* 내가 담당 번역사인 경우 */}
+                {user?.authorization?.is_translator &&
+                  selectedQuotation?.translator_id ===
+                    myTranslator?.translator_id && (
+                    <WaitConfirm translation={translation} />
+                  )}
               </>
             )}
 
@@ -271,15 +297,26 @@ export default function Page({ params: { translationId } }: Props) {
               TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED && (
               <>
                 {/* 내가 작성자인 경우 */}
-                {true && <WaitTranslationUpdate translation={translation} />}
-                {/* 내가 번역사인 경우 */}
-                {true && <ResubmitTranslation translation={translation} />}
+                {translation.user_id === user?.user_id && (
+                  <WaitTranslationUpdate translation={translation} />
+                )}
+                {/* 내가 담당 번역사인 경우 */}
+                {user?.authorization?.is_translator &&
+                  selectedQuotation?.translator_id ===
+                    myTranslator?.translator_id && (
+                    <ResubmitTranslation translation={translation} />
+                  )}
               </>
             )}
 
             {/* 번역 상태: 번역 확정 */}
             {translation.status === TRANSLATION_STATUS.TRANSLATION_RESOLVED && (
-              <TranslationResult translation={translation} />
+              <>
+                {/* 내가 작성자인 경우 */}
+                {translation.user_id === user?.user_id && (
+                  <TranslationResult translation={translation} />
+                )}
+              </>
             )}
           </div>
         )}

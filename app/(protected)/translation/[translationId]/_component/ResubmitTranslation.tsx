@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileDownload from "@/components/FileDownload";
@@ -8,6 +7,7 @@ import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Button } from "@/components/ui/button";
 import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mantine/core";
@@ -144,12 +144,7 @@ export default function ResubmitTranslation({ translation }: Props) {
         </InputSection>
 
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            size="md"
-            variant="primary"
-            onClick={handleSubmit(handleSubmitValid)}
-          >
+          <Button type="submit" onClick={handleSubmit(handleSubmitValid)}>
             번역 제출
           </Button>
         </div>

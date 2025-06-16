@@ -3,13 +3,13 @@ import {
   postTranslationComment,
 } from "@/apis/translations";
 import { getOtherUser, getUser } from "@/apis/user";
-import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
+import { Button } from "@/components/ui/button";
 import { Translation, TranslationComment } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Center, Loader } from "@mantine/core";
@@ -143,12 +143,7 @@ export default function Comments({
               )}
             />
             <div className="flex justify-end">
-              <Button
-                type="submit"
-                variant="secondary"
-                size="sm"
-                disabled={isPending}
-              >
+              <Button type="submit" size="sm" disabled={isPending}>
                 등록
               </Button>
             </div>

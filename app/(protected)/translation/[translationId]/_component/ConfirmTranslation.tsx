@@ -1,8 +1,8 @@
-import Button from "@/components/Button";
 import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Button } from "@/components/ui/button";
 import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -31,7 +31,6 @@ export default function ConfirmTranslation({
               닫기
             </Button>
             <Button
-              variant="primary"
               onClick={() => {
                 modals.closeAll();
               }}
@@ -54,7 +53,6 @@ export default function ConfirmTranslation({
               닫기
             </Button>
             <Button
-              variant="primary"
               onClick={() => {
                 modals.closeAll();
               }}
@@ -90,18 +88,12 @@ export default function ConfirmTranslation({
       <div className="flex justify-end gap-2">
         <Button
           type="submit"
-          size="md"
           variant="secondary"
           onClick={handleClickRequestUpdate}
         >
           번역 수정 요청
         </Button>
-        <Button
-          type="submit"
-          size="md"
-          variant="primary"
-          onClick={handleClickConfirm}
-        >
+        <Button type="submit" onClick={handleClickConfirm}>
           번역 확정
         </Button>
       </div>

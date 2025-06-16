@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
@@ -27,11 +27,7 @@ export default function WaitTranslationStart({
         </p>
       </div>
       <div className="flex justify-end">
-        <Button
-          size="md"
-          variant="secondary"
-          onClick={handleClickCancelTranslation}
-        >
+        <Button variant="secondary" onClick={handleClickCancelTranslation}>
           번역 요청 취소
         </Button>
       </div>

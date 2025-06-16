@@ -7,7 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/AlertDialog";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -62,11 +62,7 @@ export default function StartTranslationModal({
           <Button variant="secondary" onClick={handleClickCancel}>
             닫기
           </Button>
-          <Button
-            variant="primary"
-            onClick={handleClickConfirm}
-            disabled={isPending}
-          >
+          <Button onClick={handleClickConfirm} disabled={isPending}>
             번역 시작
           </Button>
         </AlertDialogFooter>

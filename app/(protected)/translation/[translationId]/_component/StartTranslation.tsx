@@ -1,10 +1,10 @@
 "use client";
 
-import Button from "@/components/Button";
 import StartTranslationModal from "@/modals/StartTranslationModal";
 import { Translation } from "@/types/entities";
 import { Stack } from "@mantine/core";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function StartTranslation({
   translation,
@@ -28,13 +28,7 @@ export default function StartTranslation({
       </div>
 
       <div className="flex justify-end">
-        <Button
-          size="md"
-          variant="primary"
-          onClick={handleClickStartTranslation}
-        >
-          번역 시작
-        </Button>
+        <Button onClick={handleClickStartTranslation}>번역 시작</Button>
       </div>
       <StartTranslationModal
         open={openStartTranslationModal}

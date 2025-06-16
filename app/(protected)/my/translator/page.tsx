@@ -6,9 +6,9 @@ import {
   putTranslator,
 } from "@/apis/translator";
 import { getUser } from "@/apis/user";
-import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
+import { Button } from "@/components/ui/button";
 import {
   PostTranslatorFormDefaultValue,
   PostTranslatorFormSchema,
@@ -146,7 +146,7 @@ export default function Page() {
             <Certifications />
             <Samples />
             <div className="flex justify-end">
-              <Button variant="primary" type="submit" disabled={isPending}>
+              <Button type="submit" disabled={isPending}>
                 제출
               </Button>
             </div>

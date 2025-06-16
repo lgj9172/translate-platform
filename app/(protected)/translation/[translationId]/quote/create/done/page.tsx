@@ -1,7 +1,7 @@
 "use client";
 
 import Alert from "@/components/Alert";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Check from "@assets/icons/check.svg";
 import { Center, Stack } from "@mantine/core";
 import Link from "next/link";
@@ -42,10 +42,10 @@ export default function Index({ params: { translationId } }: Props) {
             <Button variant="secondary">메인 화면</Button>
           </Link>
           <Link href={`/translation/${translationId}`}>
-            <Button variant="primary">이 번역 요청 보기</Button>
+            <Button>이 번역 요청 보기</Button>
           </Link>
           <Link href="/my/translation/request">
-            <Button variant="primary">나의 요청</Button>
+            <Button>나의 요청</Button>
           </Link>
         </div>
       </Stack>

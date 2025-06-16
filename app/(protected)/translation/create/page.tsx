@@ -3,7 +3,6 @@
 import { postFile } from "@/apis/files";
 import { postTranslation } from "@/apis/translations";
 import Speciality from "@/app/(protected)/my/translator/_component/Speciality";
-import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -15,6 +14,7 @@ import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
 import TextInput from "@/components/TextInput";
+import { Button } from "@/components/ui/button";
 import {
   TRANSLATION_CATEGORY,
   TRANSLATION_CURRENCY,
@@ -411,7 +411,6 @@ export default function Index() {
           <div className="flex justify-end">
             <Button
               type="submit"
-              variant="primary"
               disabled={
                 isSubmitting || isPostTranslationPending || isPostFilePending
               }

@@ -2,7 +2,6 @@
 
 import { getTranslation } from "@/apis/translations";
 import { postTranslationQuotation } from "@/apis/translations-quotations";
-import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
@@ -12,6 +11,7 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TextArea from "@/components/TextArea";
 import TranslationCard from "@/components/TranslationCard";
+import { Button } from "@/components/ui/button";
 import { TRANSLATION_CURRENCY } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -183,7 +183,7 @@ export default function Page({ params: { translationId } }: Props) {
             </InputSection>
 
             <div className="flex justify-end">
-              <Button type="submit" variant="primary" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 견적 보내기
               </Button>
             </div>

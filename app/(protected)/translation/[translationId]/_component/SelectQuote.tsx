@@ -1,12 +1,12 @@
 "use client";
 
 import { getTranslationQuotations } from "@/apis/translations-quotations";
-import Button from "@/components/Button";
 import Card from "@/components/Card";
 import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Button } from "@/components/ui/button";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import SelectQuoteModal from "@/modals/SelectQuoteModal";
 import { Translation } from "@/types/entities";
@@ -82,7 +82,7 @@ export default function SelectQuote({
                   <div className="flex justify-end items-center">
                     <Button
                       size="sm"
-                      variant="primary"
+                      variant="default"
                       onClick={() => handleClickSelectQuote(quote.quotation_id)}
                     >
                       번역사 선택
@@ -109,11 +109,7 @@ export default function SelectQuote({
         </>
       )}
       <div className="flex justify-end">
-        <Button
-          size="md"
-          variant="secondary"
-          onClick={handleClickCancelTranslation}
-        >
+        <Button variant="secondary" onClick={handleClickCancelTranslation}>
           번역 요청 취소
         </Button>
       </div>

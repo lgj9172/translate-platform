@@ -1,7 +1,6 @@
 "use client";
 
 import { getTranslatorQuotation } from "@/apis/translations-quotations";
-import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import Fee from "@/components/Fee";
@@ -9,6 +8,7 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextArea from "@/components/TextArea";
+import { Button } from "@/components/ui/button";
 import CancelQuoteModal from "@/modals/CancelQuoteModal";
 import SendQuoteModal from "@/modals/SendQuoteModal";
 import { Translation } from "@/types/entities";
@@ -155,7 +155,7 @@ export default function SendQuote({ translation }: Props) {
             </InputSection>
 
             <div className="flex justify-end">
-              <Button type="submit" variant="primary" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 견적 보내기
               </Button>
             </div>
@@ -187,11 +187,7 @@ export default function SendQuote({ translation }: Props) {
             </InputSection>
 
             <div className="flex justify-end">
-              <Button
-                size="md"
-                variant="secondary"
-                onClick={handleClickCancelQuote}
-              >
+              <Button variant="secondary" onClick={handleClickCancelQuote}>
                 견적 보내기 취소
               </Button>
             </div>

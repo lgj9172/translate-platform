@@ -1,7 +1,6 @@
 "use client";
 
 import { postFile } from "@/apis/files";
-import Button from "@/components/Button";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -30,6 +29,7 @@ import { z } from "zod";
 import { Counsel, COUNSEL_CATEGORY, CounselCategory } from "@/types/entities";
 import { postCounsel } from "@/apis/counsels";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 const PostCSAskFormSchema = z.object({
   category: z.nativeEnum(COUNSEL_CATEGORY, {
@@ -205,7 +205,7 @@ export default function Index() {
           </InputSection>
 
           <div className="flex justify-end">
-            <Button type="submit" variant="primary" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               등록
             </Button>
           </div>

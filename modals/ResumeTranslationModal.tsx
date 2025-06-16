@@ -6,7 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/AlertDialog";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 
 export default function ResumeTranslationModal({
   open,
@@ -43,9 +43,7 @@ export default function ResumeTranslationModal({
           <Button variant="secondary" onClick={handleClickCancel}>
             닫기
           </Button>
-          <Button variant="primary" onClick={handleClickConfirm}>
-            번역 진행중 상태로 변경
-          </Button>
+          <Button onClick={handleClickConfirm}>번역 진행중 상태로 변경</Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -1,14 +1,14 @@
 "use client";
 
 import { getCounsels } from "@/apis/counsels";
+import Alert from "@/components/Alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
+import { Button } from "@/components/ui/button";
 import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
-import Button from "@/components/Button";
-import Alert from "@/components/Alert";
 import AskCard from "./_component/AskCard";
 
 export default function Page() {
@@ -38,9 +38,7 @@ export default function Page() {
           </div>
           <Group>
             <Link href="/cs/ask/create">
-              <Button variant="primary" size="sm">
-                문의하기
-              </Button>
+              <Button size="sm">문의하기</Button>
             </Link>
           </Group>
         </Group>

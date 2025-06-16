@@ -2,10 +2,10 @@
 
 import { getTranslations } from "@/apis/translations";
 import Alert from "@/components/Alert";
-import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
+import { Button } from "@/components/ui/button";
 import { Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -27,9 +27,7 @@ export default function Page() {
           <PageTitle>번역</PageTitle>
           <Group>
             <Link href="/translation/create">
-              <Button variant="primary" size="sm">
-                번역요청하기
-              </Button>
+              <Button size="sm">번역요청하기</Button>
             </Link>
           </Group>
         </Group>

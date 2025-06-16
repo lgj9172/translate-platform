@@ -1,8 +1,8 @@
 import { Translation, File } from "@/types/entities";
-import Button from "@/components/Button";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import { Button } from "@/components/ui/button";
 import { Stack } from "@mantine/core";
 import { useState } from "react";
 import ResumeTranslationModal from "@/modals/ResumeTranslationModal";
@@ -47,7 +47,6 @@ export default function WaitConfirm({
       <div className="flex justify-end gap-2">
         <Button
           type="submit"
-          size="md"
           variant="secondary"
           onClick={handleClickRequestUpdate}
         >

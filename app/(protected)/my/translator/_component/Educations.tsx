@@ -8,6 +8,7 @@ import LabelSection from "@/components/LabelSection";
 import RadioButton from "@/components/RadioButton";
 import SelectBox from "@/components/SelectBox";
 import TextInput from "@/components/TextInput";
+import { Button } from "@/components/ui/button";
 import { DegreeSchema } from "@/model/degree";
 import { EducationDefaultValue } from "@/model/education";
 import { EducationStatusSchema } from "@/model/educationStatus";
@@ -101,13 +102,9 @@ export default function Educations() {
       <LabelSection>
         <Label>학력</Label>
         <div>
-          <button
-            type="button"
-            className="text-blue-500 text-sm font-bold"
-            onClick={handleClickAppend}
-          >
+          <Button variant="ghost" size="sm" onClick={handleClickAppend}>
             추가
-          </button>
+          </Button>
         </div>
       </LabelSection>
       {fields.map((field, index) => (

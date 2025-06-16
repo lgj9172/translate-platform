@@ -5,6 +5,7 @@ import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
+import { Button } from "@/components/ui/button";
 import { TranslationSampleDefaultValue } from "@/model/translationSample";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import {
@@ -63,13 +64,9 @@ export default function Samples() {
       <LabelSection>
         <Label>번역 샘플 (선택)</Label>
         <div>
-          <button
-            type="button"
-            className="text-blue-500 text-sm font-bold"
-            onClick={handleClickAppend}
-          >
+          <Button variant="ghost" size="sm" onClick={handleClickAppend}>
             추가
-          </button>
+          </Button>
         </div>
       </LabelSection>
       {fields.length === 0 && (

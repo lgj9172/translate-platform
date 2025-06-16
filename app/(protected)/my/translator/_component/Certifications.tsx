@@ -6,6 +6,7 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextInput from "@/components/TextInput";
+import { Button } from "@/components/ui/button";
 import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
@@ -65,13 +66,9 @@ export default function Certifications() {
       <LabelSection>
         <Label>자격증 (선택)</Label>
         <div>
-          <button
-            type="button"
-            className="text-blue-500 text-sm font-bold"
-            onClick={handleClickAppend}
-          >
+          <Button variant="ghost" size="sm" onClick={handleClickAppend}>
             추가
-          </button>
+          </Button>
         </div>
       </LabelSection>
       {fields.length === 0 && (

@@ -7,6 +7,7 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import TextInput from "@/components/TextInput";
+import { Button } from "@/components/ui/button";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon, Card, CloseIcon, Stack } from "@mantine/core";
@@ -76,13 +77,9 @@ export default function Careers() {
       <LabelSection>
         <Label>경력</Label>
         <div>
-          <button
-            type="button"
-            className="text-blue-500 text-sm font-bold"
-            onClick={handleClickAppend}
-          >
+          <Button variant="ghost" size="sm" onClick={handleClickAppend}>
             추가
-          </button>
+          </Button>
         </div>
       </LabelSection>
       {fields.map((field, index) => (

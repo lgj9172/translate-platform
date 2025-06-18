@@ -7,7 +7,6 @@ import {
 } from "@/types/entities";
 import {
   ClientWithAuth,
-  ClientWithoutAuth,
   PaginatedResponse,
   PaginationParams,
   Response,
@@ -60,7 +59,7 @@ export const getTranslation = async ({
 }: {
   translationId: string;
 }) => {
-  const response = await ClientWithoutAuth.get<Response<Translation>>(
+  const response = await ClientWithAuth.get<Response<Translation>>(
     `/translations/${translationId}`,
   );
   return response.data.data;

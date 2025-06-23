@@ -1,11 +1,11 @@
-import { InputHTMLAttributes, LegacyRef, forwardRef, useId } from "react";
+import { InputHTMLAttributes, forwardRef, useId } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   text: string;
 }
 
 const Checkbox = forwardRef(
-  ({ id, text, ...props }: Props, ref: LegacyRef<HTMLInputElement>) => {
+  ({ id, text, ...props }: Props, ref: React.Ref<HTMLInputElement>) => {
     const uniqueId = useId();
 
     return (

@@ -5,12 +5,11 @@ import { Button } from "@/components/ui/button";
 import Check from "@assets/icons/check.svg";
 import { Center, Stack } from "@mantine/core";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
-interface Props {
-  params: { translationId: string };
-}
+export default function Page() {
+  const { translationId } = useParams<{ translationId: string }>();
 
-export default function Index({ params: { translationId } }: Props) {
   return (
     <Center h={500}>
       <Stack w="100%" align="center" gap="xl">

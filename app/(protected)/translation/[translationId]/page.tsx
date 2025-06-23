@@ -1,6 +1,8 @@
 "use client";
 
 import { getTranslation } from "@/apis/translations";
+import { getSelectedQuotation } from "@/apis/translations-quotations";
+import { getMyTranslator } from "@/apis/translator";
 import { getOtherUser, getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
 import Card from "@/components/Card";
@@ -29,10 +31,9 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
-import { getSelectedQuotation } from "@/apis/translations-quotations";
-import { getMyTranslator } from "@/apis/translator";
 import Comments from "./_component/Comments";
 import ConfirmTranslation from "./_component/ConfirmTranslation";
 import Payment from "./_component/Payment";
@@ -48,11 +49,9 @@ import WaitTranslationFinish from "./_component/WaitTranslationFinish";
 import WaitTranslationStart from "./_component/WaitTranslationStart";
 import WaitTranslationUpdate from "./_component/WaitTranslationUpdate";
 
-interface Props {
-  params: { translationId: string };
-}
+export default function Page() {
+  const { translationId } = useParams<{ translationId: string }>();
 
-export default function Page({ params: { translationId } }: Props) {
   const { data: translation, isLoading: isTranslationLoading } = useQuery({
     queryKey: ["translations", translationId],
     queryFn: () => getTranslation({ translationId }),
@@ -104,7 +103,6 @@ export default function Page({ params: { translationId } }: Props) {
           <PageTitle>{translation.title}</PageTitle>
         </Group>
       </PageHeader>
-
       <Group justify="space-between">
         <Group gap={4}>
           <LanguageBadge
@@ -115,7 +113,6 @@ export default function Page({ params: { translationId } }: Props) {
         </Group>
         <TranslationStatus translation={translation} />
       </Group>
-
       <Card>
         <div className="flex gap-[8px]">
           <Avatar />
@@ -127,7 +124,6 @@ export default function Page({ params: { translationId } }: Props) {
           </div>
         </div>
       </Card>
-
       <Stack>
         <InputSection>
           <LabelSection>

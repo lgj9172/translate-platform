@@ -16,13 +16,12 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa6";
 
-interface Props {
-  params: { noticeId: string };
-}
+export default function Page() {
+  const { noticeId } = useParams<{ noticeId: string }>();
 
-export default function Page({ params: { noticeId } }: Props) {
   const { data: notice, isLoading } = useQuery({
     queryKey: ["notice", noticeId],
     queryFn: () => getNotice({ noticeId }),
@@ -56,7 +55,6 @@ export default function Page({ params: { noticeId } }: Props) {
           </PageTitle>
         </Group>
       </PageHeader>
-
       <Card>
         <div className="flex gap-[8px]">
           <Avatar />
@@ -68,7 +66,6 @@ export default function Page({ params: { noticeId } }: Props) {
           </div>
         </div>
       </Card>
-
       <div className="min-h-[320px]">
         {notice.description.split("\n").map((line, index) => (
           // eslint-disable-next-line react/no-array-index-key

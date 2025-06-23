@@ -1,6 +1,7 @@
 "use client";
 
 import { getCounsel } from "@/apis/counsels";
+import { getFile } from "@/apis/files";
 import { getUser } from "@/apis/user";
 import Badge from "@/components/Badge";
 import Card from "@/components/Card";
@@ -22,15 +23,13 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa6";
-import { getFile } from "@/apis/files";
 import CSAnswer from "./_component/CSAnswer";
 
-interface Props {
-  params: { askId: string };
-}
+export default function Page() {
+  const { askId } = useParams<{ askId: string }>();
 
-export default function Page({ params: { askId } }: Props) {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),
@@ -76,7 +75,6 @@ export default function Page({ params: { askId } }: Props) {
           </PageTitle>
         </Group>
       </PageHeader>
-
       <Card>
         <div className="flex gap-[8px]">
           <Avatar />
@@ -88,21 +86,18 @@ export default function Page({ params: { askId } }: Props) {
           </div>
         </div>
       </Card>
-
       <InputSection>
         <LabelSection>
           <Label>문의 ID</Label>
         </LabelSection>
         <Text>{ask.counsel_id}</Text>
       </InputSection>
-
       <InputSection>
         <LabelSection>
           <Label>종류</Label>
         </LabelSection>
         <Text>{ask.category}</Text>
       </InputSection>
-
       <InputSection>
         <LabelSection>
           <Label>내용</Label>
@@ -114,7 +109,6 @@ export default function Page({ params: { askId } }: Props) {
           ))}
         </div>
       </InputSection>
-
       <InputSection>
         <LabelSection>
           <Label>첨부파일</Label>
@@ -137,7 +131,6 @@ export default function Page({ params: { askId } }: Props) {
           )}
         </div>
       </InputSection>
-
       <CSAnswer askId={askId} />
     </Stack>
   );

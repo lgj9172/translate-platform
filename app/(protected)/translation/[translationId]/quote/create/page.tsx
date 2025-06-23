@@ -24,7 +24,7 @@ import {
 } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Controller,
   FormProvider,
@@ -51,11 +51,9 @@ const PostTranslationQuoteFormDefaultValue = {
   detail: "",
 };
 
-interface Props {
-  params: { translationId: string };
-}
+export default function Page() {
+  const { translationId } = useParams<{ translationId: string }>();
 
-export default function Page({ params: { translationId } }: Props) {
   const router = useRouter();
 
   const { data: translation, isLoading } = useQuery({

@@ -17,8 +17,7 @@ import Profile from "./_component/Profile";
 export default function Page() {
   const router = useRouter();
 
-  const { translatorId: id } = useParams();
-  const translatorId = Array.isArray(id) ? id[0] : id;
+  const { translatorId } = useParams<{ translatorId: string }>();
 
   const { data: translator, isLoading } = useQuery({
     queryKey: ["translator", translatorId],

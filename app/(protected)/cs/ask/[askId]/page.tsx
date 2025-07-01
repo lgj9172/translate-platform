@@ -4,22 +4,19 @@ import { getCounsel } from "@/apis/counsels";
 import { getFile } from "@/apis/files";
 import { getUser } from "@/apis/user";
 import Badge from "@/components/Badge";
-import Card from "@/components/Card";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Avatar } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useFileDownload } from "@/hooks/useFileDownload";
-import {
-  ActionIcon,
-  Avatar,
-  Center,
-  Group,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -50,8 +47,8 @@ export default function Page() {
 
   if (isLoading)
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
 
@@ -61,13 +58,10 @@ export default function Page() {
     <Stack>
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/cs/ask"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/cs/ask">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
           <PageTitle>
             <Badge>{ask.is_done ? "답변완료" : "답변대기"}</Badge>
@@ -90,13 +84,13 @@ export default function Page() {
         <LabelSection>
           <Label>문의 ID</Label>
         </LabelSection>
-        <Text>{ask.counsel_id}</Text>
+        <div>{ask.counsel_id}</div>
       </InputSection>
       <InputSection>
         <LabelSection>
           <Label>종류</Label>
         </LabelSection>
-        <Text>{ask.category}</Text>
+        <div>{ask.category}</div>
       </InputSection>
       <InputSection>
         <LabelSection>
@@ -104,7 +98,7 @@ export default function Page() {
         </LabelSection>
         <div>
           {ask.content.split("\n").map((line: string, index: number) => (
-            <Text key={`${line}-${index}`}>{line}</Text>
+            <div key={`${line}-${index}`}>{line}</div>
           ))}
         </div>
       </InputSection>
@@ -126,7 +120,7 @@ export default function Page() {
               {file?.name}
             </button>
           ) : (
-            <Text>첨부파일이 없습니다.</Text>
+            <div>첨부파일이 없습니다.</div>
           )}
         </div>
       </InputSection>

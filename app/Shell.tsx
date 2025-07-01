@@ -11,8 +11,14 @@ import {
 } from "@/components/DropdownMenu";
 import useUser from "@/hooks/useUser";
 import FluenceBi from "@assets/icons/fluence-bi.svg";
-import { Avatar, Modal, Title } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Title } from "@/components/ui/title";
 import {
   Bell,
   HeadphonesIcon,
@@ -22,7 +28,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import CustomerSupport from "../components/CustomerSupport";
 
 function HeaderMenu() {
@@ -40,7 +46,10 @@ function HeaderMenu() {
           aria-label="사용자 메뉴"
           className="p-1.5 rounded-full text-gray-500 hover:bg-gray-50 hover:text-primary focus:outline-hidden"
         >
-          <Avatar size="sm" src={user?.avatar} alt={user?.name} />
+          <Avatar>
+            <AvatarImage src={user?.avatar} alt={user?.name} />
+            <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
+          </Avatar>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -127,8 +136,28 @@ function HeaderMenu() {
 }
 
 export default function Shell({ children }: { children: ReactNode }) {
-  const [openedTOU, { open: openTOU, close: closeTOU }] = useDisclosure(false);
-  const [openedRP, { open: openRP, close: closeRP }] = useDisclosure(false);
+  const [openedTOU, setOpenedTOU] = useState(false);
+  const [openedRP, setOpenedRP] = useState(false);
+
+  const handleClickTOU = () => {
+    setOpenedTOU(true);
+  };
+
+  const handleClickRP = () => {
+    setOpenedRP(true);
+  };
+
+  const handleChangeTOU = (open: boolean) => {
+    if (!open) {
+      setOpenedTOU(open);
+    }
+  };
+
+  const handleChangeRP = (open: boolean) => {
+    if (!open) {
+      setOpenedRP(open);
+    }
+  };
 
   return (
     <div className="min-w-[360px] max-w-[768px] container mx-auto">
@@ -161,7 +190,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               <div className="flex items-center gap-6 text-sm">
                 <button
                   type="button"
-                  onClick={openTOU}
+                  onClick={handleClickTOU}
                   className="text-gray-600 hover:text-orange-500 transition-colors"
                 >
                   이용약관
@@ -169,7 +198,7 @@ export default function Shell({ children }: { children: ReactNode }) {
                 <div className="w-px h-3 bg-gray-300" />
                 <button
                   type="button"
-                  onClick={openRP}
+                  onClick={handleClickRP}
                   className="text-gray-600 hover:text-orange-500 transition-colors"
                 >
                   환불규정
@@ -179,35 +208,41 @@ export default function Shell({ children }: { children: ReactNode }) {
           </div>
         </footer>
 
-        {/* Modal 부분은 유지 */}
-        <Modal
-          opened={openedTOU}
-          onClose={closeTOU}
-          title={<Title order={3}>이용약관</Title>}
-          centered
-          size="100%"
-        >
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                '<iframe src="/assets/html/terms_of_use_230102.html" width="100%" height="500px"/>',
-            }}
-          />
-        </Modal>
-        <Modal
-          opened={openedRP}
-          onClose={closeRP}
-          title={<Title order={3}>환불규정</Title>}
-          centered
-          size="100%"
-        >
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                '<iframe src="/assets/html/terms_of_use_230102.html#_msoanchor_2" width="100%" height="500px"/>',
-            }}
-          />
-        </Modal>
+        <Dialog open={openedTOU} onOpenChange={handleChangeTOU}>
+          <DialogContent className="max-w-full w-full h-full">
+            <DialogHeader>
+              <DialogTitle>
+                <Title order={3} asChild>
+                  이용약관
+                </Title>
+              </DialogTitle>
+            </DialogHeader>
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  '<iframe src="/assets/html/terms_of_use_230102.html" width="100%" height="500px"/>',
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={openedRP} onOpenChange={handleChangeRP}>
+          <DialogContent className="max-w-full w-full h-full">
+            <DialogHeader>
+              <DialogTitle>
+                <Title order={3} asChild>
+                  환불규정
+                </Title>
+              </DialogTitle>
+            </DialogHeader>
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  '<iframe src="/assets/html/terms_of_use_230102.html#_msoanchor_2" width="100%" height="500px"/>',
+              }}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

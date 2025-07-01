@@ -13,20 +13,18 @@ import { DegreeSchema } from "@/model/degree";
 import { EducationDefaultValue } from "@/model/education";
 import { EducationStatusSchema } from "@/model/educationStatus";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import {
-  ActionIcon,
-  Card,
-  CloseIcon,
-  Group,
-  Radio,
-  Stack,
-} from "@mantine/core";
-import { DatesRangeValue, MonthPickerInput } from "@mantine/dates";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Card } from "@/components/ui/card";
+import { Group } from "@/components/ui/group";
+import { Stack } from "@/components/ui/stack";
+import { RadioGroup } from "@/components/ui/radio-group";
+import { X } from "lucide-react";
+
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChangeEvent, useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FaRegCalendar } from "react-icons/fa6";
+
 import { z } from "zod";
 
 export default function Educations() {
@@ -73,15 +71,6 @@ export default function Educations() {
     remove(index);
   };
 
-  const handleChangeMonthRange = (index: number, dates: DatesRangeValue) => {
-    const startedAt = dates[0] ? dayjs(dates[0]).toISOString() : "";
-    const endedAt = dates[1] ? dayjs(dates[1]).toISOString() : "";
-    setValue(`educations.${index}.started_at`, startedAt, {
-      shouldValidate: true,
-    });
-    setValue(`educations.${index}.ended_at`, endedAt, { shouldValidate: true });
-  };
-
   const handleChangeFile = async (
     index: number,
     e: ChangeEvent<HTMLInputElement>,
@@ -108,125 +97,139 @@ export default function Educations() {
         </div>
       </LabelSection>
       {fields.map((field, index) => (
-        <Card
-          key={field.id}
-          bg="#F9FAFB"
-          radius="16px"
-          component={Stack}
-          gap="xs"
-          pos="relative"
-        >
-          <div className="flex justify-end">
-            <ActionIcon
-              color="dark"
-              variant="transparent"
-              onClick={() => handleClickDelete(index)}
-              disabled={fields.length === 1}
-            >
-              <CloseIcon />
-            </ActionIcon>
-          </div>
-          <ControllerSection>
-            <MonthPickerInput
-              type="range"
-              valueFormat="YYYY년 MM월"
-              placeholder="시작월 - 종료월"
-              leftSection={<FaRegCalendar />}
-              value={[
-                watch(`educations.${index}.started_at`).length > 0
-                  ? dayjs(watch(`educations.${index}.started_at`)).toDate()
-                  : null,
-                watch(`educations.${index}.ended_at`).length > 0
-                  ? dayjs(watch(`educations.${index}.ended_at`)).toDate()
-                  : null,
-              ]}
-              onChange={(datesRangeValue) => {
-                handleChangeMonthRange(index, datesRangeValue);
-              }}
-              classNames={{
-                input: "focus:border-primary",
-                placeholder: "text-neutral-400",
-                monthsListControl:
-                  "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
-              }}
-            />
-            <ErrorText>
-              {errors?.educations?.[index]?.started_at?.message}
-            </ErrorText>
-            <ErrorText>
-              {errors?.educations?.[index]?.ended_at?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`educations.${index}.graduation_status`}
-              render={({ field: { value, onChange, ...f } }) => (
-                <Radio.Group {...f} value={value} onChange={onChange}>
-                  <Group>
-                    {educationStatusOptions.map((o) => (
-                      <RadioButton
-                        key={o.value}
-                        value={o.value}
-                        label={o.label}
-                      />
-                    ))}
-                  </Group>
-                </Radio.Group>
-              )}
-            />
-            <ErrorText>
-              {errors?.educations?.[index]?.graduation_status?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`educations.${index}.degree`}
-              render={({ field: { value, onChange, ...f } }) => (
-                <SelectBox
-                  {...f}
-                  value={value}
-                  onChange={(v) => onChange(v as string)}
-                  data={degreeOptions}
-                  allowDeselect={false}
+        <Card key={field.id} className="relative">
+          <Stack gap="xs">
+            <div className="flex justify-end">
+              <ActionIcon
+                variant="ghost"
+                onClick={() => handleClickDelete(index)}
+                disabled={fields.length === 1}
+              >
+                <X />
+              </ActionIcon>
+            </div>
+            <ControllerSection>
+              <div className="flex gap-2">
+                <Controller
+                  control={control}
+                  name={`educations.${index}.started_at`}
+                  render={({ field: { value, onChange } }) => (
+                    <input
+                      type="month"
+                      value={value ? dayjs(value).format("YYYY-MM") : ""}
+                      onChange={(e) =>
+                        onChange(
+                          e.target.value
+                            ? dayjs(e.target.value).toISOString()
+                            : "",
+                        )
+                      }
+                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
+                      placeholder="시작월"
+                    />
+                  )}
                 />
-              )}
-            />
-            <ErrorText>
-              {errors?.educations?.[index]?.degree?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`educations.${index}.name`}
-              render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="학교 이름" />
-              )}
-            />
-            <ErrorText>{errors?.educations?.[index]?.name?.message}</ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`educations.${index}.major`}
-              render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="전공" />
-              )}
-            />
-            <ErrorText>{errors?.educations?.[index]?.major?.message}</ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <FileInput
-              placeholder="졸업/수료 증명서 (10MB, PDF)"
-              onChange={(e) => handleChangeFile(index, e)}
-              text={`${watch(`educations.${index}.file_id`)}`}
-            />
-            <ErrorText>
-              {errors?.educations?.[index]?.file_id?.message}
-            </ErrorText>
-          </ControllerSection>
+                <Controller
+                  control={control}
+                  name={`educations.${index}.ended_at`}
+                  render={({ field: { value, onChange } }) => (
+                    <input
+                      type="month"
+                      value={value ? dayjs(value).format("YYYY-MM") : ""}
+                      onChange={(e) =>
+                        onChange(
+                          e.target.value
+                            ? dayjs(e.target.value).toISOString()
+                            : "",
+                        )
+                      }
+                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
+                      placeholder="종료월"
+                    />
+                  )}
+                />
+              </div>
+              <ErrorText>
+                {errors?.educations?.[index]?.started_at?.message}
+              </ErrorText>
+              <ErrorText>
+                {errors?.educations?.[index]?.ended_at?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`educations.${index}.graduation_status`}
+                render={({ field: { value, onChange, ...f } }) => (
+                  <RadioGroup {...f} value={value} onValueChange={onChange}>
+                    <Group>
+                      {educationStatusOptions.map((o) => (
+                        <RadioButton
+                          key={o.value}
+                          value={o.value}
+                          label={o.label}
+                        />
+                      ))}
+                    </Group>
+                  </RadioGroup>
+                )}
+              />
+              <ErrorText>
+                {errors?.educations?.[index]?.graduation_status?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`educations.${index}.degree`}
+                render={({ field: { value, onChange, ...f } }) => (
+                  <SelectBox
+                    {...f}
+                    value={value}
+                    onChange={(v) => onChange(v as string)}
+                    data={degreeOptions}
+                  />
+                )}
+              />
+              <ErrorText>
+                {errors?.educations?.[index]?.degree?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`educations.${index}.name`}
+                render={({ field: { ...f } }) => (
+                  <TextInput {...f} placeholder="학교 이름" />
+                )}
+              />
+              <ErrorText>
+                {errors?.educations?.[index]?.name?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`educations.${index}.major`}
+                render={({ field: { ...f } }) => (
+                  <TextInput {...f} placeholder="전공" />
+                )}
+              />
+              <ErrorText>
+                {errors?.educations?.[index]?.major?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <FileInput
+                placeholder="졸업/수료 증명서 (10MB, PDF)"
+                onChange={(e) => handleChangeFile(index, e)}
+                text={`${watch(`educations.${index}.file_id`)}`}
+              />
+              <ErrorText>
+                {errors?.educations?.[index]?.file_id?.message}
+              </ErrorText>
+            </ControllerSection>
+          </Stack>
         </Card>
       ))}
     </InputSection>

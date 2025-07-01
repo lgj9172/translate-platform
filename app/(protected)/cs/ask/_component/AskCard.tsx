@@ -1,5 +1,5 @@
 import Badge from "@/components/Badge";
-import Card from "@/components/Card";
+import { Card } from "@/components/ui/card";
 import { Counsel } from "@/types/entities";
 import dayjs from "dayjs";
 

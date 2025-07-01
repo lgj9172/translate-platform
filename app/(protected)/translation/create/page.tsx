@@ -23,8 +23,11 @@ import {
   TranslationLanguage,
 } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon, Group, NumberInput, Stack } from "@mantine/core";
-import { DateTimePicker } from "@mantine/dates";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Group } from "@/components/ui/group";
+import { Stack } from "@/components/ui/stack";
+import { Input } from "@/components/ui/input";
+import { NumericFormat } from "react-number-format";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -37,7 +40,7 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { FaArrowRight, FaChevronLeft, FaRegCalendar } from "react-icons/fa6";
+import { FaArrowRight, FaChevronLeft } from "react-icons/fa6";
 import { z } from "zod";
 
 const PostTranslationFormSchema = z
@@ -184,16 +187,13 @@ export default function Index() {
   return (
     <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>
       <FormProvider {...methods}>
-        <Stack w="full" h="full">
+        <Stack className="w-full h-full">
           <PageHeader>
             <Group>
-              <ActionIcon
-                variant="transparent"
-                color="black"
-                component={Link}
-                href="/"
-              >
-                <FaChevronLeft />
+              <ActionIcon variant="ghost" asChild>
+                <Link href="/">
+                  <FaChevronLeft />
+                </Link>
               </ActionIcon>
               <PageTitle>번역요청</PageTitle>
             </Group>
@@ -230,14 +230,12 @@ export default function Index() {
                 render={({ field: { onChange, ...f } }) => (
                   <SelectBox
                     {...f}
-                    w={120}
+                    className="w-[120px]"
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as TranslationLanguage);
                       trigger(`source_language`);
                     }}
-                    allowDeselect={false}
-                    checkIconPosition="right"
                   />
                 )}
               />
@@ -250,14 +248,12 @@ export default function Index() {
                 render={({ field: { onChange, ...f } }) => (
                   <SelectBox
                     {...f}
-                    w={120}
+                    className="w-[120px]"
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as TranslationLanguage);
                       trigger(`target_language`);
                     }}
-                    allowDeselect={false}
-                    checkIconPosition="right"
                   />
                 )}
               />
@@ -332,21 +328,13 @@ export default function Index() {
                 fieldState: { error },
               }) => (
                 <ControllerSection>
-                  <DateTimePicker
-                    valueFormat="YYYY년 MM월 DD일 HH시 mm분"
-                    leftSection={<FaRegCalendar />}
-                    value={dayjs(value).toDate()}
-                    onChange={(dateValue) =>
-                      dateValue
-                        ? onChange(dayjs(dateValue).toISOString())
-                        : onChange(null)
+                  <Input
+                    type="datetime-local"
+                    value={dayjs(value).format("YYYY-MM-DDTHH:mm")}
+                    onChange={(e) =>
+                      onChange(dayjs(e.target.value).toISOString())
                     }
-                    classNames={{
-                      input: "focus:border-primary",
-                      // placeholder: "text-neutral-400",
-                      day: "data-[selected=true]:bg-primary",
-                      timeInput: "focus:border-primary",
-                    }}
+                    className="focus:border-primary"
                   />
                   <ErrorText>{error?.message}</ErrorText>
                 </ControllerSection>
@@ -366,22 +354,25 @@ export default function Index() {
                 fieldState: { error },
               }) => (
                 <ControllerSection>
-                  <NumberInput
-                    {...field}
-                    onChange={(v) => onChange(Number(v))}
-                    step={1000}
-                    clampBehavior="strict"
-                    min={0}
-                    max={1000000000}
-                    allowNegative={false}
-                    allowDecimal={false}
-                    thousandSeparator=","
-                    leftSection="₩"
-                    withAsterisk
-                    classNames={{
-                      input: "focus:border-primary",
-                    }}
-                  />
+                  <div className="relative">
+                    <NumericFormat
+                      {...field}
+                      customInput={Input}
+                      thousandSeparator=","
+                      allowNegative={false}
+                      decimalScale={0}
+                      min={0}
+                      max={1000000000}
+                      onValueChange={(values) =>
+                        onChange(values.floatValue || 0)
+                      }
+                      className="focus:border-primary pl-6"
+                      placeholder="0"
+                    />
+                    <span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+                      ₩
+                    </span>
+                  </div>
                   <ErrorText>{error?.message}</ErrorText>
                 </ControllerSection>
               )}

@@ -6,7 +6,10 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
 import { Button } from "@/components/ui/button";
-import { Center, Group, Loader, Stack } from "@mantine/core";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
@@ -23,7 +26,7 @@ export default function Page() {
   return (
     <Stack>
       <PageHeader>
-        <Group justify="space-between">
+        <Group justify="between">
           <PageTitle>번역</PageTitle>
           <Group>
             <Link href="/translation/create">
@@ -33,8 +36,8 @@ export default function Page() {
         </Group>
       </PageHeader>
       {isLoading && (
-        <Center mih="320px">
-          <Loader color="orange" type="bars" />
+        <Center className="h-[500px]">
+          <Loader />
         </Center>
       )}
       {isError && (

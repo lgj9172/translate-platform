@@ -14,7 +14,11 @@ import {
   PostTranslatorFormSchema,
 } from "@/model/translator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -109,8 +113,8 @@ export default function Page() {
 
   if (isLoadingUser) {
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
   }
@@ -123,13 +127,10 @@ export default function Page() {
         <Stack>
           <PageHeader>
             <Group>
-              <ActionIcon
-                variant="transparent"
-                color="black"
-                component={Link}
-                href="/my"
-              >
-                <FaChevronLeft />
+              <ActionIcon variant="ghost" asChild>
+                <Link href="/my">
+                  <FaChevronLeft />
+                </Link>
               </ActionIcon>
               <PageTitle>
                 번역사{" "}
@@ -138,7 +139,7 @@ export default function Page() {
             </Group>
           </PageHeader>
 
-          <Stack gap={48}>
+          <Stack>
             <Speciality />
             <SelfIntroduction />
             <Educations />

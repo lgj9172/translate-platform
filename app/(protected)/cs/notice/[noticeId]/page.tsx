@@ -2,17 +2,15 @@
 
 import { getNotice } from "@/apis/notices";
 import Badge from "@/components/Badge";
-import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import {
-  ActionIcon,
-  Avatar,
-  Center,
-  Group,
-  Loader,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Avatar } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -29,8 +27,8 @@ export default function Page() {
 
   if (isLoading)
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
 
@@ -40,13 +38,10 @@ export default function Page() {
     <Stack>
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/cs/notice"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/cs/notice">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
 
           <PageTitle>

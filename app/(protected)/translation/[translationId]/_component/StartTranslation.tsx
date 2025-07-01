@@ -2,7 +2,7 @@
 
 import StartTranslationModal from "@/modals/StartTranslationModal";
 import { Translation } from "@/types/entities";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 

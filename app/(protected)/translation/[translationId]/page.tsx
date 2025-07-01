@@ -5,7 +5,6 @@ import { getSelectedQuotation } from "@/apis/translations-quotations";
 import { getMyTranslator } from "@/apis/translator";
 import { getOtherUser, getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
-import Card from "@/components/Card";
 import CategoryBadges from "@/components/CatagoryBadges";
 import Fee from "@/components/Fee";
 import FileDownload from "@/components/FileDownload";
@@ -16,17 +15,14 @@ import LanguageBadge from "@/components/LangaugeBadge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Avatar } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { TRANSLATION_STATUS } from "@/types/entities";
-import {
-  ActionIcon,
-  Avatar,
-  Center,
-  Divider,
-  Group,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
@@ -80,8 +76,8 @@ export default function Page() {
 
   if (isTranslationLoading || isWriterLoading || isUserLoading) {
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
   }
@@ -89,21 +85,18 @@ export default function Page() {
   if (!translation) return null;
 
   return (
-    <Stack w="full" h="full" gap={16}>
+    <Stack className="w-full h-full gap-[16px]">
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
           <PageTitle>{translation.title}</PageTitle>
         </Group>
       </PageHeader>
-      <Group justify="space-between">
+      <Group className="justify-between">
         <Group gap={4}>
           <LanguageBadge
             sourceLanguage={translation.source_language}
@@ -129,18 +122,18 @@ export default function Page() {
           <LabelSection>
             <Label>세부 요청사항</Label>
           </LabelSection>
-          <Text>{translation.description}</Text>
+          <div>{translation.description}</div>
         </InputSection>
 
         <InputSection>
           <LabelSection>
             <Label>마감 기한</Label>
           </LabelSection>
-          <Text>
+          <div>
             {dayjs(translation.deadline)
               .locale("ko")
               .format("YYYY.MM.DD hh:mm")}
-          </Text>
+          </div>
         </InputSection>
 
         <InputSection>
@@ -217,7 +210,7 @@ export default function Page() {
           <Comments translation={translation} />
         )}
 
-        <Divider />
+        <div className="h-[1px] bg-[#E5E7EB]" />
 
         {/* 취소된 번역 */}
         {translation.is_canceled ? (

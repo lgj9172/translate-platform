@@ -3,7 +3,11 @@
 import { getNotices } from "@/apis/notices";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -24,20 +28,17 @@ export default function Page() {
     <Stack>
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/cs"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/cs">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
           <PageTitle>공지사항</PageTitle>
         </Group>
       </PageHeader>
       {isLoading && (
-        <Center mih="320px">
-          <Loader color="orange" type="bars" />
+        <Center className="h-[500px]">
+          <Loader />
         </Center>
       )}
       {isError && <Alert>공지사항을 불러오는 중 오류가 발생했어요.</Alert>}

@@ -13,9 +13,12 @@ import CancelQuoteModal from "@/modals/CancelQuoteModal";
 import SendQuoteModal from "@/modals/SendQuoteModal";
 import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Center, NumberInput, Stack } from "@mantine/core";
+import { Center } from "@/components/ui/center";
+import { Stack } from "@/components/ui/stack";
+import { Loader } from "@/components/ui/loader";
+import { Input } from "@/components/ui/input";
+import { NumericFormat } from "react-number-format";
 import { useQuery } from "@tanstack/react-query";
-import { Loader } from "lucide-react";
 import { useState } from "react";
 import {
   Controller,
@@ -82,8 +85,8 @@ export default function SendQuote({ translation }: Props) {
 
   if (isTranslatorQuotationLoading) {
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
   }
@@ -112,22 +115,26 @@ export default function SendQuote({ translation }: Props) {
                   fieldState: { error },
                 }) => (
                   <ControllerSection>
-                    <NumberInput
-                      {...field}
-                      onChange={(v) => onChange(Number(v))}
-                      step={1000}
-                      clampBehavior="strict"
-                      min={0}
-                      max={1000000000}
-                      allowNegative={false}
-                      allowDecimal={false}
-                      thousandSeparator=","
-                      leftSection="₩"
-                      withAsterisk
-                      classNames={{
-                        input: "focus:border-primary",
-                      }}
-                    />
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                        ₩
+                      </span>
+                      <NumericFormat
+                        {...field}
+                        value={field.value}
+                        onValueChange={(values) =>
+                          onChange(values.floatValue || 0)
+                        }
+                        thousandSeparator=","
+                        allowNegative={false}
+                        decimalScale={0}
+                        min={0}
+                        max={1000000000}
+                        customInput={Input}
+                        className="pl-8 focus:border-primary"
+                        placeholder="번역료를 입력하세요"
+                      />
+                    </div>
                     <ErrorText>{error?.message}</ErrorText>
                   </ControllerSection>
                 )}

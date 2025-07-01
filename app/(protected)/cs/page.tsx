@@ -1,10 +1,12 @@
 "use client";
 
-import Card from "@/components/Card";
 import CustomerSupport from "@/components/CustomerSupport";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import { ActionIcon, Group, Stack } from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Card } from "@/components/ui/card";
+import { Group } from "@/components/ui/group";
+import { Stack } from "@/components/ui/stack";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
@@ -13,13 +15,10 @@ export default function Page() {
     <Stack>
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
           <PageTitle>고객센터</PageTitle>
         </Group>

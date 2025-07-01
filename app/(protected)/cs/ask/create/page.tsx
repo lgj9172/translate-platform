@@ -12,7 +12,9 @@ import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
 import TextArea from "@/components/TextArea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon, Group, Stack } from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Group } from "@/components/ui/group";
+import { Stack } from "@/components/ui/stack";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -119,16 +121,13 @@ export default function Index() {
   return (
     <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>
       <FormProvider {...methods}>
-        <Stack w="full" h="full">
+        <Stack className="w-full h-full">
           <PageHeader>
             <Group>
-              <ActionIcon
-                variant="transparent"
-                color="black"
-                component={Link}
-                href="/"
-              >
-                <FaChevronLeft />
+              <ActionIcon variant="ghost" asChild>
+                <Link href="/cs/ask">
+                  <FaChevronLeft />
+                </Link>
               </ActionIcon>
               <PageTitle>번역요청</PageTitle>
             </Group>
@@ -143,11 +142,7 @@ export default function Index() {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <ControllerSection>
-                  <SelectBox
-                    {...field}
-                    data={askCategoryOptions}
-                    allowDeselect={false}
-                  />
+                  <SelectBox {...field} data={askCategoryOptions} />
                   <ErrorText>{error?.message}</ErrorText>
                 </ControllerSection>
               )}

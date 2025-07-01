@@ -1,13 +1,9 @@
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export default function PageHeader({ children }: Props) {
-  return (
-    <Stack w="100%" mb="md">
-      {children}
-    </Stack>
-  );
+  return <Stack className="w-full mb-4">{children}</Stack>;
 }

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import SubmitTranslationModal from "@/modals/SubmitTranslationModal";
 import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

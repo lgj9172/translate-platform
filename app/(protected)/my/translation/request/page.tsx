@@ -5,7 +5,11 @@ import Alert from "@/components/Alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
-import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -24,20 +28,17 @@ export default function Page() {
     <Stack>
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/my"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/my">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
           <PageTitle>보낸 번역 요청</PageTitle>
         </Group>
       </PageHeader>
       {isLoading && (
-        <Center mih="320px">
-          <Loader color="orange" type="bars" />
+        <Center className="h-[500px]">
+          <Loader />
         </Center>
       )}
       {isError && (

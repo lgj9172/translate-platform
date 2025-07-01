@@ -12,7 +12,8 @@ import TextArea from "@/components/TextArea";
 import { Button } from "@/components/ui/button";
 import { Translation, TranslationComment } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Center, Loader } from "@mantine/core";
+import { Center } from "@/components/ui/center";
+import { Loader } from "@/components/ui/loader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -105,8 +106,8 @@ export default function Comments({
 
   if (isLoading)
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
 

@@ -14,14 +14,11 @@ import TranslationCard from "@/components/TranslationCard";
 import { Button } from "@/components/ui/button";
 import { TRANSLATION_CURRENCY } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ActionIcon,
-  Center,
-  Group,
-  Loader,
-  NumberInput,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -32,6 +29,8 @@ import {
   useForm,
 } from "react-hook-form";
 import { FaChevronLeft } from "react-icons/fa6";
+import { NumericFormat } from "react-number-format";
+import { Input } from "@/components/ui/input";
 import { z } from "zod";
 
 const PostTranslationQuoteFormSchema = z.object({
@@ -97,8 +96,8 @@ export default function Page() {
 
   if (isLoading) {
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
   }
@@ -108,16 +107,13 @@ export default function Page() {
   return (
     <form onSubmit={handleSubmit(handleClickCreate)}>
       <FormProvider {...methods}>
-        <Stack w="full" h="full" gap={16}>
+        <Stack className="w-full h-full gap-[16px]">
           <PageHeader>
             <Group>
-              <ActionIcon
-                variant="transparent"
-                color="black"
-                component={Link}
-                href="/"
-              >
-                <FaChevronLeft />
+              <ActionIcon variant="ghost" asChild>
+                <Link href="/">
+                  <FaChevronLeft />
+                </Link>
               </ActionIcon>
               <PageTitle>견적 보내기</PageTitle>
             </Group>
@@ -138,22 +134,26 @@ export default function Page() {
                   fieldState: { error },
                 }) => (
                   <ControllerSection>
-                    <NumberInput
-                      {...field}
-                      onChange={(v) => onChange(Number(v))}
-                      step={1000}
-                      clampBehavior="strict"
-                      min={0}
-                      max={1000000000}
-                      allowNegative={false}
-                      allowDecimal={false}
-                      thousandSeparator=","
-                      leftSection="₩"
-                      withAsterisk
-                      classNames={{
-                        input: "focus:border-primary",
-                      }}
-                    />
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                        ₩
+                      </span>
+                      <NumericFormat
+                        {...field}
+                        value={field.value}
+                        onValueChange={(values) =>
+                          onChange(values.floatValue || 0)
+                        }
+                        thousandSeparator=","
+                        allowNegative={false}
+                        decimalScale={0}
+                        min={0}
+                        max={1000000000}
+                        customInput={Input}
+                        className="pl-8 focus:border-primary"
+                        placeholder="번역료를 입력하세요"
+                      />
+                    </div>
                     <ErrorText>{error?.message}</ErrorText>
                   </ControllerSection>
                 )}

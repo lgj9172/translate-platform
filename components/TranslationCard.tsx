@@ -1,7 +1,7 @@
+import { Card } from "@/components/ui/card";
 import { Translation } from "@/types/entities";
 import { getDday } from "@/utils/converter/label";
 import Badge from "./Badge";
-import Card from "./Card";
 import CategoryBadges from "./CatagoryBadges";
 import Fee from "./Fee";
 import LanguageBadge from "./LangaugeBadge";

@@ -1,9 +1,6 @@
 "use client";
 
 import { toast, Toaster } from "sonner";
-import { MantineProvider } from "@mantine/core";
-import { DatesProvider } from "@mantine/dates";
-import { ModalsProvider } from "@mantine/modals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "dayjs/locale/ko";
@@ -86,19 +83,11 @@ function Providers({ children }: React.PropsWithChildren) {
       }),
   );
   return (
-    <DatesProvider
-      settings={{ locale: "ko", firstDayOfWeek: 1, weekendDays: [0, 6] }}
-    >
-      <MantineProvider>
-        <ModalsProvider modalProps={{ centered: true }}>
-          <QueryClientProvider client={queryClient}>
-            <Toaster />
-            {children}
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </ModalsProvider>
-      </MantineProvider>
-    </DatesProvider>
+    <QueryClientProvider client={queryClient}>
+      <Toaster />
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 

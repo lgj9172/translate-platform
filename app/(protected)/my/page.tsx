@@ -7,17 +7,15 @@ import {
 import { getTranslatorQuotations } from "@/apis/translator";
 import { getUser } from "@/apis/user";
 import Alert from "@/components/Alert";
-import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import {
-  ActionIcon,
-  Avatar,
-  Center,
-  Group,
-  Loader,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
@@ -57,13 +55,10 @@ export default function Page() {
     <Stack>
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            component={Link}
-            href="/"
-          >
-            <FaChevronLeft />
+          <ActionIcon variant="ghost" asChild>
+            <Link href="/">
+              <FaChevronLeft />
+            </Link>
           </ActionIcon>
           <PageTitle>마이 페이지</PageTitle>
         </Group>
@@ -71,8 +66,8 @@ export default function Page() {
 
       <div className="flex flex-col gap-16">
         {isLoadingUser && (
-          <Center mih="80px">
-            <Loader color="orange" type="bars" />
+          <Center className="h-[500px]">
+            <Loader />
           </Center>
         )}
         {isErrorUser && (
@@ -81,7 +76,10 @@ export default function Page() {
         {user && (
           <Card>
             <div className="flex gap-[8px]">
-              <Avatar src={user?.avatar} />
+              <Avatar>
+                <AvatarImage src={user?.avatar} />
+                <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
+              </Avatar>
               <div>
                 <div className="text-[14px] text-[#4B4D4D]">{user?.name}</div>
                 <div className="text-[14px] text-[#8B8C8D]">
@@ -138,7 +136,7 @@ export default function Page() {
                     </div>
                     <div className="flex items-center gap-2">
                       {isLoadingTranslatorQuotations ? (
-                        <Loader color="orange" type="bars" size="sm" />
+                        <Loader color="primary" size="sm" />
                       ) : (
                         <div className="text-gray-600 font-medium">
                           <span className="text-orange-500">
@@ -166,7 +164,7 @@ export default function Page() {
                     </div>
                     <div className="flex items-center gap-2">
                       {isLoadingTranslationResponse ? (
-                        <Loader color="orange" type="bars" size="sm" />
+                        <Loader color="primary" size="sm" />
                       ) : (
                         <div className="text-gray-600 font-medium">
                           <span className="text-orange-500">
@@ -259,7 +257,7 @@ export default function Page() {
                 </div>
                 <div className="flex items-center gap-2">
                   {isLoadingTranslationRequest ? (
-                    <Loader color="orange" type="bars" size="sm" />
+                    <Loader color="primary" size="sm" />
                   ) : (
                     <div className="text-gray-600 font-medium">
                       <span className="text-orange-500">

@@ -9,13 +9,15 @@ import TextInput from "@/components/TextInput";
 import { Button } from "@/components/ui/button";
 import { CertificationDefaultValue } from "@/model/certification";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
-import { DatePickerInput, DateValue } from "@mantine/dates";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Card } from "@/components/ui/card";
+import { DatePicker } from "@/components/ui/date-picker";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FaCircleInfo, FaRegCalendar } from "react-icons/fa6";
+import { X } from "lucide-react";
 import { z } from "zod";
 
 export default function Certifications() {
@@ -41,7 +43,7 @@ export default function Certifications() {
     remove(index);
   };
 
-  const handleChangeDateRange = (index: number, date: DateValue) => {
+  const handleChangeDateRange = (index: number, date: Date | undefined) => {
     const staredAt = date ? dayjs(date).toISOString() : "";
     setValue(`certifications.${index}.started_at`, staredAt, {
       shouldValidate: true,
@@ -72,51 +74,32 @@ export default function Certifications() {
         </div>
       </LabelSection>
       {fields.length === 0 && (
-        <Alert
-          color="gray"
-          bg="#F9FAFB"
-          title="자격증이 있다면 추가 버튼을 눌러 입력해주세요."
-          icon={<FaCircleInfo />}
-        />
+        <Alert>
+          <AlertTitle>
+            자격증이 있다면 추가 버튼을 눌러 입력해주세요.
+          </AlertTitle>
+        </Alert>
       )}
       {fields.map((field, index) => (
-        <Card
-          key={field.id}
-          bg="#F9FAFB"
-          radius="16px"
-          component={Stack}
-          gap="xs"
-          pos="relative"
-        >
+        <Card key={field.id} className="relative">
           <ControllerSection>
             <ActionIcon
-              color="dark"
-              variant="transparent"
+              variant="ghost"
               onClick={() => handleClickDelete(index)}
               // disabled={fields.length === 1}
             >
-              <CloseIcon />
+              <X />
             </ActionIcon>
           </ControllerSection>
           <ControllerSection>
-            <DatePickerInput
-              type="default"
-              valueFormat="YYYY년 MM월 DD일"
-              placeholder="발급일"
-              leftSection={<FaRegCalendar />}
-              value={
+            <DatePicker
+              date={
                 dayjs(watch(`certifications.${index}.started_at`)).isValid()
                   ? dayjs(watch(`certifications.${index}.started_at`)).toDate()
-                  : null
+                  : undefined
               }
-              onChange={(dateValue) => {
-                handleChangeDateRange(index, dateValue);
-              }}
-              classNames={{
-                input: "focus:border-primary",
-                placeholder: "text-neutral-400",
-                day: "data-[selected=true]:bg-primary",
-              }}
+              onDateChange={(date) => handleChangeDateRange(index, date)}
+              placeholder="발급일"
             />
             <ErrorText>
               {errors?.certifications?.[index]?.started_at?.message}

@@ -13,10 +13,13 @@ import {
   TRANSLATION_LANGUAGE_LABEL,
   TranslationLanguage,
 } from "@/types/entities";
-import { ActionIcon, Alert, Card, CloseIcon, Stack } from "@mantine/core";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Card } from "@/components/ui/card";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FaArrowDown, FaCircleInfo } from "react-icons/fa6";
+import { FaArrowDown } from "react-icons/fa6";
+import { X } from "lucide-react";
 import { z } from "zod";
 
 export default function Samples() {
@@ -70,30 +73,21 @@ export default function Samples() {
         </div>
       </LabelSection>
       {fields.length === 0 && (
-        <Alert
-          color="gray"
-          bg="#F9FAFB"
-          title="공개할 번역 샘플이 있다면 추가 버튼을 눌러 입력해주세요."
-          icon={<FaCircleInfo />}
-        />
+        <Alert>
+          <AlertTitle>
+            공개할 번역 샘플이 있다면 추가 버튼을 눌러 입력해주세요.
+          </AlertTitle>
+        </Alert>
       )}
       {fields.map((field, index) => (
-        <Card
-          key={field.id}
-          bg="#F9FAFB"
-          radius="16px"
-          component={Stack}
-          gap="xs"
-          pos="relative"
-        >
+        <Card key={field.id} className="relative">
           <div className="flex justify-end">
             <ActionIcon
-              color="dark"
-              variant="transparent"
+              variant="ghost"
               onClick={() => handleClickDelete(index)}
               // disabled={fields.length === 1}
             >
-              <CloseIcon />
+              <X />
             </ActionIcon>
           </div>
           <InputSection>
@@ -104,14 +98,12 @@ export default function Samples() {
                 <ControllerSection>
                   <SelectBox
                     {...f}
-                    w={120}
+                    className="w-[120px]"
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as TranslationLanguage);
                       trigger(`translation_samples.${index}.source_language`);
                     }}
-                    allowDeselect={false}
-                    checkIconPosition="right"
                   />
                   <ErrorText>
                     {
@@ -151,14 +143,12 @@ export default function Samples() {
                 <ControllerSection>
                   <SelectBox
                     {...f}
-                    w={120}
+                    className="w-[120px]"
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as TranslationLanguage);
                       trigger(`translation_samples.${index}.target_language`);
                     }}
-                    allowDeselect={false}
-                    checkIconPosition="right"
                   />
                   <ErrorText>
                     {

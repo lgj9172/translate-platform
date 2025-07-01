@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
 interface TypographyProps {
@@ -27,7 +27,7 @@ export default function Typography({
 }: TypographyProps) {
   return (
     <div
-      className={classNames({
+      className={cn({
         "font-normal": !bold,
         "font-bold": bold,
         "text-left": align === "left",

@@ -1,7 +1,8 @@
 "use client";
 
 import useUser from "@/hooks/useUser";
-import { Center, Loader } from "@mantine/core";
+import { Center } from "@/components/ui/center";
+import { Loader } from "@/components/ui/loader";
 import { redirect } from "next/navigation";
 
 export default function ProtectedLayout({
@@ -13,8 +14,8 @@ export default function ProtectedLayout({
 
   if (isLoading) {
     return (
-      <Center mih="500px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
   }

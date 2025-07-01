@@ -1,7 +1,4 @@
 import Providers from "@/utils/react-query/Provider";
-import { ColorSchemeScript } from "@mantine/core";
-import "@mantine/core/styles.css";
-import "@mantine/dates/styles.css";
 import { Suspense } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import localFont from "next/font/local";
@@ -37,6 +34,8 @@ const spoqaHanSansNeo = localFont({
     },
   ],
   variable: "--font-spoqa-han-sans-neo",
+  display: "swap",
+  preload: true,
 });
 
 export default function RootLayout({
@@ -45,11 +44,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${spoqaHanSansNeo.variable}`}>
-      <head>
-        <ColorSchemeScript />
-      </head>
-      <body>
+    <html lang="ko" className={spoqaHanSansNeo.variable}>
+      <head></head>
+      <body className={spoqaHanSansNeo.className}>
         <Providers>
           <Suspense>
             <Shell>{children}</Shell>

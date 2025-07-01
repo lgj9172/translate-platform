@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import { Translation } from "@/types/entities";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 import { useState } from "react";
 
 export default function WaitTranslationStart({

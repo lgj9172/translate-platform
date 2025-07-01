@@ -10,7 +10,7 @@ import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
 import { Translation } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 // import dayjs from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";

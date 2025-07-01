@@ -3,12 +3,16 @@
 import { getTranslator } from "@/apis/translator";
 import TranslatorProfile from "@/app/(protected)/translation/[translationId]/_component/TranslatorProfile";
 import Badge from "@/components/Badge";
-import Card from "@/components/Card";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Group } from "@/components/ui/group";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import { getCategoryLabel } from "@/utils/converter/label";
-import { ActionIcon, Center, Group, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -26,22 +30,18 @@ export default function Page() {
 
   if (isLoading)
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
 
   if (!translator) return null;
 
   return (
-    <Stack w="full" h="full" gap={16}>
+    <Stack className="w-full h-full gap-[16px]">
       <PageHeader>
         <Group>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            onClick={() => router.back()}
-          >
+          <ActionIcon variant="ghost" asChild onClick={() => router.back()}>
             <FaChevronLeft />
           </ActionIcon>
           <PageTitle>번역사 프로필</PageTitle>
@@ -53,7 +53,7 @@ export default function Page() {
           <TranslatorProfile translatorId={translatorId} />
         </Card>
 
-        <Group justify="space-between">
+        <Group className="justify-between">
           <Group gap={4}>
             {translator?.categories.map((category) => (
               <Badge color="blue" key={category}>

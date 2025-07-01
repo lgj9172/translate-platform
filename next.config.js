@@ -7,9 +7,6 @@ const nextConfig = {
     });
     return config;
   },
-  experimental: {
-    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
-  },
   turbopack: {
     rules: {
       "*.svg": {

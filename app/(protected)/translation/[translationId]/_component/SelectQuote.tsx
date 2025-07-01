@@ -1,16 +1,18 @@
 "use client";
 
 import { getTranslationQuotations } from "@/apis/translations-quotations";
-import Card from "@/components/Card";
 import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Loader } from "@/components/ui/loader";
+import { Stack } from "@/components/ui/stack";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import SelectQuoteModal from "@/modals/SelectQuoteModal";
 import { Translation } from "@/types/entities";
-import { Center, Loader, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import TranslatorProfile from "./TranslatorProfile";
@@ -50,8 +52,8 @@ export default function SelectQuote({
 
   if (isLoading)
     return (
-      <Center mih="320px">
-        <Loader color="orange" type="bars" />
+      <Center className="h-[500px]">
+        <Loader />
       </Center>
     );
 

@@ -1,15 +1,16 @@
 import { getTranslation } from "@/apis/translations";
+import { Card } from "@/components/ui/card";
+import { Center } from "@/components/ui/center";
+import { Loader } from "@/components/ui/loader";
 import { Quotation } from "@/types/entities";
-import { Center, Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import Badge from "./Badge";
-import Card from "./Card";
 import Fee from "./Fee";
 import InputSection from "./InputSection";
+import Label from "./Label";
 import LabelSection from "./LabelSection";
 import TranslationCard from "./TranslationCard";
-import Label from "./Label";
 
 export default function QuotationCard({ quotation }: { quotation: Quotation }) {
   const { data: translation, isLoading: isTranslationLoading } = useQuery({
@@ -46,8 +47,8 @@ export default function QuotationCard({ quotation }: { quotation: Quotation }) {
           <div>{quotation.detail || "-"}</div>
         </InputSection>
         {isTranslationLoading ? (
-          <Center mih="150px">
-            <Loader color="orange" type="bars" />
+          <Center className="h-[500px]">
+            <Loader />
           </Center>
         ) : (
           translation && (

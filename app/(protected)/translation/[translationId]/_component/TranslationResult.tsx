@@ -2,7 +2,7 @@ import { Translation, File } from "@/types/entities";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 
 export default function TranslationResult({
   translation,

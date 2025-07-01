@@ -1,5 +1,5 @@
 import { ChangeEventHandler, MouseEventHandler, useId, useRef } from "react";
-import { CloseIcon } from "@mantine/core";
+import { X } from "lucide-react";
 import TextInput from "./TextInput";
 
 interface Props {
@@ -51,7 +51,7 @@ export default function FileInput({
               onRemove?.();
             }}
           >
-            <CloseIcon />
+            <X />
           </button>
         </div>
       )}

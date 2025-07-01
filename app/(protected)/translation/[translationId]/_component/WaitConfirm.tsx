@@ -3,7 +3,7 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 import { useState } from "react";
 import ResumeTranslationModal from "@/modals/ResumeTranslationModal";
 

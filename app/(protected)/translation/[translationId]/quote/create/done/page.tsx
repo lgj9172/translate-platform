@@ -3,7 +3,8 @@
 import Alert from "@/components/Alert";
 import { Button } from "@/components/ui/button";
 import Check from "@assets/icons/check.svg";
-import { Center, Stack } from "@mantine/core";
+import { Center } from "@/components/ui/center";
+import { Stack } from "@/components/ui/stack";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -11,9 +12,9 @@ export default function Page() {
   const { translationId } = useParams<{ translationId: string }>();
 
   return (
-    <Center h={500}>
-      <Stack w="100%" align="center" gap="xl">
-        <Stack align="center">
+    <Center className="h-[500px]">
+      <Stack className="w-full gap-[16px]">
+        <Stack className="items-center">
           <Check />
           <div className="flex flex-col items-center justify-center gap-[16px]">
             <div className="text-[24px] font-bold">

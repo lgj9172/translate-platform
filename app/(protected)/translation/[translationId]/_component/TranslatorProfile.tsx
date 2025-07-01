@@ -1,6 +1,6 @@
 import { getTranslator } from "@/apis/translator";
 import { getOtherUser } from "@/apis/user";
-import { Avatar } from "@mantine/core";
+import { Avatar } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 

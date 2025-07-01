@@ -10,22 +10,21 @@ import TextInput from "@/components/TextInput";
 import { Button } from "@/components/ui/button";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
-import { ActionIcon, Card, CloseIcon, Stack } from "@mantine/core";
-import { DatePickerInput, DatesRangeValue } from "@mantine/dates";
+import { ActionIcon } from "@/components/ui/action-icon";
+import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FaRegCalendar } from "react-icons/fa6";
+import { X } from "lucide-react";
 import { z } from "zod";
+import { Stack } from "@/components/ui/stack";
 
 export default function Careers() {
   const {
     control,
-    getValues,
     setValue,
     watch,
-
     formState: { errors },
   } = useFormContext<z.infer<typeof PostTranslatorFormSchema>>();
 
@@ -42,19 +41,6 @@ export default function Careers() {
 
   const handleClickDelete = (index: number) => {
     remove(index);
-  };
-
-  const handleChangeDateRange = (index: number, dates: DatesRangeValue) => {
-    const startedAt = dates[0] ? dayjs(dates[0]).toISOString() : "";
-    const endedAt = dates[1] ? dayjs(dates[1]).toISOString() : "";
-    const isEmployed = getValues(`careers.${index}.is_employed`);
-    const currentDate = dayjs().toISOString();
-    setValue(`careers.${index}.started_at`, startedAt, {
-      shouldValidate: true,
-    });
-    setValue(`careers.${index}.ended_at`, isEmployed ? currentDate : endedAt, {
-      shouldValidate: true,
-    });
   };
 
   const handleChangeFile = async (
@@ -83,118 +69,135 @@ export default function Careers() {
         </div>
       </LabelSection>
       {fields.map((field, index) => (
-        <Card
-          key={field.id}
-          bg="#F9FAFB"
-          radius="16px"
-          component={Stack}
-          gap="xs"
-          pos="relative"
-        >
-          <div className="flex justify-end">
-            <ActionIcon
-              color="dark"
-              variant="transparent"
-              onClick={() => handleClickDelete(index)}
-              disabled={fields.length === 1}
-            >
-              <CloseIcon />
-            </ActionIcon>
-          </div>
-          <ControllerSection>
-            <DatePickerInput
-              type="range"
-              valueFormat="YYYY년 MM월 DD일"
-              placeholder="시작일 - 종료일"
-              leftSection={<FaRegCalendar />}
-              value={[
-                dayjs(watch(`careers.${index}.started_at`)).isValid()
-                  ? dayjs(watch(`careers.${index}.started_at`)).toDate()
-                  : null,
-                dayjs(watch(`careers.${index}.ended_at`)).isValid()
-                  ? dayjs(watch(`careers.${index}.ended_at`)).toDate()
-                  : null,
-              ]}
-              onChange={(datesRangeValue) => {
-                handleChangeDateRange(index, datesRangeValue);
-              }}
-              maxDate={
-                watch(`careers.${index}.is_employed`)
-                  ? dayjs().toDate()
-                  : undefined
-              }
-              classNames={{
-                input: "focus:border-primary",
-                placeholder: "text-neutral-400",
-                day: "data-[in-range=true]:bg-primary/20 data-[selected=true]:bg-primary",
-              }}
+        <Card key={field.id} className="relative">
+          <Stack gap="xs">
+            <div className="flex justify-end">
+              <ActionIcon
+                variant="ghost"
+                onClick={() => handleClickDelete(index)}
+                disabled={fields.length === 1}
+              >
+                <X />
+              </ActionIcon>
+            </div>
+            <ControllerSection>
+              <div className="flex gap-2">
+                <Controller
+                  control={control}
+                  name={`careers.${index}.started_at`}
+                  render={({ field: { value, onChange } }) => (
+                    <input
+                      type="date"
+                      value={value ? dayjs(value).format("YYYY-MM-DD") : ""}
+                      onChange={(e) =>
+                        onChange(
+                          e.target.value
+                            ? dayjs(e.target.value).toISOString()
+                            : "",
+                        )
+                      }
+                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
+                      placeholder="시작일"
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`careers.${index}.ended_at`}
+                  render={({ field: { value, onChange } }) => (
+                    <input
+                      type="date"
+                      value={value ? dayjs(value).format("YYYY-MM-DD") : ""}
+                      onChange={(e) =>
+                        onChange(
+                          e.target.value
+                            ? dayjs(e.target.value).toISOString()
+                            : "",
+                        )
+                      }
+                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
+                      placeholder="종료일"
+                      disabled={watch(`careers.${index}.is_employed`)}
+                    />
+                  )}
+                />
+              </div>
+              <ErrorText>
+                {errors?.careers?.[index]?.started_at?.message}
+              </ErrorText>
+              <ErrorText>
+                {errors?.careers?.[index]?.ended_at?.message}
+              </ErrorText>
+            </ControllerSection>
+            <Controller
+              control={control}
+              name={`careers.${index}.is_employed`}
+              render={({ field: { value, onChange, ...f } }) => (
+                <div className="flex items-center space-x-2">
+                  <CheckButton
+                    {...f}
+                    checked={value}
+                    onCheckedChange={(isChecked) => {
+                      onChange(isChecked);
+                      if (isChecked) {
+                        setValue(
+                          `careers.${index}.ended_at`,
+                          dayjs().toISOString(),
+                        );
+                      }
+                    }}
+                  />
+                  <label htmlFor={f.name} className="text-sm font-medium">
+                    재직중
+                  </label>
+                </div>
+              )}
             />
-            <ErrorText>
-              {errors?.careers?.[index]?.started_at?.message}
-            </ErrorText>
-            <ErrorText>{errors?.careers?.[index]?.ended_at?.message}</ErrorText>
-          </ControllerSection>
-          <Controller
-            control={control}
-            name={`careers.${index}.is_employed`}
-            render={({ field: { value, onChange, ...f } }) => (
-              <CheckButton
-                {...f}
-                label="재직중"
-                checked={value}
-                onChange={(e) => {
-                  const isChecked = e.currentTarget.checked;
-                  onChange(isChecked);
-                  if (isChecked) {
-                    setValue(
-                      `careers.${index}.ended_at`,
-                      dayjs().toISOString(),
-                    );
-                  }
-                }}
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`careers.${index}.name`}
+                render={({ field: { ...f } }) => (
+                  <TextInput {...f} placeholder="회사 이름" />
+                )}
               />
-            )}
-          />
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`careers.${index}.name`}
-              render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="회사 이름" />
-              )}
-            />
-            <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`careers.${index}.position`}
-              render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="직무" />
-              )}
-            />
-            <ErrorText>{errors?.careers?.[index]?.position?.message}</ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`careers.${index}.achievement`}
-              render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="주요성과" />
-              )}
-            />
-            <ErrorText>
-              {errors?.careers?.[index]?.achievement?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <FileInput
-              placeholder="경력 증명서 (10MB, PDF)"
-              onChange={(e) => handleChangeFile(index, e)}
-              text={`${watch(`careers.${index}.file_id`)}`}
-            />
-            <ErrorText>{errors?.careers?.[index]?.file_id?.message}</ErrorText>
-          </ControllerSection>
+              <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`careers.${index}.position`}
+                render={({ field: { ...f } }) => (
+                  <TextInput {...f} placeholder="직무" />
+                )}
+              />
+              <ErrorText>
+                {errors?.careers?.[index]?.position?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`careers.${index}.achievement`}
+                render={({ field: { ...f } }) => (
+                  <TextInput {...f} placeholder="주요성과" />
+                )}
+              />
+              <ErrorText>
+                {errors?.careers?.[index]?.achievement?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <FileInput
+                placeholder="경력 증명서 (10MB, PDF)"
+                onChange={(e) => handleChangeFile(index, e)}
+                text={`${watch(`careers.${index}.file_id`)}`}
+              />
+              <ErrorText>
+                {errors?.careers?.[index]?.file_id?.message}
+              </ErrorText>
+            </ControllerSection>
+          </Stack>
         </Card>
       ))}
     </InputSection>

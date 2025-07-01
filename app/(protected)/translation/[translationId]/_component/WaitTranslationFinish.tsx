@@ -1,7 +1,7 @@
 "use client";
 
 import { Translation } from "@/types/entities";
-import { Stack } from "@mantine/core";
+import { Stack } from "@/components/ui/stack";
 import dayjs from "dayjs";
 
 interface Props {

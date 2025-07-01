@@ -56,7 +56,9 @@ export default function Page() {
         <Group justify="space-between">
           <Group gap={4}>
             {translator?.categories.map((category) => (
-              <Badge color="blue">{getCategoryLabel(category)}</Badge>
+              <Badge color="blue" key={category}>
+                {getCategoryLabel(category)}
+              </Badge>
             ))}
           </Group>
         </Group>

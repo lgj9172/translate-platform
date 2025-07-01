@@ -167,8 +167,7 @@ export default function Page() {
           </LabelSection>
 
           {translation.source_files.map(({ file_id }, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index} className="flex gap-2">
+            <div key={`${file_id}-${index}`} className="flex gap-2">
               {file_id ? (
                 <FileDownload fileId={file_id} />
               ) : (

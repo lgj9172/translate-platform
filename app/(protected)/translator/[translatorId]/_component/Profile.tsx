@@ -18,7 +18,10 @@ export default function Profile({ translatorId }: { translatorId: string }) {
       <div className="flex flex-col gap-2">
         <Label>학력</Label>
         {translator?.educations.map((education) => (
-          <div className="flex flex-col gap-1 border-l-2 border-primary pl-2">
+          <div
+            key={education.education_id}
+            className="flex flex-col gap-1 border-l-2 border-primary pl-2"
+          >
             <div className="flex gap-1">
               <span className="text-sm text-gray-500">
                 {dayjs(education.started_at).format("YYYY.MM")} -{" "}
@@ -34,7 +37,10 @@ export default function Profile({ translatorId }: { translatorId: string }) {
       <div className="flex flex-col gap-2">
         <Label>경력</Label>
         {translator?.careers.map((career) => (
-          <div className="flex flex-col gap-1 border-l-2 border-primary pl-2">
+          <div
+            key={career.career_id}
+            className="flex flex-col gap-1 border-l-2 border-primary pl-2"
+          >
             <div className="flex gap-1">
               <span className="text-sm text-gray-500">
                 {career.is_employed
@@ -54,7 +60,10 @@ export default function Profile({ translatorId }: { translatorId: string }) {
         <div className="flex flex-col gap-2">
           <Label>자격증</Label>
           {translator?.certifications.map((certification) => (
-            <div className="flex flex-col gap-1 border-l-2 border-primary pl-2">
+            <div
+              key={certification.certification_id}
+              className="flex flex-col gap-1 border-l-2 border-primary pl-2"
+            >
               <div className="flex gap-1">
                 <span className="text-sm text-gray-500">
                   {dayjs(certification.started_at).format("YYYY.MM")}
@@ -72,7 +81,10 @@ export default function Profile({ translatorId }: { translatorId: string }) {
           <div className="flex flex-col gap-2">
             <Label>번역 예시</Label>
             {translator?.translation_samples.map((sample) => (
-              <div className="flex flex-col gap-2 border-l-2 border-primary pl-2">
+              <div
+                key={sample.translation_sample_id}
+                className="flex flex-col gap-2 border-l-2 border-primary pl-2"
+              >
                 <div className="flex flex-col">
                   <span className="text-sm text-gray-500">원문</span>
                   <span className="text-sm">{sample.source_text}</span>

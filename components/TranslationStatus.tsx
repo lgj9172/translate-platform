@@ -28,7 +28,6 @@ export default function TranslationStatus({
       <div className="flex gap-1">
         {Array.from({ length: 6 }).map((_, i) => (
           <div
-            // eslint-disable-next-line react/no-array-index-key
             key={`status-step-${i}`}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 
               ${i < step ? "bg-primary" : "bg-[#E5E7EA]"}`}

@@ -48,8 +48,7 @@ function Message({ message }: { message: TranslationComment }) {
           <span className="font-bold">{writer?.nickname}</span>
         </div>
         {message.content.split("\n").map((line, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index}>{line}</div>
+          <div key={`${line}-${index}`}>{line}</div>
         ))}
       </div>
     </div>

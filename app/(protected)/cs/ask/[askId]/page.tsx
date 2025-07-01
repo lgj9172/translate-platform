@@ -104,8 +104,7 @@ export default function Page() {
         </LabelSection>
         <div>
           {ask.content.split("\n").map((line: string, index: number) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Text key={index}>{line}</Text>
+            <Text key={`${line}-${index}`}>{line}</Text>
           ))}
         </div>
       </InputSection>

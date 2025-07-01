@@ -68,8 +68,7 @@ export default function Page() {
       </Card>
       <div className="min-h-[320px]">
         {notice.description.split("\n").map((line, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <p key={index}>{line}</p>
+          <p key={`${line}-${index}`}>{line}</p>
         ))}
       </div>
     </Stack>

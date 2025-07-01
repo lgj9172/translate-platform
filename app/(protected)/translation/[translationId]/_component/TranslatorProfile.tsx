@@ -3,9 +3,12 @@ import { getOtherUser } from "@/apis/user";
 import { Avatar } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { memo } from "react";
 
-const TranslatorProfile = memo(({ translatorId }: { translatorId: string }) => {
+export default function TranslatorProfile({
+  translatorId,
+}: {
+  translatorId: string;
+}) {
   const { data: translator } = useQuery({
     queryKey: ["translator", translatorId],
     queryFn: () => getTranslator({ translatorId }),
@@ -45,6 +48,4 @@ const TranslatorProfile = memo(({ translatorId }: { translatorId: string }) => {
       </div>
     </div>
   );
-});
-
-export default TranslatorProfile;
+}

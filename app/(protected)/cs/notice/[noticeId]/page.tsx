@@ -5,7 +5,7 @@ import Badge from "@/components/Badge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
@@ -52,7 +52,11 @@ export default function Page() {
       </PageHeader>
       <Card>
         <div className="flex gap-[8px]">
-          <Avatar />
+          <Avatar>
+            <AvatarFallback className="text-primary-foreground bg-primary">
+              플
+            </AvatarFallback>
+          </Avatar>
           <div>
             <div className="text-[14px] text-[#4B4D4D]">플루언스</div>
             <div className="text-[14px] text-[#8B8C8D]">

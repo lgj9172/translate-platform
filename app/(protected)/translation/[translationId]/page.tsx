@@ -16,7 +16,7 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
 import { ActionIcon } from "@/components/ui/action-icon";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
@@ -108,7 +108,10 @@ export default function Page() {
       </Group>
       <Card>
         <div className="flex gap-[8px]">
-          <Avatar />
+          <Avatar>
+            <AvatarImage src={writer?.avatar} />
+            <AvatarFallback>{writer?.nickname?.[0] || "U"}</AvatarFallback>
+          </Avatar>
           <div>
             <div className="text-[14px] text-[#4B4D4D]">{writer?.nickname}</div>
             <div className="text-[14px] text-[#8B8C8D]">

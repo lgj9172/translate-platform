@@ -1,6 +1,6 @@
 import { getTranslator } from "@/apis/translator";
 import { getOtherUser } from "@/apis/user";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
@@ -22,7 +22,10 @@ export default function TranslatorProfile({
 
   return (
     <div className="flex gap-[8px]">
-      <Avatar />
+      <Avatar>
+        <AvatarImage src={user?.avatar} />
+        <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
+      </Avatar>
       <div>
         <div className="text-[14px] text-[#4B4D4D]">
           <Link

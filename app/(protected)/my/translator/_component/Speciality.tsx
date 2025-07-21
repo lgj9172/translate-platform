@@ -82,7 +82,7 @@ export default function Speciality() {
                   value={c.value}
                   checked={field.value.includes(c.value)}
                   onChange={(e) => {
-                    const isChecked = e.currentTarget.checked;
+                    const isChecked = e.target.checked;
                     const updatedValue = isChecked
                       ? [...field.value, c.value]
                       : field.value.filter((v) => v !== c.value);

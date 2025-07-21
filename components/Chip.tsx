@@ -1,19 +1,27 @@
-import { HTMLProps, useId } from "react";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { ReactNode, useId } from "react";
 
-export default function Chip({
-  children,
-  ...props
-}: HTMLProps<HTMLInputElement>) {
+interface ChipProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  children: ReactNode;
+}
+
+export default function Chip({ children, className, ...props }: ChipProps) {
   const id = useId();
   return (
-    <label
-      htmlFor={id}
-      className="px-5 py-1 bg-white rounded-2xl border border-zinc-300 justify-center items-center gap-2.5 inline-flex has-checked:bg-orange-50 has-checked:border-orange-400 hover:cursor-pointer"
-    >
-      <input {...props} id={id} type="checkbox" className="peer" hidden />
-      <div className="text-neutral-400 text-sm font-normal leading-normal peer-checked:text-orange-400">
+    <div className="relative inline-flex items-center">
+      <input id={id} type="checkbox" className="sr-only peer" {...props} />
+      <Label
+        htmlFor={id}
+        className={cn(
+          "inline-flex items-center gap-2 px-3 py-1 rounded-md border text-sm font-medium transition-colors outline-none border-input bg-white text-foreground shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent/20 cursor-pointer select-none",
+          "peer-checked:border-primary peer-checked:text-primary peer-checked:bg-accent/10",
+          className,
+        )}
+        data-slot="chip"
+      >
         {children}
-      </div>
-    </label>
+      </Label>
+    </div>
   );
 }

@@ -5,19 +5,19 @@ import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import TextInput from "@/components/TextInput";
-import { Button } from "@/components/ui/button";
-import { CertificationDefaultValue } from "@/model/certification";
-import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DatePicker } from "@/components/ui/date-picker";
+import { Input } from "@/components/ui/input";
+import { CertificationDefaultValue } from "@/model/certification";
+import { PostTranslatorFormSchema } from "@/model/translator";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { X } from "lucide-react";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { X } from "lucide-react";
 import { z } from "zod";
 
 export default function Certifications() {
@@ -110,7 +110,7 @@ export default function Certifications() {
               control={control}
               name={`certifications.${index}.name`}
               render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="자격증" />
+                <Input {...f} placeholder="자격증" />
               )}
             />
             <ErrorText>
@@ -122,7 +122,7 @@ export default function Certifications() {
               control={control}
               name={`certifications.${index}.organization`}
               render={({ field: { ...f } }) => (
-                <TextInput {...f} placeholder="발급기관" />
+                <Input {...f} placeholder="발급기관" />
               )}
             />
             <ErrorText>

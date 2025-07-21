@@ -7,7 +7,6 @@ import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import RadioButton from "@/components/RadioButton";
 import SelectBox from "@/components/SelectBox";
-import TextInput from "@/components/TextInput";
 import { Button } from "@/components/ui/button";
 import { DegreeSchema } from "@/model/degree";
 import { EducationDefaultValue } from "@/model/education";
@@ -26,6 +25,7 @@ import { ChangeEvent, useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
 
 export default function Educations() {
   const educationStatusOptions = useMemo<
@@ -114,7 +114,7 @@ export default function Educations() {
                   control={control}
                   name={`educations.${index}.started_at`}
                   render={({ field: { value, onChange } }) => (
-                    <input
+                    <Input
                       type="month"
                       value={value ? dayjs(value).format("YYYY-MM") : ""}
                       onChange={(e) =>
@@ -133,7 +133,7 @@ export default function Educations() {
                   control={control}
                   name={`educations.${index}.ended_at`}
                   render={({ field: { value, onChange } }) => (
-                    <input
+                    <Input
                       type="month"
                       value={value ? dayjs(value).format("YYYY-MM") : ""}
                       onChange={(e) =>
@@ -200,7 +200,7 @@ export default function Educations() {
                 control={control}
                 name={`educations.${index}.name`}
                 render={({ field: { ...f } }) => (
-                  <TextInput {...f} placeholder="학교 이름" />
+                  <Input {...f} placeholder="학교 이름" />
                 )}
               />
               <ErrorText>
@@ -212,7 +212,7 @@ export default function Educations() {
                 control={control}
                 name={`educations.${index}.major`}
                 render={({ field: { ...f } }) => (
-                  <TextInput {...f} placeholder="전공" />
+                  <Input {...f} placeholder="전공" />
                 )}
               />
               <ErrorText>

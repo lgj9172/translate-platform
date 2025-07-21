@@ -12,9 +12,8 @@ import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
-import TextArea from "@/components/TextArea";
-import TextInput from "@/components/TextInput";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   TRANSLATION_CATEGORY,
   TRANSLATION_CURRENCY,
@@ -26,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Group } from "@/components/ui/group";
 import { Stack } from "@/components/ui/stack";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { NumericFormat } from "react-number-format";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -208,7 +207,7 @@ export default function Index() {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <ControllerSection>
-                  <TextInput
+                  <Input
                     {...field}
                     maxLength={100}
                     placeholder="요청에 대해 알려주세요. (최대 30자)"
@@ -275,7 +274,7 @@ export default function Index() {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <ControllerSection>
-                  <TextArea
+                  <Textarea
                     {...field}
                     maxLength={100}
                     placeholder="번역사가 번역 시 고려하거나 주의했으면 하는 내용이 있다면 적어주세요."
@@ -388,7 +387,7 @@ export default function Index() {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <ControllerSection>
-                  <TextArea
+                  <Textarea
                     {...field}
                     maxLength={100}
                     placeholder="원문의 스타일, 난이도를 확인할 수 있는 한 문단을 알려주세요. 샘플을 추가하면 더 많은 번역사와 매칭될 수 있어요."

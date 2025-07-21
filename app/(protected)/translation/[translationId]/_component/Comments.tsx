@@ -8,7 +8,7 @@ import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import TextArea from "@/components/TextArea";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Translation, TranslationComment } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -133,7 +133,7 @@ export default function Comments({
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <ControllerSection>
-                  <TextArea
+                  <Textarea
                     {...field}
                     maxLength={100}
                     placeholder="댓글을 입력해주세요."

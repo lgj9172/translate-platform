@@ -9,7 +9,7 @@ import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import TextArea from "@/components/TextArea";
+import { Textarea } from "@/components/ui/textarea";
 import TranslationCard from "@/components/TranslationCard";
 import { Button } from "@/components/ui/button";
 import { TRANSLATION_CURRENCY } from "@/types/entities";
@@ -169,7 +169,7 @@ export default function Page() {
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <ControllerSection>
-                    <TextArea
+                    <Textarea
                       {...field}
                       maxLength={100}
                       placeholder="번역을 요청한 사람에게 남길 말을 입력해주세요."

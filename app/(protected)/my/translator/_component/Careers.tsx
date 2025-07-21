@@ -6,8 +6,8 @@ import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import TextInput from "@/components/TextInput";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -86,7 +86,7 @@ export default function Careers() {
                   control={control}
                   name={`careers.${index}.started_at`}
                   render={({ field: { value, onChange } }) => (
-                    <input
+                    <Input
                       type="date"
                       value={value ? dayjs(value).format("YYYY-MM-DD") : ""}
                       onChange={(e) =>
@@ -105,7 +105,7 @@ export default function Careers() {
                   control={control}
                   name={`careers.${index}.ended_at`}
                   render={({ field: { value, onChange } }) => (
-                    <input
+                    <Input
                       type="date"
                       value={value ? dayjs(value).format("YYYY-MM-DD") : ""}
                       onChange={(e) =>
@@ -158,7 +158,7 @@ export default function Careers() {
                 control={control}
                 name={`careers.${index}.name`}
                 render={({ field: { ...f } }) => (
-                  <TextInput {...f} placeholder="회사 이름" />
+                  <Input {...f} placeholder="회사 이름" />
                 )}
               />
               <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
@@ -168,7 +168,7 @@ export default function Careers() {
                 control={control}
                 name={`careers.${index}.position`}
                 render={({ field: { ...f } }) => (
-                  <TextInput {...f} placeholder="직무" />
+                  <Input {...f} placeholder="직무" />
                 )}
               />
               <ErrorText>
@@ -180,7 +180,7 @@ export default function Careers() {
                 control={control}
                 name={`careers.${index}.achievement`}
                 render={({ field: { ...f } }) => (
-                  <TextInput {...f} placeholder="주요성과" />
+                  <Input {...f} placeholder="주요성과" />
                 )}
               />
               <ErrorText>

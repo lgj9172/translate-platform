@@ -7,7 +7,7 @@ import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import TextArea from "@/components/TextArea";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import CancelQuoteModal from "@/modals/CancelQuoteModal";
 import SendQuoteModal from "@/modals/SendQuoteModal";
@@ -150,7 +150,7 @@ export default function SendQuote({ translation }: Props) {
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <ControllerSection>
-                    <TextArea
+                    <Textarea
                       {...field}
                       maxLength={100}
                       placeholder="번역을 요청한 사람에게 남길 말을 입력해주세요."

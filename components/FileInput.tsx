@@ -1,6 +1,6 @@
 import { ChangeEventHandler, MouseEventHandler, useId, useRef } from "react";
 import { X } from "lucide-react";
-import TextInput from "./TextInput";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   text?: string;
@@ -33,7 +33,7 @@ export default function FileInput({
         id={id}
         onChange={onChange}
       />
-      <TextInput
+      <Input
         readOnly
         defaultValue={text}
         placeholder={placeholder}

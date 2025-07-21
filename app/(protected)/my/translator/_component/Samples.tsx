@@ -4,7 +4,7 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import SelectBox from "@/components/SelectBox";
-import TextArea from "@/components/TextArea";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { TranslationSampleDefaultValue } from "@/model/translationSample";
 import { PostTranslatorFormSchema } from "@/model/translator";
@@ -121,7 +121,7 @@ export default function Samples() {
               control={control}
               render={({ field: f }) => (
                 <ControllerSection>
-                  <TextArea
+                  <Textarea
                     {...f}
                     placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
                   />
@@ -166,7 +166,7 @@ export default function Samples() {
               control={control}
               render={({ field: f }) => (
                 <ControllerSection>
-                  <TextArea
+                  <Textarea
                     {...f}
                     placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
                   />

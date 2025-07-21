@@ -10,7 +10,7 @@ import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
-import TextArea from "@/components/TextArea";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Group } from "@/components/ui/group";
@@ -158,7 +158,7 @@ export default function Index() {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <ControllerSection>
-                  <TextArea
+                  <Textarea
                     {...field}
                     maxLength={100}
                     placeholder="번역과 관련이 있다면 번역 ID도 함께 적어주세요."

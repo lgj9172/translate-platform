@@ -1,6 +1,6 @@
 import { TranslationCategory } from "@/types/entities";
 import { getCategoryLabel } from "@/utils/converter/label";
-import Badge from "./Badge";
+import { Badge } from "@/components/ui/badge";
 
 export default function CategoryBadges({
   categories,
@@ -10,7 +10,7 @@ export default function CategoryBadges({
   return (
     <div className="flex gap-1">
       {categories.map((category: TranslationCategory) => (
-        <Badge key={category} color="blue">
+        <Badge key={category} variant="secondary">
           {getCategoryLabel(category)}
         </Badge>
       ))}

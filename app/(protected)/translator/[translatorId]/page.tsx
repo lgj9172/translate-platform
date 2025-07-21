@@ -2,7 +2,7 @@
 
 import { getTranslator } from "@/apis/translator";
 import TranslatorProfile from "@/app/(protected)/translation/[translationId]/_component/TranslatorProfile";
-import Badge from "@/components/Badge";
+import { Badge } from "@/components/ui/badge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
@@ -56,7 +56,7 @@ export default function Page() {
         <Group className="justify-between">
           <Group gap={4}>
             {translator?.categories.map((category) => (
-              <Badge color="blue" key={category}>
+              <Badge variant="secondary" key={category}>
                 {getCategoryLabel(category)}
               </Badge>
             ))}

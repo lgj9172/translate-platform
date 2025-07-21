@@ -1,4 +1,4 @@
-import Badge from "@/components/Badge";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Notice } from "@/types/entities";
 import dayjs from "dayjs";
@@ -13,7 +13,7 @@ export default function NoticeCard({ notice }: Props) {
       <div className="flex flex-col gap-2">
         {/* 태그 및 제목 */}
         <div className="flex gap-2 items-center">
-          {notice.is_important && <Badge color="primary">중요</Badge>}
+          {notice.is_important && <Badge variant="default">중요</Badge>}
           <span className="text-[18px] font-bold">{notice.title}</span>
         </div>
         {/* 날짜 */}

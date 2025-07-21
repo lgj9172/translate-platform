@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Translation } from "@/types/entities";
 import { getDday } from "@/utils/converter/label";
-import Badge from "./Badge";
+import { Badge } from "@/components/ui/badge";
 import CategoryBadges from "./CatagoryBadges";
 import Fee from "./Fee";
 import LanguageBadge from "./LangaugeBadge";
@@ -41,7 +41,7 @@ export default function TranslationCard({
               targetLanguage={translation.target_language}
             />
             <CategoryBadges categories={translation.categories} />
-            <Badge color="red">{getDday(translation.deadline)}</Badge>
+            <Badge variant="destructive">{getDday(translation.deadline)}</Badge>
           </div>
         </div>
         <TranslationInfo

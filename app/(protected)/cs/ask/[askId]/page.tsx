@@ -3,7 +3,7 @@
 import { getCounsel } from "@/apis/counsels";
 import { getFile } from "@/apis/files";
 import { getUser } from "@/apis/user";
-import Badge from "@/components/Badge";
+import { Badge } from "@/components/ui/badge";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -64,7 +64,9 @@ export default function Page() {
             </Link>
           </ActionIcon>
           <PageTitle>
-            <Badge>{ask.is_done ? "답변완료" : "답변대기"}</Badge>
+            <Badge variant="default">
+              {ask.is_done ? "답변완료" : "답변대기"}
+            </Badge>
             {ask.category}
           </PageTitle>
         </Group>

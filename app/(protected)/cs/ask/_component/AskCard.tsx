@@ -1,4 +1,4 @@
-import Badge from "@/components/Badge";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Counsel } from "@/types/entities";
 import dayjs from "dayjs";
@@ -14,7 +14,7 @@ export default function AskCard({ ask }: Props) {
         {/* 태그 및 제목 */}
         <div className="flex gap-2 items-center">
           {ask.is_done && (
-            <Badge color="primary">
+            <Badge variant="default">
               {ask.is_done ? "답변완료" : "답변대기"}
             </Badge>
           )}

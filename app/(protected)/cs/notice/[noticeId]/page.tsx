@@ -1,7 +1,7 @@
 "use client";
 
 import { getNotice } from "@/apis/notices";
-import Badge from "@/components/Badge";
+import { Badge } from "@/components/ui/badge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -45,7 +45,7 @@ export default function Page() {
           </ActionIcon>
 
           <PageTitle>
-            {notice.is_important && <Badge>중요</Badge>}
+            {notice.is_important && <Badge variant="default">중요</Badge>}
             {notice.title}
           </PageTitle>
         </Group>

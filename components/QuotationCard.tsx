@@ -5,7 +5,7 @@ import { Loader } from "@/components/ui/loader";
 import { Quotation } from "@/types/entities";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import Badge from "./Badge";
+import { Badge } from "@/components/ui/badge";
 import Fee from "./Fee";
 import InputSection from "./InputSection";
 import Label from "./Label";
@@ -24,12 +24,16 @@ export default function QuotationCard({ quotation }: { quotation: Quotation }) {
         <div className="flex justify-between items-center">
           <div className="flex gap-1">
             {quotation.is_selected ? (
-              <Badge color="green">채택됨</Badge>
+              <Badge variant="default">채택됨</Badge>
             ) : (
-              <Badge color="gray">미채택</Badge>
+              <Badge variant="secondary">미채택</Badge>
             )}
-            {quotation.is_canceled && <Badge color="red">취소된 견적</Badge>}
-            {quotation.is_deleted && <Badge color="gray">삭제된 견적</Badge>}
+            {quotation.is_canceled && (
+              <Badge variant="destructive">취소된 견적</Badge>
+            )}
+            {quotation.is_deleted && (
+              <Badge variant="secondary">삭제된 견적</Badge>
+            )}
           </div>
         </div>
         <InputSection>

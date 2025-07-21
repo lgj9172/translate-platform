@@ -1,4 +1,4 @@
-import { Translation, File } from "@/types/entities";
+import { Translation } from "@/types/entities";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
 import { useState } from "react";
 import ResumeTranslationModal from "@/modals/ResumeTranslationModal";
+import FileDownload from "@/components/FileDownload";
 
 export default function WaitConfirm({
   translation,
@@ -32,16 +33,12 @@ export default function WaitConfirm({
         <LabelSection>
           <Label>번역 결과물</Label>
         </LabelSection>
-        {translation.target_files.map((target_file) => {
-          const file = target_file as unknown as File;
-          return (
-            <div key={file.file_id}>
-              <button type="button" className="text-[#3B82F6] font-bold">
-                <span>{file.name}</span>
-              </button>
-            </div>
-          );
-        })}
+        {translation.target_files.map((target_file) => (
+          <FileDownload
+            key={target_file.file_id}
+            fileId={target_file.file_id}
+          />
+        ))}
       </InputSection>
 
       <div className="flex justify-end gap-2">

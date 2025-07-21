@@ -5,22 +5,15 @@ import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
 import { Translation } from "@/types/entities";
 import { Stack } from "@/components/ui/stack";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { useState } from "react";
+import RequestUpdateModal from "@/modals/RequestUpdateModal";
+import ConfirmCompleteModal from "@/modals/ConfirmCompleteModal";
 
 export default function ConfirmTranslation({
   translation,
 }: {
   translation: Translation;
 }) {
-  // TODO: 번역결과물 다운로드, 번역수정요청, 번역평가, 번역종료 기능 추가 필요
-  // const { downloadFile } = useFileDownload();
-
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
@@ -61,54 +54,16 @@ export default function ConfirmTranslation({
         </Button>
       </div>
 
-      <Dialog open={openUpdateModal} onOpenChange={setOpenUpdateModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>번역 수정 요청</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-8">
-            <p>
-              번역 수정을 요청하시겠어요?
-              <br />
-              번역 수정 요청은 최대 3번 가능해요.
-            </p>
-            <div>현재 수정 요청 가능 횟수: 3번</div>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="secondary"
-                onClick={() => setOpenUpdateModal(false)}
-              >
-                닫기
-              </Button>
-              <Button onClick={() => setOpenUpdateModal(false)}>
-                번역 수정 요청
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={openConfirmModal} onOpenChange={setOpenConfirmModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>번역 확정</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-8">
-            <p>번역이 만족스러우셨나요?</p>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="secondary"
-                onClick={() => setOpenConfirmModal(false)}
-              >
-                닫기
-              </Button>
-              <Button onClick={() => setOpenConfirmModal(false)}>
-                번역 확정
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <RequestUpdateModal
+        open={openUpdateModal}
+        onOpenChange={setOpenUpdateModal}
+        translationId={translation.translation_id}
+      />
+      <ConfirmCompleteModal
+        open={openConfirmModal}
+        onOpenChange={setOpenConfirmModal}
+        translationId={translation.translation_id}
+      />
     </Stack>
   );
 }

@@ -10,6 +10,8 @@ import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Translation, TranslationComment } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Center } from "@/components/ui/center";
@@ -18,6 +20,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 
 function Message({ message }: { message: TranslationComment }) {
   const { data: user } = useQuery({
@@ -35,23 +38,40 @@ function Message({ message }: { message: TranslationComment }) {
 
   return (
     <div
-      className={`flex flex-col gap-2 ${isCurrentUser ? "items-end" : "items-start"}`}
+      className={`flex w-full ${isCurrentUser ? "justify-end" : "justify-start"}`}
     >
-      <div
-        className={`p-2 rounded-[16px] gap-2 ${isCurrentUser ? "bg-[#FFF7ED] text-right rounded-br-none" : "bg-[#F9FAFB] text-left rounded-bl-none"}`}
+      <Card
+        className={
+          `flex items-end gap-3 max-w-[80%] border-none shadow-none bg-transparent p-0 ` +
+          (isCurrentUser ? "flex-row-reverse" : "flex-row")
+        }
       >
+        <Avatar className="size-8">
+          {writer?.avatar ? (
+            <AvatarImage src={writer.avatar} alt="avatar" />
+          ) : (
+            <AvatarFallback>{writer?.nickname?.[0] || "U"}</AvatarFallback>
+          )}
+        </Avatar>
         <div
-          className={`text-[14px] text-[#8B8C8D] flex items-center justify-end gap-2 ${
-            isCurrentUser ? "flex-row" : "flex-row-reverse"
-          }`}
+          className={cn(
+            "rounded-xl px-4 py-2 text-sm whitespace-pre-line break-words flex flex-col gap-1 shadow",
+            isCurrentUser
+              ? "bg-muted text-foreground border border-input rounded-br-sm text-right"
+              : "bg-muted text-foreground border border-input rounded-bl-sm text-left",
+          )}
         >
-          <span>{dayjs(message.created_at).format("YYYY.MM.DD HH:mm")}</span>
-          <span className="font-bold">{writer?.nickname}</span>
+          <div>{message.content}</div>
+          <div
+            className={
+              "flex items-center text-xs mt-1 text-muted-foreground " +
+              (isCurrentUser ? "justify-end" : "justify-start")
+            }
+          >
+            {dayjs(message.created_at).format("YYYY.MM.DD HH:mm")}
+          </div>
         </div>
-        {message.content.split("\n").map((line, index) => (
-          <div key={`${line}-${index}`}>{line}</div>
-        ))}
-      </div>
+      </Card>
     </div>
   );
 }
@@ -117,7 +137,7 @@ export default function Comments({
         <Label>댓글</Label>
       </LabelSection>
       <ControllerSection>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3 mb-4">
           {comments
             ?.sort((a, b) =>
               (a.created_at || "").localeCompare(b.created_at || ""),
@@ -126,27 +146,29 @@ export default function Comments({
               <Message key={comment.comment_id} message={comment} />
             ))}
         </div>
-        <form onSubmit={handleSubmit(handleSubmitSuccess)}>
-          <div className="flex flex-col gap-2">
-            <Controller
-              name="content"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <ControllerSection>
-                  <Textarea
-                    {...field}
-                    maxLength={100}
-                    placeholder="댓글을 입력해주세요."
-                  />
-                  <ErrorText>{error?.message}</ErrorText>
-                </ControllerSection>
-              )}
-            />
-            <div className="flex justify-end">
-              <Button type="submit" size="sm" disabled={isPending}>
-                등록
-              </Button>
-            </div>
+        <form
+          onSubmit={handleSubmit(handleSubmitSuccess)}
+          className="flex flex-col gap-2 mt-2"
+        >
+          <Controller
+            name="content"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <ControllerSection>
+                <Textarea
+                  {...field}
+                  maxLength={100}
+                  placeholder="댓글을 입력해주세요."
+                  className="resize-none min-h-[40px]"
+                />
+                <ErrorText>{error?.message}</ErrorText>
+              </ControllerSection>
+            )}
+          />
+          <div className="flex justify-end">
+            <Button type="submit" size="sm" disabled={isPending}>
+              등록
+            </Button>
           </div>
         </form>
       </ControllerSection>

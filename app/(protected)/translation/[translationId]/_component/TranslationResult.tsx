@@ -1,8 +1,9 @@
-import { Translation, File } from "@/types/entities";
+import { Translation } from "@/types/entities";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Stack } from "@/components/ui/stack";
+import FileDownload from "@/components/FileDownload";
 
 export default function TranslationResult({
   translation,
@@ -20,16 +21,12 @@ export default function TranslationResult({
         <LabelSection>
           <Label>번역 결과물</Label>
         </LabelSection>
-        {translation.target_files.map((target_file) => {
-          const file = target_file as unknown as File;
-          return (
-            <div key={file.file_id}>
-              <button type="button" className="text-[#3B82F6] font-bold">
-                <span>{file.name}</span>
-              </button>
-            </div>
-          );
-        })}
+        {translation.target_files.map((target_file) => (
+          <FileDownload
+            key={target_file.file_id}
+            fileId={target_file.file_id}
+          />
+        ))}
       </InputSection>
     </Stack>
   );

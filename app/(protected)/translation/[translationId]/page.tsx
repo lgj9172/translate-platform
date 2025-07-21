@@ -303,8 +303,11 @@ export default function Page() {
             {/* 번역 상태: 번역 확정 */}
             {translation.status === TRANSLATION_STATUS.TRANSLATION_RESOLVED && (
               <>
-                {/* 내가 작성자인 경우 */}
-                {translation.user_id === user?.user_id && (
+                {/* 내가 작성자인 경우 또는 내가 담당 번역사인 경우*/}
+                {(translation.user_id === user?.user_id ||
+                  (user?.authorization?.is_translator &&
+                    selectedQuotation?.translator_id ===
+                      myTranslator?.translator_id)) && (
                   <TranslationResult translation={translation} />
                 )}
               </>

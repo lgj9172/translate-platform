@@ -92,115 +92,119 @@ export default function SendQuote({ translation }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleClickCreateQuote)}>
-      <FormProvider {...methods}>
-        {!translatorQuotation ? (
-          <Stack>
-            <div className="flex flex-col gap-2 mb-4">
-              <div className="text-xl font-bold text-gray-800">견적 보내기</div>
-              <p className="text-sm text-gray-600">
-                이 번역 작업을 진행하고 싶다면 희망 번역료를 참고해서 견적을
-                보내보세요.
-              </p>
-            </div>
-            <InputSection>
-              <LabelSection>
-                <Label>번역료</Label>
-              </LabelSection>
-              <Controller
-                name="translation_fee"
-                control={control}
-                render={({
-                  field: { onChange, ...field },
-                  fieldState: { error },
-                }) => (
-                  <ControllerSection>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                        ₩
-                      </span>
-                      <NumericFormat
+    <>
+      {!translatorQuotation ? (
+        <form onSubmit={handleSubmit(handleClickCreateQuote)}>
+          <FormProvider {...methods}>
+            <Stack>
+              <div className="flex flex-col gap-2 mb-4">
+                <div className="text-xl font-bold text-gray-800">
+                  견적 보내기
+                </div>
+                <p className="text-sm text-gray-600">
+                  이 번역 작업을 진행하고 싶다면 희망 번역료를 참고해서 견적을
+                  보내보세요.
+                </p>
+              </div>
+              <InputSection>
+                <LabelSection>
+                  <Label>번역료</Label>
+                </LabelSection>
+                <Controller
+                  name="translation_fee"
+                  control={control}
+                  render={({
+                    field: { onChange, ...field },
+                    fieldState: { error },
+                  }) => (
+                    <ControllerSection>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                          ₩
+                        </span>
+                        <NumericFormat
+                          {...field}
+                          value={field.value}
+                          onValueChange={(values) =>
+                            onChange(values.floatValue || 0)
+                          }
+                          thousandSeparator=","
+                          allowNegative={false}
+                          decimalScale={0}
+                          min={0}
+                          max={1000000000}
+                          customInput={Input}
+                          className="pl-8 focus:border-primary"
+                          placeholder="번역료를 입력하세요"
+                        />
+                      </div>
+                      <ErrorText>{error?.message}</ErrorText>
+                    </ControllerSection>
+                  )}
+                />
+              </InputSection>
+
+              <InputSection>
+                <LabelSection>
+                  <Label>세부사항(선택)</Label>
+                </LabelSection>
+                <Controller
+                  name="detail"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <ControllerSection>
+                      <Textarea
                         {...field}
-                        value={field.value}
-                        onValueChange={(values) =>
-                          onChange(values.floatValue || 0)
-                        }
-                        thousandSeparator=","
-                        allowNegative={false}
-                        decimalScale={0}
-                        min={0}
-                        max={1000000000}
-                        customInput={Input}
-                        className="pl-8 focus:border-primary"
-                        placeholder="번역료를 입력하세요"
+                        maxLength={100}
+                        placeholder="번역을 요청한 사람에게 남길 말을 입력해주세요."
                       />
-                    </div>
-                    <ErrorText>{error?.message}</ErrorText>
-                  </ControllerSection>
-                )}
-              />
-            </InputSection>
+                      <ErrorText>{error?.message}</ErrorText>
+                    </ControllerSection>
+                  )}
+                />
+              </InputSection>
 
-            <InputSection>
-              <LabelSection>
-                <Label>세부사항(선택)</Label>
-              </LabelSection>
-              <Controller
-                name="detail"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <ControllerSection>
-                    <Textarea
-                      {...field}
-                      maxLength={100}
-                      placeholder="번역을 요청한 사람에게 남길 말을 입력해주세요."
-                    />
-                    <ErrorText>{error?.message}</ErrorText>
-                  </ControllerSection>
-                )}
-              />
-            </InputSection>
+              <div className="flex justify-end">
+                <Button type="submit" disabled={isSubmitting}>
+                  견적 보내기
+                </Button>
+              </div>
+            </Stack>
+          </FormProvider>
+        </form>
+      ) : (
+        <Stack>
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="text-xl font-bold text-gray-800">보낸 견적</div>
+            <p className="text-sm text-gray-600">
+              이 번역 작업에 보낸 견적 내용입니다.
+            </p>
+          </div>
 
-            <div className="flex justify-end">
-              <Button type="submit" disabled={isSubmitting}>
-                견적 보내기
-              </Button>
-            </div>
-          </Stack>
-        ) : (
-          <Stack>
-            <div className="flex flex-col gap-2 mb-4">
-              <div className="text-xl font-bold text-gray-800">보낸 견적</div>
-              <p className="text-sm text-gray-600">
-                이 번역 작업에 보낸 견적 내용입니다.
-              </p>
-            </div>
+          <InputSection>
+            <LabelSection>
+              <Label>번역료</Label>
+            </LabelSection>
+            <Fee
+              value={translatorQuotation.fee.value}
+              unit={translatorQuotation.fee.unit}
+            />
+          </InputSection>
 
-            <InputSection>
-              <LabelSection>
-                <Label>번역료</Label>
-              </LabelSection>
-              <Fee
-                value={translatorQuotation.fee.value}
-                unit={translatorQuotation.fee.unit}
-              />
-            </InputSection>
+          <InputSection>
+            <LabelSection>
+              <Label>세부사항</Label>
+            </LabelSection>
+            <div>{translatorQuotation.detail}</div>
+          </InputSection>
 
-            <InputSection>
-              <LabelSection>
-                <Label>세부사항</Label>
-              </LabelSection>
-              <div>{translatorQuotation.detail}</div>
-            </InputSection>
-
-            <div className="flex justify-end">
-              <Button variant="secondary" onClick={handleClickCancelQuote}>
-                견적 보내기 취소
-              </Button>
-            </div>
-          </Stack>
-        )}
-      </FormProvider>
+          <div className="flex justify-end">
+            <Button variant="secondary" onClick={handleClickCancelQuote}>
+              견적 보내기 취소
+            </Button>
+          </div>
+        </Stack>
+      )}
       <SendQuoteModal
         open={openSendQuoteModal}
         onOpenChange={setOpenSendQuoteModal}
@@ -211,12 +215,14 @@ export default function SendQuote({ translation }: Props) {
         }}
         detail={methods.getValues("detail")}
       />
-      <CancelQuoteModal
-        open={openCancelQuoteModal}
-        onOpenChange={setOpenCancelQuoteModal}
-        translationId={translation.translation_id}
-        quotationId={translatorQuotation?.quotation_id || ""}
-      />
-    </form>
+      {translatorQuotation && (
+        <CancelQuoteModal
+          open={openCancelQuoteModal}
+          onOpenChange={setOpenCancelQuoteModal}
+          translationId={translation.translation_id}
+          quotationId={translatorQuotation.quotation_id}
+        />
+      )}
+    </>
   );
 }

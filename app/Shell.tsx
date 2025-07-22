@@ -18,7 +18,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Title } from "@/components/ui/title";
 import {
   Bell,
   HeadphonesIcon,
@@ -210,38 +209,46 @@ export default function Shell({ children }: { children: ReactNode }) {
         </footer>
 
         <Dialog open={openedTOU} onOpenChange={handleChangeTOU}>
-          <DialogContent className="max-w-full w-full h-full">
-            <DialogHeader>
-              <DialogTitle>
-                <Title order={3} asChild>
-                  이용약관
-                </Title>
+          <DialogContent
+            className="h-[700px] p-0 overflow-hidden flex flex-col"
+            style={{ maxWidth: "none", width: "95vw" }}
+          >
+            <DialogHeader className="px-6 py-4 border-b bg-gray-50/50">
+              <DialogTitle className="text-lg font-semibold text-gray-900">
+                이용약관
               </DialogTitle>
             </DialogHeader>
-            <div
-              dangerouslySetInnerHTML={{
-                __html:
-                  '<iframe src="/assets/html/terms_of_use_230102.html" width="100%" height="500px"/>',
-              }}
-            />
+            <div className="flex-1 p-4 md:p-6 overflow-hidden">
+              <div className="h-full rounded-lg border border-gray-200 bg-white overflow-hidden">
+                <iframe
+                  src="/assets/html/terms_of_use_230102.html"
+                  className="w-full h-full border-0"
+                  title="이용약관"
+                />
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
 
         <Dialog open={openedRP} onOpenChange={handleChangeRP}>
-          <DialogContent className="max-w-full w-full h-full">
-            <DialogHeader>
-              <DialogTitle>
-                <Title order={3} asChild>
-                  환불규정
-                </Title>
+          <DialogContent
+            className="h-[700px] p-0 overflow-hidden flex flex-col"
+            style={{ maxWidth: "none", width: "95vw" }}
+          >
+            <DialogHeader className="px-6 py-4 border-b bg-gray-50/50">
+              <DialogTitle className="text-lg font-semibold text-gray-900">
+                환불규정
               </DialogTitle>
             </DialogHeader>
-            <div
-              dangerouslySetInnerHTML={{
-                __html:
-                  '<iframe src="/assets/html/terms_of_use_230102.html#_msoanchor_2" width="100%" height="500px"/>',
-              }}
-            />
+            <div className="flex-1 p-4 md:p-6 overflow-hidden">
+              <div className="h-full rounded-lg border border-gray-200 bg-white overflow-hidden">
+                <iframe
+                  src="/assets/html/terms_of_use_230102.html#_msoanchor_2"
+                  className="w-full h-full border-0"
+                  title="환불규정"
+                />
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
       </div>

@@ -6,8 +6,8 @@ import { ActionIcon } from "@/components/ui/action-icon";
 import { Card } from "@/components/ui/card";
 import { Group } from "@/components/ui/group";
 import { Stack } from "@/components/ui/stack";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 export default function Page() {
   return (
@@ -16,7 +16,7 @@ export default function Page() {
         <Group>
           <ActionIcon variant="ghost" asChild>
             <Link href="/">
-              <FaChevronLeft />
+              <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>고객센터</PageTitle>
@@ -45,7 +45,7 @@ export default function Page() {
                 플루언스의 새로운 소식을 확인하세요.
               </div>
             </div>
-            <FaChevronRight color="#8B8C8D" />
+            <ArrowRightIcon color="#8B8C8D" />
           </div>
         </Card>
       </Link>
@@ -59,7 +59,7 @@ export default function Page() {
                 자주 묻는 질문들을 확인해보세요.
               </div>
             </div>
-            <FaChevronRight color="#8B8C8D" />
+            <ArrowRightIcon color="#8B8C8D" />
           </div>
         </Card>
       </Link>
@@ -73,7 +73,7 @@ export default function Page() {
                 불편사항이나 개선사항이 있다면 문의해주세요.
               </div>
             </div>
-            <FaChevronRight color="#8B8C8D" />
+            <ArrowRightIcon color="#8B8C8D" />
           </div>
         </Card>
       </Link>

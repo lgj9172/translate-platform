@@ -4,15 +4,15 @@ import { getCounsels } from "@/apis/counsels";
 import Alert from "@/components/Alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import { Button } from "@/components/ui/button";
 import { ActionIcon } from "@/components/ui/action-icon";
+import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import { FaChevronLeft } from "react-icons/fa6";
 import AskCard from "./_component/AskCard";
 
 export default function Page() {
@@ -32,7 +32,7 @@ export default function Page() {
           <div className="flex items-center gap-2">
             <ActionIcon variant="ghost" asChild>
               <Link href="/cs">
-                <FaChevronLeft />
+                <ArrowLeftIcon />
               </Link>
             </ActionIcon>
             <PageTitle>1:1 문의하기</PageTitle>

@@ -1,6 +1,7 @@
 "use client";
 
 import { getFaqs } from "@/apis/faqs";
+import Alert from "@/components/Alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -9,9 +10,8 @@ import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import { FaChevronLeft } from "react-icons/fa6";
-import Alert from "@/components/Alert";
 import FaqCard from "./_component/FAQCard";
 
 export default function Page() {
@@ -30,7 +30,7 @@ export default function Page() {
         <Group>
           <ActionIcon variant="ghost" asChild>
             <Link href="/cs">
-              <FaChevronLeft />
+              <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>자주하는 질문(FAQ)</PageTitle>

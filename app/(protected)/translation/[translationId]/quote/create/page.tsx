@@ -9,17 +9,19 @@ import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
-import { Textarea } from "@/components/ui/textarea";
 import TranslationCard from "@/components/TranslationCard";
-import { Button } from "@/components/ui/button";
-import { TRANSLATION_CURRENCY } from "@/types/entities";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionIcon } from "@/components/ui/action-icon";
+import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
+import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
+import { Textarea } from "@/components/ui/textarea";
+import { TRANSLATION_CURRENCY } from "@/types/entities";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -28,9 +30,7 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
-import { Input } from "@/components/ui/input";
 import { z } from "zod";
 
 const PostTranslationQuoteFormSchema = z.object({
@@ -112,7 +112,7 @@ export default function Page() {
             <Group>
               <ActionIcon variant="ghost" asChild>
                 <Link href="/">
-                  <FaChevronLeft />
+                  <ArrowLeftIcon />
                 </Link>
               </ActionIcon>
               <PageTitle>견적 보내기</PageTitle>

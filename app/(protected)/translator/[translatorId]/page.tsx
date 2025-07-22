@@ -2,11 +2,11 @@
 
 import { getTranslator } from "@/apis/translator";
 import TranslatorProfile from "@/app/(protected)/translation/[translationId]/_component/TranslatorProfile";
-import { Badge } from "@/components/ui/badge";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import { ActionIcon } from "@/components/ui/action-icon";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
@@ -14,8 +14,8 @@ import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import { getCategoryLabel } from "@/utils/converter/label";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { FaChevronLeft } from "react-icons/fa6";
 import Profile from "./_component/Profile";
 
 export default function Page() {
@@ -42,7 +42,7 @@ export default function Page() {
       <PageHeader>
         <Group>
           <ActionIcon variant="ghost" asChild onClick={() => router.back()}>
-            <FaChevronLeft />
+            <ArrowLeftIcon />
           </ActionIcon>
           <PageTitle>번역사 프로필</PageTitle>
         </Group>

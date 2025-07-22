@@ -3,7 +3,6 @@
 import { getCounsel } from "@/apis/counsels";
 import { getFile } from "@/apis/files";
 import { getUser } from "@/apis/user";
-import { Badge } from "@/components/ui/badge";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
@@ -11,6 +10,7 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Avatar } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
@@ -19,9 +19,9 @@ import { Stack } from "@/components/ui/stack";
 import { useFileDownload } from "@/hooks/useFileDownload";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FaChevronLeft } from "react-icons/fa6";
 import CSAnswer from "./_component/CSAnswer";
 
 export default function Page() {
@@ -60,7 +60,7 @@ export default function Page() {
         <Group>
           <ActionIcon variant="ghost" asChild>
             <Link href="/cs/ask">
-              <FaChevronLeft />
+              <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>

@@ -12,9 +12,13 @@ import LabelSection from "@/components/LabelSection";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
+import { ActionIcon } from "@/components/ui/action-icon";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { DateTimePicker } from "@/components/ui/date-picker";
+import { Group } from "@/components/ui/group";
+import { Input } from "@/components/ui/input";
+import { Stack } from "@/components/ui/stack";
+import { Textarea } from "@/components/ui/textarea";
 import {
   TRANSLATION_CATEGORY,
   TRANSLATION_CURRENCY,
@@ -23,13 +27,9 @@ import {
   TranslationLanguage,
 } from "@/types/entities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ActionIcon } from "@/components/ui/action-icon";
-import { Group } from "@/components/ui/group";
-import { Stack } from "@/components/ui/stack";
-import { Textarea } from "@/components/ui/textarea";
-import { NumericFormat } from "react-number-format";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
@@ -40,7 +40,7 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { FaArrowRight, FaChevronLeft } from "react-icons/fa6";
+import { NumericFormat } from "react-number-format";
 import { z } from "zod";
 
 const PostTranslationFormSchema = z
@@ -192,7 +192,7 @@ export default function Index() {
             <Group>
               <ActionIcon variant="ghost" asChild>
                 <Link href="/">
-                  <FaChevronLeft />
+                  <ArrowLeftIcon />
                 </Link>
               </ActionIcon>
               <PageTitle>번역요청</PageTitle>
@@ -240,7 +240,7 @@ export default function Index() {
                 )}
               />
               <div className="flex justify-center items-center text-primary">
-                <FaArrowRight />
+                <ArrowRightIcon />
               </div>
               <Controller
                 name="target_language"

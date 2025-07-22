@@ -26,12 +26,12 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { FaChevronLeft } from "react-icons/fa6";
 import { z } from "zod";
 import { Counsel, COUNSEL_CATEGORY, CounselCategory } from "@/types/entities";
 import { postCounsel } from "@/apis/counsels";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon } from "lucide-react";
 
 const PostCSAskFormSchema = z.object({
   category: z.nativeEnum(COUNSEL_CATEGORY, {
@@ -126,7 +126,7 @@ export default function Index() {
             <Group>
               <ActionIcon variant="ghost" asChild>
                 <Link href="/cs/ask">
-                  <FaChevronLeft />
+                  <ArrowLeftIcon />
                 </Link>
               </ActionIcon>
               <PageTitle>번역요청</PageTitle>

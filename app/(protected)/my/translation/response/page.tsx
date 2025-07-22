@@ -11,8 +11,8 @@ import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import { FaChevronLeft } from "react-icons/fa6";
 
 export default function Page() {
   const {
@@ -31,7 +31,7 @@ export default function Page() {
         <Group>
           <ActionIcon variant="ghost" asChild>
             <Link href="/my">
-              <FaChevronLeft />
+              <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>받은 번역 요청</PageTitle>

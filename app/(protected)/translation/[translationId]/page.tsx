@@ -21,15 +21,15 @@ import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
-import { Stack } from "@/components/ui/stack";
 import { Separator } from "@/components/ui/separator";
+import { Stack } from "@/components/ui/stack";
 import { TRANSLATION_STATUS } from "@/types/entities";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FaChevronLeft } from "react-icons/fa6";
 import { NumericFormat } from "react-number-format";
 import Comments from "./_component/Comments";
 import ConfirmTranslation from "./_component/ConfirmTranslation";
@@ -91,7 +91,7 @@ export default function Page() {
         <Group>
           <ActionIcon variant="ghost" asChild>
             <Link href="/">
-              <FaChevronLeft />
+              <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>{translation.title}</PageTitle>

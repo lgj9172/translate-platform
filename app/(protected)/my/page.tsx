@@ -17,8 +17,8 @@ import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 export default function Page() {
   const {
@@ -57,7 +57,7 @@ export default function Page() {
         <Group>
           <ActionIcon variant="ghost" asChild>
             <Link href="/">
-              <FaChevronLeft />
+              <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>마이 페이지</PageTitle>
@@ -117,7 +117,7 @@ export default function Page() {
                       <div className="text-green-600 font-medium">
                         번역사로 인증되었어요.
                       </div>
-                      <FaChevronRight className="text-gray-400" />
+                      <ArrowRightIcon className="text-gray-400" />
                     </div>
                   </div>
                 </Card>
@@ -145,7 +145,7 @@ export default function Page() {
                           건
                         </div>
                       )}
-                      <FaChevronRight className="text-gray-400" />
+                      <ArrowRightIcon className="text-gray-400" />
                     </div>
                   </div>
                 </Card>
@@ -173,7 +173,7 @@ export default function Page() {
                           건
                         </div>
                       )}
-                      <FaChevronRight className="text-gray-400" />
+                      <ArrowRightIcon className="text-gray-400" />
                     </div>
                   </div>
                 </Card>
@@ -266,7 +266,7 @@ export default function Page() {
                       건
                     </div>
                   )}
-                  <FaChevronRight className="text-gray-400" />
+                  <ArrowRightIcon className="text-gray-400" />
                 </div>
               </div>
             </Card>
@@ -352,7 +352,7 @@ export default function Page() {
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="text-gray-600 font-medium">등록 필요</div>
-                      <FaChevronRight className="text-gray-400" />
+                      <ArrowRightIcon className="text-gray-400" />
                     </div>
                   </div>
                 </Card>
@@ -377,7 +377,7 @@ export default function Page() {
                     회원 탈퇴를 진행합니다
                   </span>
                 </div>
-                <FaChevronRight className="text-gray-400" />
+                <ArrowRightIcon className="text-gray-400" />
               </div>
             </Card>
           </Link>

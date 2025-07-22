@@ -1,6 +1,5 @@
 "use client";
 
-import CustomerSupport from "@/components/CustomerSupport";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -34,10 +33,6 @@ export default function Page() {
             <br />
             1:1 문의하기는 운영시간 외에도 답변을 최대한 도와드리고 있습니다.
           </p>
-        </div>
-
-        <div className="space-y-4">
-          <CustomerSupport />
         </div>
       </div>
 

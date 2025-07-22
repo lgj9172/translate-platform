@@ -29,7 +29,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
-import CustomerSupport from "../components/CustomerSupport";
 
 function HeaderMenu() {
   const { user, signOut } = useUser();
@@ -179,31 +178,33 @@ export default function Shell({ children }: { children: ReactNode }) {
       </div>
       <div className="p-[20px]">
         {children}
-        <footer className="mt-12 border-t border-gray-200 pt-8">
-          <div className="w-full">
-            <CustomerSupport />
-          </div>
-
-          {/* 하단: 약관 링크 및 저작권 섹션 */}
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-              <div className="flex items-center gap-6 text-sm">
-                <button
-                  type="button"
-                  onClick={handleClickTOU}
-                  className="text-gray-600 hover:text-orange-500 transition-colors"
-                >
-                  이용약관
-                </button>
-                <div className="w-px h-3 bg-gray-300" />
-                <button
-                  type="button"
-                  onClick={handleClickRP}
-                  className="text-gray-600 hover:text-orange-500 transition-colors"
-                >
-                  환불규정
-                </button>
-              </div>
+        <footer className="mt-8 pt-6 border-t border-gray-100">
+          <div className="text-left mb-4">
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              플루언스 고객센터
+            </h3>
+            <p className="text-2xl font-bold text-orange-500 mb-3">
+              070-8383-6353
+            </p>
+            <div className="text-sm text-gray-600 space-y-1 mb-4">
+              <p>운영시간: 평일 09:00 - 18:00 (점심시간: 12:00 - 13:00)</p>
+            </div>
+            <div className="flex items-center gap-6 text-sm text-gray-500">
+              <button
+                type="button"
+                onClick={handleClickTOU}
+                className="hover:text-orange-500 transition-colors"
+              >
+                이용약관
+              </button>
+              <div className="w-px h-3 bg-gray-200" />
+              <button
+                type="button"
+                onClick={handleClickRP}
+                className="hover:text-orange-500 transition-colors"
+              >
+                환불규정
+              </button>
             </div>
           </div>
         </footer>

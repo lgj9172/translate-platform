@@ -14,6 +14,7 @@ import PageTitle from "@/components/PageTitle";
 import SelectBox from "@/components/SelectBox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DateTimePicker } from "@/components/ui/date-picker";
 import {
   TRANSLATION_CATEGORY,
   TRANSLATION_CURRENCY,
@@ -100,7 +101,7 @@ const PostTranslationFormDefaultValue = {
   categories: [],
   description: "",
   source_files: [],
-  deadline: dayjs().toISOString(),
+  deadline: dayjs().add(7, "day").toISOString(),
   fee_unit: "KRW" as const,
   fee_value: 0,
   sample: "",
@@ -327,13 +328,13 @@ export default function Index() {
                 fieldState: { error },
               }) => (
                 <ControllerSection>
-                  <Input
-                    type="datetime-local"
-                    value={dayjs(value).format("YYYY-MM-DDTHH:mm")}
-                    onChange={(e) =>
-                      onChange(dayjs(e.target.value).toISOString())
+                  <DateTimePicker
+                    date={value ? dayjs(value).toDate() : undefined}
+                    onDateChange={(date) =>
+                      onChange(date ? dayjs(date).toISOString() : "")
                     }
-                    className="focus:border-primary"
+                    placeholder="마감 기한을 선택하세요"
+                    minDate={new Date()}
                   />
                   <ErrorText>{error?.message}</ErrorText>
                 </ControllerSection>

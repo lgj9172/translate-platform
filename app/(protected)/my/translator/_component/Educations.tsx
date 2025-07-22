@@ -8,6 +8,7 @@ import LabelSection from "@/components/LabelSection";
 import RadioButton from "@/components/RadioButton";
 import SelectBox from "@/components/SelectBox";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { DegreeSchema } from "@/model/degree";
 import { EducationDefaultValue } from "@/model/education";
 import { EducationStatusSchema } from "@/model/educationStatus";
@@ -119,18 +120,13 @@ export default function Educations() {
                   control={control}
                   name={`educations.${index}.started_at`}
                   render={({ field: { value, onChange } }) => (
-                    <Input
-                      type="month"
-                      value={value ? dayjs(value).format("YYYY-MM") : ""}
-                      onChange={(e) =>
-                        onChange(
-                          e.target.value
-                            ? dayjs(e.target.value).toISOString()
-                            : "",
-                        )
+                    <DatePicker
+                      date={value ? dayjs(value).toDate() : undefined}
+                      onDateChange={(date) =>
+                        onChange(date ? dayjs(date).toISOString() : "")
                       }
-                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
                       placeholder="시작월"
+                      className="flex-1"
                     />
                   )}
                 />
@@ -138,18 +134,13 @@ export default function Educations() {
                   control={control}
                   name={`educations.${index}.ended_at`}
                   render={({ field: { value, onChange } }) => (
-                    <Input
-                      type="month"
-                      value={value ? dayjs(value).format("YYYY-MM") : ""}
-                      onChange={(e) =>
-                        onChange(
-                          e.target.value
-                            ? dayjs(e.target.value).toISOString()
-                            : "",
-                        )
+                    <DatePicker
+                      date={value ? dayjs(value).toDate() : undefined}
+                      onDateChange={(date) =>
+                        onChange(date ? dayjs(date).toISOString() : "")
                       }
-                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
                       placeholder="종료월"
+                      className="flex-1"
                     />
                   )}
                 />

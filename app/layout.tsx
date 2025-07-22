@@ -1,6 +1,5 @@
 import Providers from "@/utils/react-query/Provider";
 import { Suspense } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import localFont from "next/font/local";
 import Shell from "./Shell";
 import "./globals.css";

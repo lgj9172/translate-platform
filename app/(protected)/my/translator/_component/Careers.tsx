@@ -8,6 +8,7 @@ import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -91,18 +92,13 @@ export default function Careers() {
                   control={control}
                   name={`careers.${index}.started_at`}
                   render={({ field: { value, onChange } }) => (
-                    <Input
-                      type="date"
-                      value={value ? dayjs(value).format("YYYY-MM-DD") : ""}
-                      onChange={(e) =>
-                        onChange(
-                          e.target.value
-                            ? dayjs(e.target.value).toISOString()
-                            : "",
-                        )
+                    <DatePicker
+                      date={value ? dayjs(value).toDate() : undefined}
+                      onDateChange={(date) =>
+                        onChange(date ? dayjs(date).toISOString() : "")
                       }
-                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
                       placeholder="시작일"
+                      className="flex-1"
                     />
                   )}
                 />
@@ -110,19 +106,14 @@ export default function Careers() {
                   control={control}
                   name={`careers.${index}.ended_at`}
                   render={({ field: { value, onChange } }) => (
-                    <Input
-                      type="date"
-                      value={value ? dayjs(value).format("YYYY-MM-DD") : ""}
-                      onChange={(e) =>
-                        onChange(
-                          e.target.value
-                            ? dayjs(e.target.value).toISOString()
-                            : "",
-                        )
+                    <DatePicker
+                      date={value ? dayjs(value).toDate() : undefined}
+                      onDateChange={(date) =>
+                        onChange(date ? dayjs(date).toISOString() : "")
                       }
-                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-primary"
                       placeholder="종료일"
                       disabled={watch(`careers.${index}.is_employed`)}
+                      className="flex-1"
                     />
                   )}
                 />

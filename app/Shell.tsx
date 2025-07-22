@@ -18,6 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
@@ -164,7 +165,8 @@ export default function Shell({ children }: { children: ReactNode }) {
       </div>
       <div className="p-[20px]">
         {children}
-        <footer className="mt-8 pt-6 border-t border-gray-100">
+        <footer className="mt-8 pt-6">
+          <Separator className="mb-6" />
           <div className="text-left mb-4">
             <h3 className="text-lg font-bold text-gray-800 mb-2">
               플루언스 고객센터
@@ -186,7 +188,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               >
                 이용약관
               </Link>
-              <div className="w-px h-3 bg-gray-200" />
+              <Separator orientation="vertical" className="h-3" />
               <Link
                 href="#"
                 onClick={(e) => {

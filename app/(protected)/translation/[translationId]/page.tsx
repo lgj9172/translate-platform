@@ -22,6 +22,7 @@ import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
+import { Separator } from "@/components/ui/separator";
 import { TRANSLATION_STATUS } from "@/types/entities";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -213,7 +214,7 @@ export default function Page() {
           <Comments translation={translation} />
         )}
 
-        <div className="h-[1px] bg-[#E5E7EB]" />
+        <Separator />
 
         {/* 취소된 번역 */}
         {translation.is_canceled ? (

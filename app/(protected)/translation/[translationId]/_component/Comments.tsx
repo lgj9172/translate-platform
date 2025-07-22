@@ -160,6 +160,12 @@ export default function Comments({
                   maxLength={100}
                   placeholder="댓글을 입력해주세요."
                   className="resize-none min-h-[40px]"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit(handleSubmitSuccess)();
+                    }
+                  }}
                 />
                 <ErrorText>{error?.message}</ErrorText>
               </ControllerSection>

@@ -18,14 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Bell,
-  HeadphonesIcon,
-  HelpCircle,
-  LogIn,
-  LogOut,
-  User,
-} from "lucide-react";
+import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
 
@@ -36,6 +29,19 @@ function HeaderMenu() {
     signOut();
   };
 
+  // 로그인되지 않은 경우 로그인/회원가입 링크 표시
+  if (!user) {
+    return (
+      <Link
+        href="/signin"
+        className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
+      >
+        로그인/회원가입
+      </Link>
+    );
+  }
+
+  // 로그인된 경우 기존 아바타 드롭다운 메뉴 표시
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -94,39 +100,22 @@ function HeaderMenu() {
           개인
         </DropdownMenuLabel>
         <DropdownMenuGroup className="px-1">
-          {!user ? (
-            <DropdownMenuItem
-              asChild
-              className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+          <DropdownMenuItem asChild className="rounded-md">
+            <Link
+              href="/my"
+              className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
             >
-              <Link
-                href="/signin"
-                className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-              >
-                <LogIn className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                로그인
-              </Link>
-            </DropdownMenuItem>
-          ) : (
-            <>
-              <DropdownMenuItem asChild className="rounded-md">
-                <Link
-                  href="/my"
-                  className="text-sm flex items-center gap-2 w-full text-gray-700 hover:text-primary"
-                >
-                  <User className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                  마이 페이지
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={handleClickSignout}
-                className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
-              >
-                <LogOut className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
-                로그아웃
-              </DropdownMenuItem>
-            </>
-          )}
+              <User className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+              마이 페이지
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleClickSignout}
+            className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+          >
+            <LogOut className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+            로그아웃
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -164,13 +153,11 @@ export default function Shell({ children }: { children: ReactNode }) {
           <FluenceBi />
         </Link>
         <div className="flex gap-2 items-center">
-          <Link href="/cs">
-            <button
-              type="button"
-              className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
-            >
-              고객센터
-            </button>
+          <Link
+            href="/cs"
+            className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
+          >
+            고객센터
           </Link>
           <HeaderMenu />
         </div>
@@ -189,21 +176,27 @@ export default function Shell({ children }: { children: ReactNode }) {
               <p>운영시간: 평일 09:00 - 18:00 (점심시간: 12:00 - 13:00)</p>
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-500">
-              <button
-                type="button"
-                onClick={handleClickTOU}
-                className="hover:text-orange-500 transition-colors"
+              <Link
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleClickTOU();
+                }}
+                className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
               >
                 이용약관
-              </button>
+              </Link>
               <div className="w-px h-3 bg-gray-200" />
-              <button
-                type="button"
-                onClick={handleClickRP}
-                className="hover:text-orange-500 transition-colors"
+              <Link
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleClickRP();
+                }}
+                className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
               >
                 환불규정
-              </button>
+              </Link>
             </div>
           </div>
         </footer>

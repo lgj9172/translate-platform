@@ -22,6 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
+import { Group } from "@/components/ui/group";
 
 function HeaderMenu() {
   const { user, signOut } = useUser();
@@ -112,7 +113,7 @@ function HeaderMenu() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleClickSignout}
-            className="text-sm rounded-md flex items-center gap-2 hover:text-primary cursor-pointer"
+            className="text-sm rounded-md flex items-center gap-2 hover:text-primary"
           >
             <LogOut className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
             로그아웃
@@ -153,7 +154,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         <Link href="/">
           <FluenceBi />
         </Link>
-        <div className="flex gap-2 items-center">
+        <Group>
           <Link
             href="/cs"
             className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
@@ -161,7 +162,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             고객센터
           </Link>
           <HeaderMenu />
-        </div>
+        </Group>
       </div>
       <div className="p-[20px]">
         {children}
@@ -177,7 +178,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <div className="text-sm text-gray-600 space-y-1 mb-4">
               <p>운영시간: 평일 09:00 - 18:00 (점심시간: 12:00 - 13:00)</p>
             </div>
-            <div className="flex items-center gap-6 text-sm text-gray-500">
+            <Group>
               <Link
                 href="#"
                 onClick={(e) => {
@@ -188,7 +189,6 @@ export default function Shell({ children }: { children: ReactNode }) {
               >
                 이용약관
               </Link>
-              <Separator orientation="vertical" className="h-3" />
               <Link
                 href="#"
                 onClick={(e) => {
@@ -199,7 +199,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               >
                 환불규정
               </Link>
-            </div>
+            </Group>
           </div>
         </footer>
 

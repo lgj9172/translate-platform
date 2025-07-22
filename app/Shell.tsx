@@ -166,7 +166,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       </div>
       <div className="p-[20px]">
         {children}
-        <footer className="mt-8 pt-6">
+        <footer className="mt-8 pt-6 min-h-[200px]">
           <Separator className="mb-6" />
           <div className="text-left mb-4">
             <h3 className="text-lg font-bold text-gray-800 mb-2">

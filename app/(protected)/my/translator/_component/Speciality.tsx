@@ -75,7 +75,7 @@ export default function Speciality() {
         control={control}
         render={({ field: { onChange, ...field }, fieldState: { error } }) => (
           <ControllerSection>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 min-h-[40px]">
               {categoryOptions.map((c) => (
                 <Chip
                   key={c.value}

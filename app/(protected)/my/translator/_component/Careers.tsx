@@ -1,5 +1,4 @@
 import { postFile, getFile } from "@/apis/files";
-import CheckButton from "@/components/CheckButton";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -9,6 +8,7 @@ import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/ui/date-picker";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CareerDefaultValue } from "@/model/career";
 import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -163,7 +163,7 @@ export default function Careers() {
               name={`careers.${index}.is_employed`}
               render={({ field: { value, onChange, ...f } }) => (
                 <div className="flex items-center space-x-2">
-                  <CheckButton
+                  <Checkbox
                     {...f}
                     checked={value}
                     onCheckedChange={(isChecked) => {

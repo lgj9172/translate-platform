@@ -5,7 +5,6 @@ import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import RadioButton from "@/components/RadioButton";
 import SelectBox from "@/components/SelectBox";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -17,7 +16,7 @@ import { ActionIcon } from "@/components/ui/action-icon";
 import { Card } from "@/components/ui/card";
 import { Group } from "@/components/ui/group";
 import { Stack } from "@/components/ui/stack";
-import { RadioGroup } from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { X } from "lucide-react";
 
 import { useMutation } from "@tanstack/react-query";
@@ -193,11 +192,21 @@ export default function Educations() {
                   <RadioGroup {...f} value={value} onValueChange={onChange}>
                     <Group>
                       {educationStatusOptions.map((o) => (
-                        <RadioButton
+                        <div
                           key={o.value}
-                          value={o.value}
-                          label={o.label}
-                        />
+                          className="flex items-center space-x-2"
+                        >
+                          <RadioGroupItem
+                            value={o.value}
+                            id={`${f.name}-${o.value}`}
+                          />
+                          <label
+                            htmlFor={`${f.name}-${o.value}`}
+                            className="text-sm font-medium"
+                          >
+                            {o.label}
+                          </label>
+                        </div>
                       ))}
                     </Group>
                   </RadioGroup>

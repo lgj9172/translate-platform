@@ -67,7 +67,12 @@ export default function Samples() {
       <LabelSection>
         <Label>번역 샘플 (선택)</Label>
         <div>
-          <Button variant="ghost" size="sm" onClick={handleClickAppend}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleClickAppend}
+          >
             추가
           </Button>
         </div>

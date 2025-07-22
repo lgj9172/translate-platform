@@ -91,7 +91,12 @@ export default function Educations() {
       <LabelSection>
         <Label>학력</Label>
         <div>
-          <Button variant="ghost" size="sm" onClick={handleClickAppend}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleClickAppend}
+          >
             추가
           </Button>
         </div>

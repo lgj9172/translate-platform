@@ -1,4 +1,4 @@
-import { postFile } from "@/apis/files";
+import { postFile, getFile } from "@/apis/files";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -16,7 +16,7 @@ import { PostTranslatorFormSchema } from "@/model/translator";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { X } from "lucide-react";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
@@ -34,6 +34,36 @@ export default function Certifications() {
   });
 
   const { mutateAsync } = useMutation({ mutationFn: postFile });
+
+  const certificationFields = watch("certifications");
+
+  const getFileInfo = async (fileId: string) => {
+    try {
+      const fileInfo = await getFile({ fileId });
+      return fileInfo;
+    } catch (error) {
+      console.error("파일 정보를 가져오는데 실패했습니다:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadFileNames = async () => {
+      if (certificationFields) {
+        for (let i = 0; i < certificationFields.length; i++) {
+          const certification = certificationFields[i];
+          if (certification.file_id && !certification.file_name) {
+            const fileInfo = await getFileInfo(certification.file_id);
+            if (fileInfo) {
+              setValue(`certifications.${i}.file_name`, fileInfo.name);
+            }
+          }
+        }
+      }
+    };
+
+    loadFileNames();
+  }, [certificationFields, setValue]);
 
   const handleClickAppend = () => {
     append(CertificationDefaultValue);
@@ -58,6 +88,9 @@ export default function Certifications() {
     if (file) {
       const res = await mutateAsync({ payload: { content: file } });
       setValue(`certifications.${index}.file_id`, res.file_id, {
+        shouldValidate: true,
+      });
+      setValue(`certifications.${index}.file_name`, file.name, {
         shouldValidate: true,
       });
     }
@@ -91,7 +124,6 @@ export default function Certifications() {
             <ActionIcon
               variant="ghost"
               onClick={() => handleClickDelete(index)}
-              // disabled={fields.length === 1}
             >
               <X />
             </ActionIcon>
@@ -138,7 +170,11 @@ export default function Certifications() {
             <FileInput
               placeholder="자격증 사본 추가 (10MB, PDF)"
               onChange={(e) => handleChangeFile(index, e)}
-              text={`${watch(`certifications.${index}.file_id`)}`}
+              onRemove={() => {
+                setValue(`certifications.${index}.file_id`, "");
+                setValue(`certifications.${index}.file_name`, "");
+              }}
+              text={watch(`certifications.${index}.file_name`) || ""}
             />
             <ErrorText>
               {errors?.certifications?.[index]?.file_id?.message}

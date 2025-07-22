@@ -1,4 +1,4 @@
-import { postFile } from "@/apis/files";
+import { postFile, getFile } from "@/apis/files";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -22,7 +22,7 @@ import { X } from "lucide-react";
 
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { ChangeEvent, useMemo } from "react";
+import { ChangeEvent, useMemo, useEffect } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { z } from "zod";
@@ -64,6 +64,36 @@ export default function Educations() {
 
   const { mutateAsync } = useMutation({ mutationFn: postFile });
 
+  const educationFields = watch("educations");
+
+  const getFileInfo = async (fileId: string) => {
+    try {
+      const fileInfo = await getFile({ fileId });
+      return fileInfo;
+    } catch (error) {
+      console.error("파일 정보를 가져오는데 실패했습니다:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadFileNames = async () => {
+      if (educationFields) {
+        for (let i = 0; i < educationFields.length; i++) {
+          const education = educationFields[i];
+          if (education.file_id && !education.file_name) {
+            const fileInfo = await getFileInfo(education.file_id);
+            if (fileInfo) {
+              setValue(`educations.${i}.file_name`, fileInfo.name);
+            }
+          }
+        }
+      }
+    };
+
+    loadFileNames();
+  }, [educationFields, setValue]);
+
   const handleClickAppend = () => {
     append(EducationDefaultValue);
   };
@@ -82,6 +112,9 @@ export default function Educations() {
         payload: { content: file },
       });
       setValue(`educations.${index}.file_id`, res.file_id, {
+        shouldValidate: true,
+      });
+      setValue(`educations.${index}.file_name`, file.name, {
         shouldValidate: true,
       });
     }
@@ -219,7 +252,11 @@ export default function Educations() {
               <FileInput
                 placeholder="졸업/수료 증명서 (10MB, PDF)"
                 onChange={(e) => handleChangeFile(index, e)}
-                text={`${watch(`educations.${index}.file_id`)}`}
+                onRemove={() => {
+                  setValue(`educations.${index}.file_id`, "");
+                  setValue(`educations.${index}.file_name`, "");
+                }}
+                text={watch(`educations.${index}.file_name`) || ""}
               />
               <ErrorText>
                 {errors?.educations?.[index]?.file_id?.message}

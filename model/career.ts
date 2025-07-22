@@ -8,6 +8,7 @@ export const CareerSchema = z.object({
   position: z.string().min(1, "직무를 입력해주세요."),
   achievement: z.string().min(1, "주요성과를 입력해주세요.").optional(),
   file_id: z.string().min(1, "경력 증명서를 업로드해주세요."),
+  file_name: z.string().optional(),
 });
 
 export const CareerDefaultValue = {
@@ -18,4 +19,5 @@ export const CareerDefaultValue = {
   position: "",
   achievement: "",
   file_id: "",
+  file_name: "",
 };

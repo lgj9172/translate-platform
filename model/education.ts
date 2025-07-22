@@ -10,6 +10,7 @@ export const EducationSchema = z.object({
   degree: DegreeSchema,
   graduation_status: EducationStatusSchema,
   file_id: z.string().min(1, "졸업/수료 증명서를 업로드해주세요."),
+  file_name: z.string().optional(),
 });
 
 export const EducationDefaultValue: z.infer<typeof EducationSchema> = {
@@ -20,4 +21,5 @@ export const EducationDefaultValue: z.infer<typeof EducationSchema> = {
   degree: "BACHELOR",
   graduation_status: "GRADUATED",
   file_id: "",
+  file_name: "",
 };

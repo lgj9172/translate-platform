@@ -1,4 +1,4 @@
-import { postFile } from "@/apis/files";
+import { postFile, getFile } from "@/apis/files";
 import CheckButton from "@/components/CheckButton";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
@@ -15,7 +15,7 @@ import { ActionIcon } from "@/components/ui/action-icon";
 import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { X } from "lucide-react";
 import { z } from "zod";
@@ -36,6 +36,36 @@ export default function Careers() {
 
   const { mutateAsync } = useMutation({ mutationFn: postFile });
 
+  const careerFields = watch("careers");
+
+  const getFileInfo = async (fileId: string) => {
+    try {
+      const fileInfo = await getFile({ fileId });
+      return fileInfo;
+    } catch (error) {
+      console.error("파일 정보를 가져오는데 실패했습니다:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadFileNames = async () => {
+      if (careerFields) {
+        for (let i = 0; i < careerFields.length; i++) {
+          const career = careerFields[i];
+          if (career.file_id && !career.file_name) {
+            const fileInfo = await getFileInfo(career.file_id);
+            if (fileInfo) {
+              setValue(`careers.${i}.file_name`, fileInfo.name);
+            }
+          }
+        }
+      }
+    };
+
+    loadFileNames();
+  }, [careerFields, setValue]);
+
   const handleClickAppend = () => {
     append(CareerDefaultValue);
   };
@@ -54,6 +84,9 @@ export default function Careers() {
         payload: { content: file },
       });
       setValue(`careers.${index}.file_id`, res.file_id, {
+        shouldValidate: true,
+      });
+      setValue(`careers.${index}.file_name`, file.name, {
         shouldValidate: true,
       });
     }
@@ -187,7 +220,11 @@ export default function Careers() {
               <FileInput
                 placeholder="경력 증명서 (10MB, PDF)"
                 onChange={(e) => handleChangeFile(index, e)}
-                text={`${watch(`careers.${index}.file_id`)}`}
+                onRemove={() => {
+                  setValue(`careers.${index}.file_id`, "");
+                  setValue(`careers.${index}.file_name`, "");
+                }}
+                text={watch(`careers.${index}.file_name`) || ""}
               />
               <ErrorText>
                 {errors?.careers?.[index]?.file_id?.message}

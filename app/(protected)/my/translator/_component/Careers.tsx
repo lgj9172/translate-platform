@@ -15,7 +15,7 @@ import { ActionIcon } from "@/components/ui/action-icon";
 import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { X } from "lucide-react";
 import { z } from "zod";
@@ -37,6 +37,7 @@ export default function Careers() {
   const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const careerFields = watch("careers");
+  const [fileNames, setFileNames] = useState<{ [key: string]: string }>({});
 
   const getFileInfo = async (fileId: string) => {
     try {
@@ -51,20 +52,24 @@ export default function Careers() {
   useEffect(() => {
     const loadFileNames = async () => {
       if (careerFields) {
+        const newFileNames: { [key: string]: string } = {};
         for (let i = 0; i < careerFields.length; i++) {
           const career = careerFields[i];
-          if (career.file_id && !career.file_name) {
+          if (career.file_id && !fileNames[career.file_id]) {
             const fileInfo = await getFileInfo(career.file_id);
             if (fileInfo) {
-              setValue(`careers.${i}.file_name`, fileInfo.name);
+              newFileNames[career.file_id] = fileInfo.name;
             }
           }
+        }
+        if (Object.keys(newFileNames).length > 0) {
+          setFileNames((prev) => ({ ...prev, ...newFileNames }));
         }
       }
     };
 
     loadFileNames();
-  }, [careerFields, setValue]);
+  }, [careerFields, fileNames]);
 
   const handleClickAppend = () => {
     append(CareerDefaultValue);
@@ -86,9 +91,7 @@ export default function Careers() {
       setValue(`careers.${index}.file_id`, res.file_id, {
         shouldValidate: true,
       });
-      setValue(`careers.${index}.file_name`, file.name, {
-        shouldValidate: true,
-      });
+      setFileNames((prev) => ({ ...prev, [res.file_id]: file.name }));
     }
   };
 
@@ -107,132 +110,143 @@ export default function Careers() {
           </Button>
         </div>
       </LabelSection>
-      {fields.map((field, index) => (
-        <Card key={field.id} className="relative">
-          <Stack gap="xs">
-            <div className="flex justify-end">
-              <ActionIcon
-                variant="ghost"
-                onClick={() => handleClickDelete(index)}
-                disabled={fields.length === 1}
-              >
-                <X />
-              </ActionIcon>
-            </div>
-            <ControllerSection>
-              <div className="flex gap-2">
-                <Controller
-                  control={control}
-                  name={`careers.${index}.started_at`}
-                  render={({ field: { value, onChange } }) => (
-                    <DatePicker
-                      date={value ? dayjs(value).toDate() : undefined}
-                      onDateChange={(date) =>
-                        onChange(date ? dayjs(date).toISOString() : "")
-                      }
-                      placeholder="시작일"
-                      className="flex-1"
-                    />
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name={`careers.${index}.ended_at`}
-                  render={({ field: { value, onChange } }) => (
-                    <DatePicker
-                      date={value ? dayjs(value).toDate() : undefined}
-                      onDateChange={(date) =>
-                        onChange(date ? dayjs(date).toISOString() : "")
-                      }
-                      placeholder="종료일"
-                      disabled={watch(`careers.${index}.is_employed`)}
-                      className="flex-1"
-                    />
-                  )}
-                />
+      {fields.map((field, index) => {
+        const career = careerFields?.[index];
+        const fileName = career?.file_id ? fileNames[career.file_id] : "";
+
+        return (
+          <Card key={field.id} className="relative">
+            <Stack gap="xs">
+              <div className="flex justify-end">
+                <ActionIcon
+                  variant="ghost"
+                  onClick={() => handleClickDelete(index)}
+                  disabled={fields.length === 1}
+                >
+                  <X />
+                </ActionIcon>
               </div>
-              <ErrorText>
-                {errors?.careers?.[index]?.started_at?.message}
-              </ErrorText>
-              <ErrorText>
-                {errors?.careers?.[index]?.ended_at?.message}
-              </ErrorText>
-            </ControllerSection>
-            <Controller
-              control={control}
-              name={`careers.${index}.is_employed`}
-              render={({ field: { value, onChange, ...f } }) => (
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    {...f}
-                    checked={value}
-                    onCheckedChange={(isChecked) => {
-                      onChange(isChecked);
-                      if (isChecked) {
-                        setValue(
-                          `careers.${index}.ended_at`,
-                          dayjs().toISOString(),
-                        );
-                      }
-                    }}
+              <ControllerSection>
+                <div className="flex gap-2">
+                  <Controller
+                    control={control}
+                    name={`careers.${index}.started_at`}
+                    render={({ field: { value, onChange } }) => (
+                      <DatePicker
+                        date={value ? dayjs(value).toDate() : undefined}
+                        onDateChange={(date) =>
+                          onChange(date ? dayjs(date).toISOString() : "")
+                        }
+                        placeholder="시작일"
+                        className="flex-1"
+                      />
+                    )}
                   />
-                  <label htmlFor={f.name} className="text-sm font-medium">
-                    재직중
-                  </label>
+                  <Controller
+                    control={control}
+                    name={`careers.${index}.ended_at`}
+                    render={({ field: { value, onChange } }) => (
+                      <DatePicker
+                        date={value ? dayjs(value).toDate() : undefined}
+                        onDateChange={(date) =>
+                          onChange(date ? dayjs(date).toISOString() : "")
+                        }
+                        placeholder="종료일"
+                        disabled={watch(`careers.${index}.is_employed`)}
+                        className="flex-1"
+                      />
+                    )}
+                  />
                 </div>
-              )}
-            />
-            <ControllerSection>
+                <ErrorText>
+                  {errors?.careers?.[index]?.started_at?.message}
+                </ErrorText>
+                <ErrorText>
+                  {errors?.careers?.[index]?.ended_at?.message}
+                </ErrorText>
+              </ControllerSection>
               <Controller
                 control={control}
-                name={`careers.${index}.name`}
-                render={({ field: { ...f } }) => (
-                  <Input {...f} placeholder="회사 이름" />
+                name={`careers.${index}.is_employed`}
+                render={({ field: { value, onChange, ...f } }) => (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      {...f}
+                      checked={value}
+                      onCheckedChange={(isChecked) => {
+                        onChange(isChecked);
+                        if (isChecked) {
+                          setValue(
+                            `careers.${index}.ended_at`,
+                            dayjs().toISOString(),
+                          );
+                        }
+                      }}
+                    />
+                    <label htmlFor={f.name} className="text-sm font-medium">
+                      재직중
+                    </label>
+                  </div>
                 )}
               />
-              <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
-            </ControllerSection>
-            <ControllerSection>
-              <Controller
-                control={control}
-                name={`careers.${index}.position`}
-                render={({ field: { ...f } }) => (
-                  <Input {...f} placeholder="직무" />
-                )}
-              />
-              <ErrorText>
-                {errors?.careers?.[index]?.position?.message}
-              </ErrorText>
-            </ControllerSection>
-            <ControllerSection>
-              <Controller
-                control={control}
-                name={`careers.${index}.achievement`}
-                render={({ field: { ...f } }) => (
-                  <Input {...f} placeholder="주요성과" />
-                )}
-              />
-              <ErrorText>
-                {errors?.careers?.[index]?.achievement?.message}
-              </ErrorText>
-            </ControllerSection>
-            <ControllerSection>
-              <FileInput
-                placeholder="경력 증명서 (10MB, PDF)"
-                onChange={(e) => handleChangeFile(index, e)}
-                onRemove={() => {
-                  setValue(`careers.${index}.file_id`, "");
-                  setValue(`careers.${index}.file_name`, "");
-                }}
-                text={watch(`careers.${index}.file_name`) || ""}
-              />
-              <ErrorText>
-                {errors?.careers?.[index]?.file_id?.message}
-              </ErrorText>
-            </ControllerSection>
-          </Stack>
-        </Card>
-      ))}
+              <ControllerSection>
+                <Controller
+                  control={control}
+                  name={`careers.${index}.name`}
+                  render={({ field: { ...f } }) => (
+                    <Input {...f} placeholder="회사 이름" />
+                  )}
+                />
+                <ErrorText>{errors?.careers?.[index]?.name?.message}</ErrorText>
+              </ControllerSection>
+              <ControllerSection>
+                <Controller
+                  control={control}
+                  name={`careers.${index}.position`}
+                  render={({ field: { ...f } }) => (
+                    <Input {...f} placeholder="직무" />
+                  )}
+                />
+                <ErrorText>
+                  {errors?.careers?.[index]?.position?.message}
+                </ErrorText>
+              </ControllerSection>
+              <ControllerSection>
+                <Controller
+                  control={control}
+                  name={`careers.${index}.achievement`}
+                  render={({ field: { ...f } }) => (
+                    <Input {...f} placeholder="주요성과" />
+                  )}
+                />
+                <ErrorText>
+                  {errors?.careers?.[index]?.achievement?.message}
+                </ErrorText>
+              </ControllerSection>
+              <ControllerSection>
+                <FileInput
+                  placeholder="경력 증명서 (10MB, PDF)"
+                  onChange={(e) => handleChangeFile(index, e)}
+                  onRemove={() => {
+                    setValue(`careers.${index}.file_id`, "");
+                    if (career?.file_id) {
+                      setFileNames((prev) => {
+                        const newFileNames = { ...prev };
+                        delete newFileNames[career.file_id];
+                        return newFileNames;
+                      });
+                    }
+                  }}
+                  text={fileName}
+                />
+                <ErrorText>
+                  {errors?.careers?.[index]?.file_id?.message}
+                </ErrorText>
+              </ControllerSection>
+            </Stack>
+          </Card>
+        );
+      })}
     </InputSection>
   );
 }

@@ -7,6 +7,9 @@ import {
   AlertDialogTitle,
 } from "@/components/AlertDialog";
 import { Button } from "@/components/ui/button";
+import { postTranslationResume } from "@/apis/translations";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function ResumeTranslationModal({
   open,
@@ -17,11 +20,26 @@ export default function ResumeTranslationModal({
   onOpenChange: (open: boolean) => void;
   translationId: string;
 }) {
-  // TODO: 번역 재시작 기능 추가 필요
+  const queryClient = useQueryClient();
+
+  const { mutate: mutatePostTranslationResume, isPending } = useMutation({
+    mutationFn: postTranslationResume,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["translations", translationId],
+      });
+      toast.success("번역이 진행중 상태로 변경되었어요.", {
+        richColors: true,
+        position: "top-center",
+      });
+      onOpenChange(false);
+    },
+  });
 
   const handleClickConfirm = () => {
-    console.log(translationId);
-    alert("아직 번역 진행중 상태로 변경하는 api가 개발되지 않았어요.");
+    mutatePostTranslationResume({
+      translationId,
+    });
   };
 
   const handleClickCancel = () => {
@@ -43,7 +61,9 @@ export default function ResumeTranslationModal({
           <Button variant="secondary" onClick={handleClickCancel}>
             닫기
           </Button>
-          <Button onClick={handleClickConfirm}>번역 진행중 상태로 변경</Button>
+          <Button onClick={handleClickConfirm} disabled={isPending}>
+            번역 진행중 상태로 변경
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

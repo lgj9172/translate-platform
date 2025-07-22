@@ -176,3 +176,14 @@ export const postTranslationRequestRevision = async ({
   );
   return response.data.data;
 };
+
+export const postTranslationResume = async ({
+  translationId,
+}: {
+  translationId: string;
+}) => {
+  const response = await ClientWithAuth.post<Response<Translation>>(
+    `/translations/${translationId}/resume`,
+  );
+  return response.data.data;
+};

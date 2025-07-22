@@ -19,6 +19,7 @@ import { X } from "lucide-react";
 import { ChangeEvent } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { z } from "zod";
+import { Stack } from "@/components/ui/stack";
 
 export default function Certifications() {
   const {
@@ -87,67 +88,71 @@ export default function Certifications() {
       )}
       {fields.map((field, index) => (
         <Card key={field.id} className="relative">
-          <ControllerSection>
-            <ActionIcon
-              variant="ghost"
-              onClick={() => handleClickDelete(index)}
-            >
-              <X />
-            </ActionIcon>
-          </ControllerSection>
-          <ControllerSection>
-            <DatePicker
-              date={
-                dayjs(watch(`certifications.${index}.started_at`)).isValid()
-                  ? dayjs(watch(`certifications.${index}.started_at`)).toDate()
-                  : undefined
-              }
-              onDateChange={(date) => handleChangeDateRange(index, date)}
-              placeholder="발급일"
-            />
-            <ErrorText>
-              {errors?.certifications?.[index]?.started_at?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`certifications.${index}.name`}
-              render={({ field: { ...f } }) => (
-                <Input {...f} placeholder="자격증" />
-              )}
-            />
-            <ErrorText>
-              {errors?.certifications?.[index]?.name?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <Controller
-              control={control}
-              name={`certifications.${index}.organization`}
-              render={({ field: { ...f } }) => (
-                <Input {...f} placeholder="발급기관" />
-              )}
-            />
-            <ErrorText>
-              {errors?.certifications?.[index]?.organization?.message}
-            </ErrorText>
-          </ControllerSection>
-          <ControllerSection>
-            <FileInput
-              placeholder="자격증 사본 추가 (10MB, PDF)"
-              onChange={(e) => handleChangeFile(index, e)}
-              onRemove={() => setValue(`certifications.${index}.file_id`, "")}
-              text={
-                watch(`certifications.${index}.file_id`)
-                  ? "파일이 업로드되었습니다"
-                  : ""
-              }
-            />
-            <ErrorText>
-              {errors?.certifications?.[index]?.file_id?.message}
-            </ErrorText>
-          </ControllerSection>
+          <Stack gap="xs">
+            <div className="flex justify-end">
+              <ActionIcon
+                variant="ghost"
+                onClick={() => handleClickDelete(index)}
+              >
+                <X />
+              </ActionIcon>
+            </div>
+            <ControllerSection>
+              <DatePicker
+                date={
+                  dayjs(watch(`certifications.${index}.started_at`)).isValid()
+                    ? dayjs(
+                        watch(`certifications.${index}.started_at`),
+                      ).toDate()
+                    : undefined
+                }
+                onDateChange={(date) => handleChangeDateRange(index, date)}
+                placeholder="발급일"
+              />
+              <ErrorText>
+                {errors?.certifications?.[index]?.started_at?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`certifications.${index}.name`}
+                render={({ field: { ...f } }) => (
+                  <Input {...f} placeholder="자격증" />
+                )}
+              />
+              <ErrorText>
+                {errors?.certifications?.[index]?.name?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                control={control}
+                name={`certifications.${index}.organization`}
+                render={({ field: { ...f } }) => (
+                  <Input {...f} placeholder="발급기관" />
+                )}
+              />
+              <ErrorText>
+                {errors?.certifications?.[index]?.organization?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <FileInput
+                placeholder="자격증 사본 추가 (10MB, PDF)"
+                onChange={(e) => handleChangeFile(index, e)}
+                onRemove={() => setValue(`certifications.${index}.file_id`, "")}
+                text={
+                  watch(`certifications.${index}.file_id`)
+                    ? "파일이 업로드되었습니다"
+                    : ""
+                }
+              />
+              <ErrorText>
+                {errors?.certifications?.[index]?.file_id?.message}
+              </ErrorText>
+            </ControllerSection>
+          </Stack>
         </Card>
       ))}
     </InputSection>

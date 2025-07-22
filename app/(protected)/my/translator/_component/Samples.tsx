@@ -16,6 +16,7 @@ import {
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
+import { Stack } from "@/components/ui/stack";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { FaArrowDown } from "react-icons/fa6";
@@ -86,21 +87,20 @@ export default function Samples() {
       )}
       {fields.map((field, index) => (
         <Card key={field.id} className="relative">
-          <div className="flex justify-end">
-            <ActionIcon
-              variant="ghost"
-              onClick={() => handleClickDelete(index)}
-              // disabled={fields.length === 1}
-            >
-              <X />
-            </ActionIcon>
-          </div>
-          <InputSection>
-            <Controller
-              name={`translation_samples.${index}.source_language`}
-              control={control}
-              render={({ field: { onChange, ...f } }) => (
-                <ControllerSection>
+          <Stack gap="xs">
+            <div className="flex justify-end">
+              <ActionIcon
+                variant="ghost"
+                onClick={() => handleClickDelete(index)}
+              >
+                <X />
+              </ActionIcon>
+            </div>
+            <ControllerSection>
+              <Controller
+                name={`translation_samples.${index}.source_language`}
+                control={control}
+                render={({ field: { onChange, ...f } }) => (
                   <SelectBox
                     {...f}
                     className="w-[120px]"
@@ -110,42 +110,35 @@ export default function Samples() {
                       trigger(`translation_samples.${index}.source_language`);
                     }}
                   />
-                  <ErrorText>
-                    {
-                      errors?.translation_samples?.[index]?.source_language
-                        ?.message
-                    }
-                  </ErrorText>
-                </ControllerSection>
-              )}
-            />
-          </InputSection>
-          <InputSection>
-            <Controller
-              name={`translation_samples.${index}.source_text`}
-              control={control}
-              render={({ field: f }) => (
-                <ControllerSection>
+                )}
+              />
+              <ErrorText>
+                {errors?.translation_samples?.[index]?.source_language?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                name={`translation_samples.${index}.source_text`}
+                control={control}
+                render={({ field: f }) => (
                   <Textarea
                     {...f}
                     placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
                   />
-                  <ErrorText>
-                    {errors?.translation_samples?.[index]?.source_text?.message}
-                  </ErrorText>
-                </ControllerSection>
-              )}
-            />
-          </InputSection>
-          <div className="flex justify-center items-center text-primary">
-            <FaArrowDown />
-          </div>
-          <InputSection>
-            <Controller
-              name={`translation_samples.${index}.target_language`}
-              control={control}
-              render={({ field: { onChange, ...f } }) => (
-                <ControllerSection>
+                )}
+              />
+              <ErrorText>
+                {errors?.translation_samples?.[index]?.source_text?.message}
+              </ErrorText>
+            </ControllerSection>
+            <div className="flex justify-center items-center text-primary">
+              <FaArrowDown />
+            </div>
+            <ControllerSection>
+              <Controller
+                name={`translation_samples.${index}.target_language`}
+                control={control}
+                render={({ field: { onChange, ...f } }) => (
                   <SelectBox
                     {...f}
                     className="w-[120px]"
@@ -155,37 +148,28 @@ export default function Samples() {
                       trigger(`translation_samples.${index}.target_language`);
                     }}
                   />
-                  <ErrorText>
-                    {
-                      errors?.translation_samples?.[index]?.target_language
-                        ?.message
-                    }
-                  </ErrorText>
-                </ControllerSection>
-              )}
-            />
-          </InputSection>
-          <InputSection>
-            <Controller
-              name={`translation_samples.${index}.target_text`}
-              control={control}
-              render={({ field: f }) => (
-                <ControllerSection>
+                )}
+              />
+              <ErrorText>
+                {errors?.translation_samples?.[index]?.target_language?.message}
+              </ErrorText>
+            </ControllerSection>
+            <ControllerSection>
+              <Controller
+                name={`translation_samples.${index}.target_text`}
+                control={control}
+                render={({ field: f }) => (
                   <Textarea
                     {...f}
                     placeholder="요청자가 나의 번역 실력을 확인할 수 있도록 샘플을 입력해주세요."
                   />
-                  <ErrorText>
-                    {errors?.translation_samples?.[index]?.target_text?.message}
-                  </ErrorText>
-                </ControllerSection>
-              )}
-            />
-          </InputSection>
-
-          <ErrorText>
-            {errors?.translation_samples?.[index]?.root?.message}
-          </ErrorText>
+                )}
+              />
+              <ErrorText>
+                {errors?.translation_samples?.[index]?.target_text?.message}
+              </ErrorText>
+            </ControllerSection>
+          </Stack>
         </Card>
       ))}
     </InputSection>

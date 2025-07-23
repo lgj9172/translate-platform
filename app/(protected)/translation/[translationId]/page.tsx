@@ -98,7 +98,7 @@ export default function Page() {
         </Group>
       </PageHeader>
       <Group className="justify-between">
-        <Group gap={4}>
+        <Group gap="xs">
           <LanguageBadge
             sourceLanguage={translation.source_language}
             targetLanguage={translation.target_language}

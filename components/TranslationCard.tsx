@@ -6,6 +6,7 @@ import CategoryBadges from "./CatagoryBadges";
 import Fee from "./Fee";
 import LanguageBadge from "./LangaugeBadge";
 import TranslationStatus from "./TranslationStatus";
+import dayjs from "dayjs";
 
 interface TranslationCardProps {
   translation: Translation;
@@ -31,18 +32,23 @@ export default function TranslationCard({
   translation,
   showStatus = false,
 }: TranslationCardProps) {
+  const dday = dayjs(translation.deadline).diff(dayjs(), "day");
+  const isUrgent = dday <= 3;
+
   return (
     <Card>
       <div className="flex flex-col gap-[16px]">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start">
           <div className="flex gap-1">
             <LanguageBadge
               sourceLanguage={translation.source_language}
               targetLanguage={translation.target_language}
             />
             <CategoryBadges categories={translation.categories} />
-            <Badge variant="destructive">{getDday(translation.deadline)}</Badge>
           </div>
+          <Badge variant={isUrgent ? "destructive" : "secondary"}>
+            {getDday(translation.deadline)}
+          </Badge>
         </div>
         <TranslationInfo
           title={translation.title}

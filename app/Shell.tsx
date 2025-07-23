@@ -19,9 +19,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+
 import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { Group } from "@/components/ui/group";
 
 function HeaderMenu() {
@@ -150,19 +152,24 @@ export default function Shell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-w-[360px] max-w-[768px] container mx-auto">
-      <div className="h-[48px] px-[20px] flex justify-between items-center sticky z-10 top-0 bg-white">
-        <Link href="/">
-          <FluenceBi />
-        </Link>
-        <Group>
-          <Link
-            href="/cs"
-            className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
-          >
-            고객센터
+      <div className="sticky z-10 top-0 bg-white">
+        <div className="h-[48px] px-[20px] flex justify-between items-center">
+          <Link href="/">
+            <FluenceBi />
           </Link>
-          <HeaderMenu />
-        </Group>
+          <Group>
+            <Link
+              href="/cs"
+              className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
+            >
+              고객센터
+            </Link>
+            <HeaderMenu />
+          </Group>
+        </div>
+        <div className="px-[20px] pb-2">
+          <Breadcrumb />
+        </div>
       </div>
       <div className="p-[20px]">
         {children}

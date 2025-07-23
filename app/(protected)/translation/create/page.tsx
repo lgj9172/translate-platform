@@ -195,7 +195,7 @@ export default function Index() {
                   <ArrowLeftIcon />
                 </Link>
               </ActionIcon>
-              <PageTitle>번역요청</PageTitle>
+              <PageTitle>번역 요청</PageTitle>
             </Group>
           </PageHeader>
 

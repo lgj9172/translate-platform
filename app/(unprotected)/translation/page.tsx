@@ -30,7 +30,7 @@ export default function Page() {
           <PageTitle>번역</PageTitle>
           <Group>
             <Link href="/translation/create">
-              <Button size="sm">번역요청하기</Button>
+              <Button size="sm">번역 요청하기</Button>
             </Link>
           </Group>
         </Group>

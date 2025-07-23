@@ -57,7 +57,7 @@ function Message({ message }: { message: TranslationComment }) {
           className={cn(
             "rounded-xl px-4 py-2 text-sm whitespace-pre-line break-words flex flex-col gap-1 shadow",
             isCurrentUser
-              ? "bg-muted text-foreground border border-input rounded-br-sm text-right"
+              ? "bg-primary/5 text-foreground border border-primary/20 rounded-br-sm text-right"
               : "bg-muted text-foreground border border-input rounded-bl-sm text-left",
           )}
         >

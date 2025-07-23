@@ -1,6 +1,6 @@
 "use client";
 
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import Check from "@assets/icons/check.svg";
 import { Center } from "@/components/ui/center";
@@ -25,16 +25,18 @@ export default function Page() {
             </div>
           </div>
           <Alert>
-            <div className="flex flex-col justify-center items-start">
-              <div className="text-[16px] font-bold">
-                견적을 보낸 이후엔 이렇게 진행돼요
+            <AlertDescription>
+              <div className="flex flex-col justify-center items-start">
+                <div className="text-[16px] font-bold">
+                  견적을 보낸 이후엔 이렇게 진행돼요
+                </div>
+                <ul className="list-disc list-inside flex flex-col justify-center items-start">
+                  <li>요청자가 견적을 보낸 번역사들을 확인합니다.</li>
+                  <li>작업을 진행할 번역사를 선택해 번역료를 결제해요.</li>
+                  <li>선택된 번역사는 문자를 통해 알림을 받아요.</li>
+                </ul>
               </div>
-              <ul className="list-disc list-inside flex flex-col justify-center items-start">
-                <li>요청자가 견적을 보낸 번역사들을 확인합니다.</li>
-                <li>작업을 진행할 번역사를 선택해 번역료를 결제해요.</li>
-                <li>선택된 번역사는 문자를 통해 알림을 받아요.</li>
-              </ul>
-            </div>
+            </AlertDescription>
           </Alert>
         </Stack>
         <div className="flex gap-2">

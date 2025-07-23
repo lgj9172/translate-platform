@@ -1,5 +1,5 @@
 import { getCounselAnswer } from "@/apis/counsels";
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useQuery } from "@tanstack/react-query";
 
 export default function CSAnswer({ askId }: { askId: string }) {
@@ -11,8 +11,10 @@ export default function CSAnswer({ askId }: { askId: string }) {
   if (!answer)
     return (
       <Alert>
-        아직 답변이 달리지 않았어요.
-        <br /> 조금만 기다려주시면 메일로 알림을 보내드릴게요.
+        <AlertDescription>
+          아직 답변이 달리지 않았어요.
+          <br /> 조금만 기다려주시면 메일로 알림을 보내드릴게요.
+        </AlertDescription>
       </Alert>
     );
 

@@ -6,7 +6,7 @@ import {
 } from "@/apis/translations";
 import { getTranslatorQuotations } from "@/apis/translator";
 import { getUser } from "@/apis/user";
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -71,7 +71,11 @@ export default function Page() {
           </Center>
         )}
         {isErrorUser && (
-          <Alert>회원 정보를 불러오는 중 오류가 발생했어요.</Alert>
+          <Alert>
+            <AlertDescription>
+              회원 정보를 불러오는 중 오류가 발생했어요.
+            </AlertDescription>
+          </Alert>
         )}
         {user && (
           <Card>

@@ -4,7 +4,8 @@ import { getTranslation } from "@/apis/translations";
 import { getSelectedQuotation } from "@/apis/translations-quotations";
 import { getMyTranslator } from "@/apis/translator";
 import { getOtherUser, getUser } from "@/apis/user";
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
 import CategoryBadges from "@/components/CatagoryBadges";
 import Fee from "@/components/Fee";
 import FileDownload from "@/components/FileDownload";
@@ -218,7 +219,9 @@ export default function Page() {
 
         {/* 취소된 번역 */}
         {translation.is_canceled ? (
-          <Alert>취소된 번역입니다.</Alert>
+          <Alert variant="destructive">
+            <AlertDescription>취소된 번역입니다.</AlertDescription>
+          </Alert>
         ) : (
           <div className="mt-4 flex flex-col gap-16">
             {/* 번역 상태: 견적 요청 */}

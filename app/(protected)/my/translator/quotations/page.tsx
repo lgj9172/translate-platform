@@ -1,7 +1,7 @@
 "use client";
 
 import { getTranslatorQuotations } from "@/apis/translator";
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import QuotationCard from "@/components/QuotationCard";
@@ -42,10 +42,16 @@ export default function Page() {
         </Center>
       )}
       {isError && (
-        <Alert>보낸 견적 요청 목록을 불러오는 중 오류가 발생했어요.</Alert>
+        <Alert>
+          <AlertDescription>
+            보낸 견적 요청 목록을 불러오는 중 오류가 발생했어요.
+          </AlertDescription>
+        </Alert>
       )}
       {translatorQuotations?.length === 0 && (
-        <Alert>아직 보낸 견적 요청이 없어요.</Alert>
+        <Alert>
+          <AlertDescription>아직 보낸 견적 요청이 없어요.</AlertDescription>
+        </Alert>
       )}
       {translatorQuotations?.length !== 0 && (
         <div className="flex flex-col gap-[8px]">

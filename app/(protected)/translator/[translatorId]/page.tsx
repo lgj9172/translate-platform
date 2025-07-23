@@ -82,33 +82,21 @@ export default function Page() {
                       <span className="text-muted-foreground">(24)</span>
                     </div>
 
-                    {/* 전문 분야 */}
+                    {/* 경력 및 최근 번역 */}
                     <div className="flex items-center gap-1">
-                      <div className="flex gap-1">
-                        {translator.categories.map((category) => (
-                          <Badge
-                            key={category}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {getCategoryLabel(category)}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* 경력 */}
-                    <div className="flex items-center gap-1">
-                      <span>{`${Math.floor(
-                        (translator?.total_career_duration ?? 0) / 12,
-                      )}년 ${
-                        (translator?.total_career_duration ?? 0) % 12
-                      }개월`}</span>
-                    </div>
-
-                    {/* 최근 번역 */}
-                    <div className="flex items-center gap-1">
-                      <span>{`최근 ${translator.recent_translations}건`}</span>
+                      <span className="text-[#8B8C8D]">
+                        {`${
+                          translator?.total_career_duration
+                            ? `경력 ${Math.floor(translator.total_career_duration / 12)}년 ${
+                                translator.total_career_duration % 12
+                              }개월`
+                            : "경력 없음"
+                        } ・ ${
+                          translator?.recent_translations
+                            ? `최근 ${translator?.recent_translations}건`
+                            : "최근 번역 없음"
+                        }`}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -117,22 +105,16 @@ export default function Page() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {/* 전문 분야 */}
-              {translator.categories.length > 0 && (
-                <div>
-                  <div className="flex flex-wrap gap-1">
-                    {translator.categories.map((category) => (
-                      <Badge
-                        key={category}
-                        variant="outline"
-                        className="text-xs"
-                      >
-                        {getCategoryLabel(category)}
-                      </Badge>
-                    ))}
-                  </div>
+              {/* 카테고리 */}
+              <div>
+                <div className="flex gap-1">
+                  {translator.categories.map((category) => (
+                    <Badge key={category} variant="outline" className="text-xs">
+                      {getCategoryLabel(category)}
+                    </Badge>
+                  ))}
                 </div>
-              )}
+              </div>
 
               {/* 자기소개 */}
               <div>
@@ -145,46 +127,42 @@ export default function Page() {
         </Card>
 
         {/* 상세 정보 탭 */}
-        <Card>
-          <CardContent className="p-0">
-            <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="profile">프로필</TabsTrigger>
-                <TabsTrigger value="review">리뷰</TabsTrigger>
-              </TabsList>
-              <div className="p-6">
-                <TabsContent value="profile" className="mt-0">
-                  <Profile translatorId={translatorId} />
-                </TabsContent>
-                <TabsContent value="review" className="mt-0">
-                  <div className="text-center py-12">
-                    <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                      <svg
-                        className="w-8 h-8 text-muted-foreground"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">
-                      아직 리뷰가 없습니다
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      이 번역사에 대한 첫 번째 리뷰를 남겨보세요.
-                    </p>
-                  </div>
-                </TabsContent>
+        <Tabs defaultValue="profile" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="profile">프로필</TabsTrigger>
+            <TabsTrigger value="review">리뷰</TabsTrigger>
+          </TabsList>
+          <div className="mt-6">
+            <TabsContent value="profile" className="mt-0">
+              <Profile translatorId={translatorId} />
+            </TabsContent>
+            <TabsContent value="review" className="mt-0">
+              <div className="text-center py-12">
+                <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                  <svg
+                    className="w-8 h-8 text-muted-foreground"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  아직 리뷰가 없습니다
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  이 번역사에 대한 첫 번째 리뷰를 남겨보세요.
+                </p>
               </div>
-            </Tabs>
-          </CardContent>
-        </Card>
+            </TabsContent>
+          </div>
+        </Tabs>
       </Stack>
     </Stack>
   );

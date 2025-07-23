@@ -1,7 +1,7 @@
 "use client";
 
 import { getTranslations } from "@/apis/translations";
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
@@ -41,9 +41,17 @@ export default function Page() {
         </Center>
       )}
       {isError && (
-        <Alert>번역 요청 목록을 불러오는 중 오류가 발생했어요.</Alert>
+        <Alert>
+          <AlertDescription>
+            번역 요청 목록을 불러오는 중 오류가 발생했어요.
+          </AlertDescription>
+        </Alert>
       )}
-      {translations?.length === 0 && <Alert>아직 번역 요청이 없어요.</Alert>}
+      {translations?.length === 0 && (
+        <Alert>
+          <AlertDescription>아직 번역 요청이 없어요.</AlertDescription>
+        </Alert>
+      )}
       {translations?.length !== 0 && (
         <div className="flex flex-col gap-[8px]">
           {translations?.map((translation) => (

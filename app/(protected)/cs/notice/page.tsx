@@ -1,7 +1,7 @@
 "use client";
 
 import { getNotices } from "@/apis/notices";
-import Alert from "@/components/Alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
@@ -41,8 +41,18 @@ export default function Page() {
           <Loader />
         </Center>
       )}
-      {isError && <Alert>공지사항을 불러오는 중 오류가 발생했어요.</Alert>}
-      {notices?.length === 0 && <Alert>아직 공지사항이 없어요.</Alert>}
+      {isError && (
+        <Alert>
+          <AlertDescription>
+            공지사항을 불러오는 중 오류가 발생했어요.
+          </AlertDescription>
+        </Alert>
+      )}
+      {notices?.length === 0 && (
+        <Alert>
+          <AlertDescription>아직 공지사항이 없어요.</AlertDescription>
+        </Alert>
+      )}
       {notices?.length !== 0 && (
         <div className="flex flex-col gap-[8px]">
           {notices?.map((notice) => (

@@ -118,9 +118,11 @@ export default function Page() {
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="text-green-600 font-medium">
-                        번역사로 인증되었어요.
-                      </div>
+                      {user?.authorization?.is_translator ? (
+                        <div className="text-green-600 font-medium">인증됨</div>
+                      ) : (
+                        <div className="text-gray-500 font-medium">미인증</div>
+                      )}
                       <ArrowRightIcon className="text-gray-400" />
                     </div>
                   </div>

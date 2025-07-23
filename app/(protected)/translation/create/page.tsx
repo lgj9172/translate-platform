@@ -52,8 +52,8 @@ const PostTranslationFormSchema = z
       .array(z.nativeEnum(TRANSLATION_CATEGORY))
       .refine((value) => value.length > 0, "분야를 1개 이상 선택해 주세요.")
       .refine(
-        (value) => value.length <= 2,
-        "분야는 최대 2개까지만 선택 할 수 있어요.",
+        (value) => value.length <= 3,
+        "분야는 최대 3개까지만 선택 할 수 있어요.",
       ),
     description: z.string(),
     source_files: z
@@ -187,7 +187,7 @@ export default function Index() {
   return (
     <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>
       <FormProvider {...methods}>
-        <Stack className="w-full h-full">
+        <Stack className="w-full h-full" gap="xl">
           <PageHeader>
             <Group>
               <ActionIcon variant="ghost" asChild>

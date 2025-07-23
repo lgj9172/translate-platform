@@ -65,7 +65,7 @@ export default function ResubmitTranslation({ translation }: Props) {
 
   return (
     <form onSubmit={handleSubmit(handleSubmitValid)}>
-      <Stack>
+      <Stack gap="xl">
         <div className="flex flex-col gap-2 mb-4">
           <div className="text-xl font-bold text-gray-800">번역 제출</div>
           <p className="text-sm text-gray-600">

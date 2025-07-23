@@ -121,7 +121,7 @@ export default function Index() {
   return (
     <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>
       <FormProvider {...methods}>
-        <Stack className="w-full h-full">
+        <Stack className="w-full h-full" gap="xl">
           <PageHeader>
             <Group>
               <ActionIcon variant="ghost" asChild>

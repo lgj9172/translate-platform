@@ -124,7 +124,7 @@ export default function Page() {
       onSubmit={methods.handleSubmit(handleSubmitSuccess, handleSubmitError)}
     >
       <FormProvider {...methods}>
-        <Stack>
+        <Stack gap="xl">
           <PageHeader>
             <Group>
               <ActionIcon variant="ghost" asChild>
@@ -139,7 +139,7 @@ export default function Page() {
             </Group>
           </PageHeader>
 
-          <Stack>
+          <Stack gap="xl">
             <Speciality />
             <SelfIntroduction />
             <Educations />

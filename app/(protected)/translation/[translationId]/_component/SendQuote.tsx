@@ -96,7 +96,7 @@ export default function SendQuote({ translation }: Props) {
       {!translatorQuotation ? (
         <form onSubmit={handleSubmit(handleClickCreateQuote)}>
           <FormProvider {...methods}>
-            <Stack>
+            <Stack gap="xl">
               <div className="flex flex-col gap-2 mb-4">
                 <div className="text-xl font-bold text-gray-800">
                   견적 보내기

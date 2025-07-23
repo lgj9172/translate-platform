@@ -121,7 +121,7 @@ export default function Page() {
 
           <TranslationCard translation={translation} />
 
-          <Stack>
+          <Stack gap="xl">
             <InputSection>
               <LabelSection>
                 <Label>번역료</Label>

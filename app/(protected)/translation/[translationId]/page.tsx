@@ -121,7 +121,7 @@ export default function Page() {
           </div>
         </div>
       </Card>
-      <Stack>
+      <Stack gap="xl">
         <InputSection>
           <LabelSection>
             <Label>세부 요청사항</Label>

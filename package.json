@@ -8,12 +8,11 @@
     "dev": "env-cmd -f .env.local node server.js",
     "dev:postman": "env-cmd -f .env.postman node server.js",
     "dev:development": "env-cmd -f .env.development next dev",
-    "lint": "next lint",
+    "lint": "eslint .",
     "start": "next start",
     "ts": "tsc --noEmit --incremental --watch"
   },
   "dependencies": {
-    "@eslint/eslintrc": "^3.3.1",
     "@hookform/devtools": "^4.4.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.15",

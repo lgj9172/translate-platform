@@ -19,12 +19,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { getHealth } from "@/apis/health";
 
 import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import React, { ReactNode, useState } from "react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Group } from "@/components/ui/group";
+import { useQuery } from "@tanstack/react-query";
 
 function HeaderMenu() {
   const { user, signOut } = useUser();
@@ -130,6 +132,11 @@ export default function Shell({ children }: { children: ReactNode }) {
   const [openedTOU, setOpenedTOU] = useState(false);
   const [openedRP, setOpenedRP] = useState(false);
 
+  const { isSuccess, isLoading, isError, data, error } = useQuery({
+    queryKey: ["health"],
+    queryFn: getHealth,
+  });
+
   const handleClickTOU = () => {
     setOpenedTOU(true);
   };
@@ -206,6 +213,22 @@ export default function Shell({ children }: { children: ReactNode }) {
               >
                 환불규정
               </Link>
+              <span className="text-xs text-gray-400 flex items-center gap-1">
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    isLoading
+                      ? "bg-yellow-400 animate-pulse"
+                      : isSuccess
+                        ? "bg-green-500"
+                        : "bg-red-500"
+                  }`}
+                />
+                {isLoading
+                  ? "서버와의 연결을 확인중입니다"
+                  : isSuccess
+                    ? "서버와 연결되었습니다"
+                    : "서버와 연결이 중지되었습니다"}
+              </span>
             </Group>
           </div>
         </footer>

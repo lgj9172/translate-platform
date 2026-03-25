@@ -1,19 +1,29 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import Link from "next/link";
 import { getTranslations } from "@/apis/translations";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
-import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
+import useUser from "@/hooks/useUser";
 
 export default function Page() {
+  const router = useRouter();
+  const { user, isLoading: isUserLoading } = useUser();
+
+  useEffect(() => {
+    if (!isUserLoading && !user?.authorization?.is_translator) {
+      router.replace("/my/translation/request");
+    }
+  }, [isUserLoading, user, router]);
+
   const {
     data: translations,
     isLoading,
@@ -21,19 +31,13 @@ export default function Page() {
   } = useQuery({
     queryKey: ["translations"],
     queryFn: () => getTranslations({ params: { start: 0, size: 100 } }),
+    enabled: !!user?.authorization?.is_translator,
   });
 
   return (
     <Stack>
       <PageHeader>
-        <Group justify="between">
-          <PageTitle>번역</PageTitle>
-          <Group>
-            <Link href="/translation/create">
-              <Button size="sm">번역 요청하기</Button>
-            </Link>
-          </Group>
-        </Group>
+        <PageTitle>번역</PageTitle>
       </PageHeader>
       {isLoading && (
         <Center className="h-[500px]">

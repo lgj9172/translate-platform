@@ -28,6 +28,16 @@ export class QuotationsController {
     return this.quotationsService.findAll({ translatorId, translationId });
   }
 
+  @Get("me")
+  @ApiOperation({ summary: "내가 보낸 견적 목록 조회 (번역사)" })
+  findMine(
+    @CurrentUser() user: SupabaseUser,
+    @Query("start") start?: number,
+    @Query("size") size?: number,
+  ) {
+    return this.quotationsService.findAllByUser(user.id, { start, size });
+  }
+
   @Post()
   @ApiOperation({ summary: "견적 제출 (번역사)" })
   create(@CurrentUser() user: SupabaseUser, @Body() dto: CreateQuotationDto) {

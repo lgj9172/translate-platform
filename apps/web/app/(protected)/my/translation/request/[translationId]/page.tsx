@@ -9,8 +9,7 @@ import { useParams } from "next/navigation";
 import { NumericFormat } from "react-number-format";
 import { getTranslation } from "@/apis/translations";
 import { getSelectedQuotation } from "@/apis/translations-quotations";
-import { getMyTranslator } from "@/apis/translator";
-import { getOtherUser, getUser } from "@/apis/user";
+import { getUser } from "@/apis/user";
 import CategoryBadges from "@/components/CatagoryBadges";
 import Fee from "@/components/Fee";
 import FileDownload from "@/components/FileDownload";
@@ -23,23 +22,21 @@ import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Separator } from "@/components/ui/separator";
 import { Stack } from "@/components/ui/stack";
 import { TRANSLATION_STATUS } from "@/types/entities";
-import Comments from "./_component/Comments";
-import Payment from "./_component/Payment";
-import ResubmitTranslation from "./_component/ResubmitTranslation";
-import SendQuote from "./_component/SendQuote";
-import StartTranslation from "./_component/StartTranslation";
-import SubmitTranslation from "./_component/SubmitTranslation";
-import TranslationResult from "./_component/TranslationResult";
-import Translator from "./_component/Translator";
-import WaitConfirm from "./_component/WaitConfirm";
+import Comments from "@/app/(protected)/translation/[translationId]/_component/Comments";
+import ConfirmTranslation from "@/app/(protected)/translation/[translationId]/_component/ConfirmTranslation";
+import Payment from "@/app/(protected)/translation/[translationId]/_component/Payment";
+import SelectQuote from "@/app/(protected)/translation/[translationId]/_component/SelectQuote";
+import TranslationResult from "@/app/(protected)/translation/[translationId]/_component/TranslationResult";
+import Translator from "@/app/(protected)/translation/[translationId]/_component/Translator";
+import WaitTranslationFinish from "@/app/(protected)/translation/[translationId]/_component/WaitTranslationFinish";
+import WaitTranslationStart from "@/app/(protected)/translation/[translationId]/_component/WaitTranslationStart";
+import WaitTranslationUpdate from "@/app/(protected)/translation/[translationId]/_component/WaitTranslationUpdate";
 
 export default function Page() {
   const { translationId } = useParams<{ translationId: string }>();
@@ -47,12 +44,6 @@ export default function Page() {
   const { data: translation, isLoading: isTranslationLoading } = useQuery({
     queryKey: ["translations", translationId],
     queryFn: () => getTranslation({ translationId }),
-  });
-
-  const { data: writer, isLoading: isWriterLoading } = useQuery({
-    queryKey: ["user", translation?.user_id],
-    queryFn: () => getOtherUser({ userId: translation?.user_id ?? "" }),
-    enabled: !!translation?.user_id,
   });
 
   const { data: user, isLoading: isUserLoading } = useQuery({
@@ -74,16 +65,7 @@ export default function Page() {
     enabled: hasSelectedTranslator,
   });
 
-  const { data: myTranslator } = useQuery({
-    queryKey: ["translators", "me"],
-    queryFn: () => getMyTranslator(),
-    enabled: hasSelectedTranslator,
-  });
-
-  const isMyTranslation =
-    selectedQuotation?.translator_id === myTranslator?.translator_id;
-
-  if (isTranslationLoading || isWriterLoading || isUserLoading) {
+  if (isTranslationLoading || isUserLoading) {
     return (
       <Center className="h-[500px]">
         <Loader />
@@ -93,12 +75,14 @@ export default function Page() {
 
   if (!translation) return null;
 
+  const isOwner = translation.user_id === user?.user_id;
+
   return (
     <Stack className="w-full h-full gap-[16px]">
       <PageHeader>
         <Group>
           <ActionIcon variant="ghost" asChild>
-            <Link href="/translation">
+            <Link href="/my/translation/request">
               <ArrowLeftIcon />
             </Link>
           </ActionIcon>
@@ -115,20 +99,6 @@ export default function Page() {
         </Group>
         <TranslationStatus translation={translation} />
       </Group>
-      <Card>
-        <div className="flex gap-[8px]">
-          <Avatar>
-            <AvatarImage src={writer?.avatar} />
-            <AvatarFallback>{writer?.nickname?.[0] || "U"}</AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="text-[14px] text-[#4B4D4D]">{writer?.nickname}</div>
-            <div className="text-[14px] text-[#8B8C8D]">
-              {dayjs(translation.created_at).locale("ko").format("YYYY.MM.DD")}
-            </div>
-          </div>
-        </div>
-      </Card>
       <Stack gap="xl">
         <InputSection>
           <LabelSection><Label>세부 요청사항</Label></LabelSection>
@@ -160,52 +130,51 @@ export default function Page() {
 
         <InputSection>
           <LabelSection><Label>원문</Label></LabelSection>
-          {isMyTranslation ? (
-            translation.source_files.map(({ file_id, name, presigned_url }, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: file_id can be null
-              <div key={`${file_id}-${index}`} className="flex gap-2">
-                {file_id ? (
-                  <FileDownload fileId={file_id} presignedUrl={presigned_url} name={name} />
-                ) : (
-                  <span className="text-[#8B8C8D]">파일 없음</span>
-                )}
-              </div>
-            ))
-          ) : (
-            <span className="text-[#8B8C8D]">원문 파일은 선택된 번역사만 다운로드 가능해요.</span>
-          )}
+          {translation.source_files.map(({ file_id, name, presigned_url }, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: file_id can be null
+            <div key={`${file_id}-${index}`} className="flex gap-2">
+              {file_id ? (
+                <FileDownload fileId={file_id} presignedUrl={presigned_url} name={name} />
+              ) : (
+                <span className="text-[#8B8C8D]">파일 없음</span>
+              )}
+            </div>
+          ))}
         </InputSection>
 
-        <InputSection>
-          <LabelSection><Label>원문 샘플</Label></LabelSection>
-          {translation.sample ? (
+        {translation.sample && (
+          <InputSection>
+            <LabelSection><Label>원문 샘플</Label></LabelSection>
             <div>{translation.sample}</div>
-          ) : (
-            <span className="text-[#8B8C8D]">샘플이 없어요.</span>
-          )}
-        </InputSection>
+          </InputSection>
+        )}
 
         <InputSection>
           <LabelSection><Label>희망 번역료</Label></LabelSection>
           <Fee value={translation.fee.value} unit={translation.fee.unit} />
         </InputSection>
 
-        {isMyTranslation && (
+        {[
+          TRANSLATION_STATUS.TRANSLATOR_SELECTED,
+          TRANSLATION_STATUS.TRANSLATION_BEGAN,
+          TRANSLATION_STATUS.TRANSLATION_SUBMITTED,
+          TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED,
+          TRANSLATION_STATUS.TRANSLATION_RESOLVED,
+        ].includes(translation.status as never) && (
           <>
             <Translator translation={translation} />
             <Payment translation={translation} />
           </>
         )}
 
-        {isMyTranslation &&
-          [
-            TRANSLATION_STATUS.TRANSLATION_BEGAN,
-            TRANSLATION_STATUS.TRANSLATION_SUBMITTED,
-            TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED,
-            TRANSLATION_STATUS.TRANSLATION_RESOLVED,
-          ].includes(translation.status as never) && (
-            <Comments translation={translation} />
-          )}
+        {[
+          TRANSLATION_STATUS.TRANSLATION_BEGAN,
+          TRANSLATION_STATUS.TRANSLATION_SUBMITTED,
+          TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED,
+          TRANSLATION_STATUS.TRANSLATION_RESOLVED,
+        ].includes(translation.status as never) && (
+          <Comments translation={translation} />
+        )}
 
         <Separator />
 
@@ -213,35 +182,28 @@ export default function Page() {
           <Alert variant="destructive">
             <AlertDescription>취소된 번역입니다.</AlertDescription>
           </Alert>
-        ) : (
+        ) : isOwner ? (
           <div className="mt-4 flex flex-col gap-16">
-            {/* 견적 제출 */}
             {translation.status === TRANSLATION_STATUS.QUOTE_SENT && (
-              <SendQuote translation={translation} />
+              <SelectQuote translation={translation} />
             )}
-
-            {/* 담당 번역사인 경우 액션 */}
-            {isMyTranslation && (
-              <>
-                {translation.status === TRANSLATION_STATUS.TRANSLATOR_SELECTED && (
-                  <StartTranslation translation={translation} />
-                )}
-                {translation.status === TRANSLATION_STATUS.TRANSLATION_BEGAN && (
-                  <SubmitTranslation translation={translation} />
-                )}
-                {translation.status === TRANSLATION_STATUS.TRANSLATION_SUBMITTED && (
-                  <WaitConfirm translation={translation} />
-                )}
-                {translation.status === TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED && (
-                  <ResubmitTranslation translation={translation} />
-                )}
-                {translation.status === TRANSLATION_STATUS.TRANSLATION_RESOLVED && (
-                  <TranslationResult translation={translation} />
-                )}
-              </>
+            {translation.status === TRANSLATION_STATUS.TRANSLATOR_SELECTED && (
+              <WaitTranslationStart translation={translation} />
+            )}
+            {translation.status === TRANSLATION_STATUS.TRANSLATION_BEGAN && (
+              <WaitTranslationFinish translation={translation} />
+            )}
+            {translation.status === TRANSLATION_STATUS.TRANSLATION_SUBMITTED && (
+              <ConfirmTranslation translation={translation} />
+            )}
+            {translation.status === TRANSLATION_STATUS.TRANSLATION_EDIT_REQUESTED && (
+              <WaitTranslationUpdate translation={translation} />
+            )}
+            {translation.status === TRANSLATION_STATUS.TRANSLATION_RESOLVED && (
+              <TranslationResult translation={translation} />
             )}
           </div>
-        )}
+        ) : null}
       </Stack>
     </Stack>
   );

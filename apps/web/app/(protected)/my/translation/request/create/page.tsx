@@ -147,7 +147,7 @@ export default function Index() {
     useMutation({
       mutationFn: postTranslation,
       onSuccess: (res) => {
-        router.push(`/translation/${res.translation_id}`);
+        router.push(`/my/translation/request/${res.translation_id}`);
       },
     });
 
@@ -170,12 +170,23 @@ export default function Index() {
     );
     await mutatePostTranslation({
       payload: {
-        ...input,
-        source_files: filesInfo.map((file) => ({ file_id: file.file_id })),
+        title: input.title,
+        source_language: input.source_language,
+        target_language: input.target_language,
+        categories: input.categories,
+        description: input.description,
+        source_files: filesInfo.map((file) => ({
+          file_id: file.file_id,
+          char_with_blank: file.char_with_blank ?? 0,
+          char_without_blank: file.char_without_blank ?? 0,
+          word: file.word ?? 0,
+        })),
+        deadline: input.deadline,
         fee: {
           unit: input.fee_unit,
           value: input.fee_value,
         },
+        sample: input.sample,
       },
     });
   };
@@ -191,7 +202,7 @@ export default function Index() {
           <PageHeader>
             <Group>
               <ActionIcon variant="ghost" asChild>
-                <Link href="/">
+                <Link href="/my/translation/request">
                   <ArrowLeftIcon />
                 </Link>
               </ActionIcon>

@@ -9,6 +9,7 @@ import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
@@ -27,13 +28,18 @@ export default function Page() {
   return (
     <Stack>
       <PageHeader>
-        <Group>
-          <ActionIcon variant="ghost" asChild>
-            <Link href="/my">
-              <ArrowLeftIcon />
-            </Link>
-          </ActionIcon>
-          <PageTitle>보낸 번역 요청</PageTitle>
+        <Group justify="between">
+          <Group>
+            <ActionIcon variant="ghost" asChild>
+              <Link href="/my">
+                <ArrowLeftIcon />
+              </Link>
+            </ActionIcon>
+            <PageTitle>보낸 번역 요청</PageTitle>
+          </Group>
+          <Link href="/my/translation/request/create">
+            <Button size="sm">번역 요청하기</Button>
+          </Link>
         </Group>
       </PageHeader>
       {isLoading && (
@@ -58,7 +64,7 @@ export default function Page() {
           {translationsRequest?.map((translation) => (
             <Link
               className="hover:cursor-pointer"
-              href={`/translation/${translation.translation_id}`}
+              href={`/my/translation/request/${translation.translation_id}`}
               key={translation.translation_id}
             >
               <TranslationCard

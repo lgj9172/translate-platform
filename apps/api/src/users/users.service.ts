@@ -28,9 +28,17 @@ export class UsersService {
   async findMe(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { user_id: userId },
+      include: { translator: { select: { translator_id: true, is_deleted: true } } },
     });
     if (!user) throw new NotFoundException("사용자를 찾을 수 없습니다.");
-    return ok(user);
+
+    const is_translator = !!(user.translator && !user.translator.is_deleted);
+    const authorization = {
+      ...((user.authorization as Record<string, unknown>) ?? {}),
+      is_translator,
+    };
+
+    return ok({ ...user, authorization });
   }
 
   async findOne(userId: string) {

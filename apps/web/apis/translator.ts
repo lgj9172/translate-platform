@@ -124,10 +124,8 @@ export const getTranslatorQuotations = async ({
   params: PaginationParams;
 }) => {
   const response = await ClientWithAuth.get<Response<Quotation[]>>(
-    `/translator/quotations`,
-    {
-      params,
-    },
+    `/quotations/me`,
+    { params },
   );
   return response.data.data;
 };

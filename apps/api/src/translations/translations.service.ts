@@ -1,10 +1,12 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
 import { PrismaService } from "../prisma/prisma.service";
+import { SupabaseService } from "../supabase/supabase.service";
 import type {
   CreateCommentDto,
   CreateTranslationDto,
@@ -12,11 +14,66 @@ import type {
   UpdateTranslationDto,
 } from "./translations.dto";
 
+const FILES_BUCKET = "files";
+const SIGNED_URL_EXPIRES = 60 * 60;
+
 @Injectable()
 export class TranslationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(TranslationsService.name);
 
-  async findAll(userId: string, query: QueryTranslationDto) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly supabase: SupabaseService,
+  ) {}
+
+  async findAll(query: QueryTranslationDto) {
+    const take = query.size ?? 20;
+    const skip = query.start ?? 0;
+
+    const where = {
+      is_deleted: false,
+      ...(query.status ? { status: query.status as never } : {}),
+    };
+
+    const [data, total_count] = await this.prisma.$transaction([
+      this.prisma.translation.findMany({ where, skip, take, orderBy: { created_at: "desc" } }),
+      this.prisma.translation.count({ where }),
+    ]);
+
+    return paginated(data, total_count, data.length);
+  }
+
+  async findAllByTranslator(userId: string, query: QueryTranslationDto) {
+    const take = query.size ?? 20;
+    const skip = query.start ?? 0;
+
+    const translator = await this.prisma.translator.findUnique({
+      where: { user_id: userId },
+    });
+
+    if (!translator) return paginated([], 0, 0);
+
+    const where = {
+      is_deleted: false,
+      quotations: {
+        some: {
+          translator_id: translator.translator_id,
+          is_selected: true,
+          is_deleted: false,
+        },
+      },
+      ...(query.status ? { status: query.status as never } : {}),
+    };
+
+    const [data, total_count] = await this.prisma.$transaction([
+      this.prisma.translation.findMany({ where, skip, take, orderBy: { created_at: "desc" } }),
+      this.prisma.translation.count({ where }),
+    ]);
+
+    return paginated(data, total_count, data.length);
+  }
+
+  async findAllByUser(userId: string, query: QueryTranslationDto) {
     const take = query.size ?? 20;
     const skip = query.start ?? 0;
 
@@ -42,7 +99,7 @@ export class TranslationsService {
         target_language: dto.target_language,
         categories: dto.categories,
         description: dto.description ?? "",
-        source_files: dto.source_files,
+        source_files: dto.source_files as object[],
         target_files: [],
         deadline: new Date(dto.deadline),
         fee: dto.fee,
@@ -59,7 +116,23 @@ export class TranslationsService {
       include: { quotations: { where: { is_deleted: false } } },
     });
     if (!translation) throw new NotFoundException("번역을 찾을 수 없습니다.");
-    return ok(translation);
+
+    const sourceFiles = (translation.source_files ?? []) as Array<{ file_id?: string }>;
+    const enrichedSourceFiles = await Promise.all(
+      sourceFiles.map(async (sf) => {
+        if (!sf.file_id) return sf;
+        const file = await this.prisma.file.findUnique({ where: { file_id: sf.file_id } });
+        if (!file) return sf;
+        const path = `${file.user_id}/${file.file_id}.${file.extension.toLowerCase()}`;
+        const { data, error } = await this.supabase.admin.storage
+          .from(FILES_BUCKET)
+          .createSignedUrl(path, SIGNED_URL_EXPIRES);
+        if (error) this.logger.warn(`signed URL 생성 실패: ${error.message}`);
+        return { ...sf, name: file.name, presigned_url: data?.signedUrl ?? null };
+      }),
+    );
+
+    return ok({ ...translation, source_files: enrichedSourceFiles });
   }
 
   async update(translationId: string, userId: string, dto: UpdateTranslationDto) {

@@ -33,10 +33,13 @@ export class FilesController {
     @CurrentUser() user: SupabaseUser,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    const originalName = Buffer.from(file.originalname, "latin1").toString(
+      "utf8",
+    );
     return this.filesService.upload(
       user.id,
       file.buffer,
-      file.originalname,
+      originalName,
       file.mimetype,
     );
   }

@@ -86,6 +86,9 @@ export interface File {
   extension: FileExtension;
   user_id: string;
   presigned_url?: string;
+  char_with_blank?: number;
+  char_without_blank?: number;
+  word?: number;
   created_at?: string;
   updated_at?: string;
 }
@@ -179,6 +182,8 @@ export interface TranslationSourceFile {
   char_without_blank: number;
   word: number;
   file_id?: string;
+  name?: string;
+  presigned_url?: string | null;
 }
 
 export interface TranslationTargetFile {

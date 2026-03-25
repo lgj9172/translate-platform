@@ -6,7 +6,10 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  IsUUID,
+  ValidateNested,
 } from "class-validator";
+import { Type } from "class-transformer";
 
 const LANGUAGES = [
   "ko-KR","en-US","ja-JP","zh-CN","ru-RU","es-ES","ar-SA","de-DE","fr-FR",
@@ -15,6 +18,20 @@ const LANGUAGES = [
 const CATEGORIES = [
   "IT","FINANCE","CONTENTS","GAME","LAW","MEDICAL","CONSTRUCTION","MARKETING","LITERATURE","ETC",
 ] as const;
+
+export class SourceFileDto {
+  @IsUUID()
+  file_id!: string;
+
+  @IsNumber()
+  char_with_blank!: number;
+
+  @IsNumber()
+  char_without_blank!: number;
+
+  @IsNumber()
+  word!: number;
+}
 
 export class CreateTranslationDto {
   @IsString()
@@ -34,7 +51,9 @@ export class CreateTranslationDto {
   description?: string;
 
   @IsArray()
-  source_files!: object[];
+  @ValidateNested({ each: true })
+  @Type(() => SourceFileDto)
+  source_files!: SourceFileDto[];
 
   @IsDateString()
   deadline!: string;
@@ -86,4 +105,13 @@ export class QueryTranslationDto {
 export class CreateCommentDto {
   @IsString()
   content!: string;
+}
+
+export class CreateTranslationQuotationDto {
+  @IsObject()
+  fee!: { unit: string; value: number };
+
+  @IsOptional()
+  @IsString()
+  detail?: string;
 }

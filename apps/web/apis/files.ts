@@ -1,5 +1,4 @@
 import type { File } from "@/types/entities";
-import { objectToFormData } from "@/utils/converter/form";
 import {
   ClientWithAuth,
   type PaginatedResponse,
@@ -26,7 +25,8 @@ export const postFile = async ({
     content: globalThis.File | Blob;
   };
 }) => {
-  const formData = objectToFormData(payload);
+  const formData = new FormData();
+  formData.append("file", payload.content);
 
   const response = await ClientWithAuth.post<Response<File>>(
     "/files",

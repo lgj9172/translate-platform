@@ -1,6 +1,6 @@
 import {
-  forwardRef,
   type MouseEventHandler,
+  type Ref,
   useEffect,
   useRef,
   useState,
@@ -9,96 +9,101 @@ import Checkbox from "./Checkbox";
 import Typography from "./Typography";
 
 interface Props {
+  ref?: Ref<HTMLButtonElement>;
   options: { label: string; value: string; disabled?: boolean }[];
   value: string[];
   onChange?: (value: string[]) => void;
   placeholder?: string;
 }
 
-const MultipleSelectBox = forwardRef<HTMLButtonElement, Props>(
-  function MultipleSelectBox(
-    { options, value, onChange, placeholder = "" },
-    ref,
-  ) {
-    const selectRef = useRef<HTMLDivElement>(null);
+export default function MultipleSelectBox({
+  ref,
+  options,
+  value,
+  onChange,
+  placeholder = "",
+}: Props) {
+  const selectRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef(null);
+  const [open, setOpen] = useState(false);
 
-    const optionsRef = useRef(null);
+  const handleClickSelect: MouseEventHandler<HTMLButtonElement> = () => {
+    setOpen((prev) => !prev);
+  };
 
-    const [open, setOpen] = useState(false);
+  const handleClickOption = (v: string) => {
+    const updatedValue = value.includes(v)
+      ? value.filter((e) => e !== v)
+      : [...value, v];
+    if (onChange) onChange(updatedValue);
+  };
 
-    const handleClickSelect: MouseEventHandler<HTMLButtonElement> = () => {
-      setOpen((prev) => !prev);
+  useEffect(() => {
+    const handleOutsideClose = (e: MouseEvent) => {
+      if (
+        open &&
+        selectRef.current &&
+        !selectRef.current.contains(e.target as Node)
+      )
+        setOpen(false);
     };
+    document.addEventListener("click", handleOutsideClose);
+    return () => document.removeEventListener("click", handleOutsideClose);
+  });
 
-    const handleClickOption = (v: string) => {
-      const updatedValue = value.includes(v)
-        ? value.filter((e) => e !== v)
-        : [...value, v];
-      if (onChange) onChange(updatedValue);
-    };
-
-    useEffect(() => {
-      const handleOutsideClose = (e: MouseEvent) => {
-        if (
-          open &&
-          selectRef.current &&
-          !selectRef.current.contains(e.target as Node)
-        )
-          setOpen(false);
-      };
-      document.addEventListener("click", handleOutsideClose);
-      return () => document.removeEventListener("click", handleOutsideClose);
-    });
-
-    return (
-      <div ref={selectRef} className="relative flex items-center">
-        <button
-          ref={ref}
-          type="button"
-          onClick={handleClickSelect}
-          className="flex items-center"
+  return (
+    <div ref={selectRef} className="relative flex items-center">
+      <button
+        ref={ref}
+        type="button"
+        onClick={handleClickSelect}
+        className="flex items-center"
+      >
+        <Typography type="body-16">
+          {value.length === 0
+            ? placeholder
+            : options
+                .filter((option) => value.includes(option.value))
+                .map((option) => option.label)
+                .join(", ")}
+        </Typography>
+        {open ? (
+          <path d="M9 6L13.3301 10.5H4.66987L9 6Z" fill="#8B8C8D" />
+        ) : (
+          <path d="M9 12L4.66987 7.5L13.3301 7.5L9 12Z" fill="#8B8C8D" />
+        )}
+      </button>
+      {open && (
+        <div
+          ref={optionsRef}
+          role="listbox"
+          className="z-10 absolute top-6 left-0 mt-1 py-3 min-w-[150px] max-h-[248px]
+              border border-[#D7D8D9] rounded-xl bg-white overflow-y-auto"
         >
-          <Typography type="body-16">
-            {value.length === 0
-              ? placeholder
-              : options
-                  .filter((option) => value.includes(option.value))
-                  .map((option) => option.label)
-                  .join(", ")}
-          </Typography>
-          {open ? (
-            <path d="M9 6L13.3301 10.5H4.66987L9 6Z" fill="#8B8C8D" />
-          ) : (
-            <path d="M9 12L4.66987 7.5L13.3301 7.5L9 12Z" fill="#8B8C8D" />
-          )}
-        </button>
-        {open && (
-          <ul
-            ref={optionsRef}
-            className="z-10 absolute top-6 left-0 mt-1 py-3 min-w-[150px] max-h-[248px]
-              border border-[#D7D8D9] rounded-xl bg-white list-none overflow-y-auto"
-          >
-            {options.map((option) => (
-              <li
-                key={option.value}
-                role="presentation"
-                onClick={() => handleClickOption(option.value)}
-                className="px-4 py-1
+          {options.map((option) => (
+            <div
+              key={option.value}
+              role="option"
+              aria-selected={value.includes(option.value)}
+              tabIndex={0}
+              onClick={() => handleClickOption(option.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ")
+                  handleClickOption(option.value);
+              }}
+              className="px-4 py-1
                   overflow-hidden text-ellipsis whitespace-nowrap
                  hover:bg-[#FFF7ED]"
-              >
-                <Checkbox
-                  text={option.label}
-                  readOnly
-                  checked={value.includes(option.value)}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  },
-);
-
-export default MultipleSelectBox;
+            >
+              <Checkbox
+                text={option.label}
+                readOnly
+                checked={value.includes(option.value)}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

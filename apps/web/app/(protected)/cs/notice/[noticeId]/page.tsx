@@ -67,6 +67,7 @@ export default function Page() {
       </Card>
       <div className="min-h-[320px]">
         {notice.description.split("\n").map((line, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: text lines have no stable id
           <p key={`${line}-${index}`}>{line}</p>
         ))}
       </div>

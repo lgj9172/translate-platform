@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "@/lib/utils";
 
 const actionIconVariants = cva(
@@ -37,18 +37,23 @@ export interface ActionIconProps
   asChild?: boolean;
 }
 
-const ActionIcon = React.forwardRef<HTMLButtonElement, ActionIconProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp
-        className={cn(actionIconVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
-);
+function ActionIcon({
+  ref,
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: ActionIconProps) {
+  const Comp = asChild ? Slot : "button";
+  return (
+    <Comp
+      className={cn(actionIconVariants({ variant, size, className }))}
+      ref={ref}
+      {...props}
+    />
+  );
+}
 ActionIcon.displayName = "ActionIcon";
 
 export { ActionIcon, actionIconVariants };

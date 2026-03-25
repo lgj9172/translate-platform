@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 interface KeyValueMap {
-  [key: string]: any;
+  [key: string]: string;
 }
 
 const category2label: KeyValueMap = {

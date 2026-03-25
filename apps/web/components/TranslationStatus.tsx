@@ -26,11 +26,11 @@ export default function TranslationStatus({
     <div className="flex items-center gap-2">
       <div className="text-[14px] font-bold text-[#8B8C8D]">{label}</div>
       <div className="flex gap-1">
-        {Array.from({ length: 6 }).map((_, i) => (
+        {[1, 2, 3, 4, 5, 6].map((n) => (
           <div
-            key={`status-step-${i}`}
+            key={n}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 
-              ${i < step ? "bg-primary" : "bg-[#E5E7EA]"}`}
+              ${n <= step ? "bg-primary" : "bg-[#E5E7EA]"}`}
           />
         ))}
       </div>

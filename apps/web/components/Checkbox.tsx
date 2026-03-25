@@ -16,6 +16,7 @@ export default function Checkbox({ text, ...props }: Props) {
         className="peer appearance-none w-3.5 h-3.5 m-0.5 bg-gray-100 rounded-xs checked:bg-orange-400 disabled:bg-zinc-300"
       />
       <svg
+        aria-hidden="true"
         width="10"
         height="6"
         viewBox="0 0 10 6"

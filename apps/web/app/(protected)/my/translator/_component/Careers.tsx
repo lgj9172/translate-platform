@@ -69,6 +69,7 @@ export default function Careers() {
     };
 
     loadFileNames();
+    // biome-ignore lint/correctness/useExhaustiveDependencies: getFileInfo is a stable imported function
   }, [careerFields, fileNames, getFileInfo]);
 
   const handleClickAppend = () => {

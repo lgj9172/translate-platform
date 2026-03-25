@@ -131,7 +131,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const [openedTOU, setOpenedTOU] = useState(false);
   const [openedRP, setOpenedRP] = useState(false);
 
-  const { isSuccess, isLoading, isError, data, error } = useQuery({
+  const { isSuccess, isLoading } = useQuery({
     queryKey: ["health"],
     queryFn: getHealth,
   });

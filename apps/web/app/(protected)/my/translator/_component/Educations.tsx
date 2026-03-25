@@ -94,6 +94,7 @@ export default function Educations() {
     };
 
     loadFileNames();
+    // biome-ignore lint/correctness/useExhaustiveDependencies: getFileInfo is a stable imported function
   }, [educationFields, fileNames, getFileInfo]);
 
   const handleClickAppend = () => {

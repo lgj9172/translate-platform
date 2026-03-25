@@ -164,6 +164,7 @@ export default function Page() {
           </LabelSection>
 
           {translation.source_files.map(({ file_id }, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: file_id can be null
             <div key={`${file_id}-${index}`} className="flex gap-2">
               {file_id ? (
                 <FileDownload fileId={file_id} />

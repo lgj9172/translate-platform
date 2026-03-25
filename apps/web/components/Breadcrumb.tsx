@@ -89,15 +89,15 @@ export function Breadcrumb() {
             <Link href="/">홈</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        {breadcrumbItems.map((item, index) => (
-          <React.Fragment key={index}>
+        {breadcrumbItems.map((item) => (
+          <React.Fragment key={item.href ?? item.label}>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               {item.isLast ? (
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               ) : (
                 <BreadcrumbLink asChild>
-                  <Link href={item.href!}>{item.label}</Link>
+                  <Link href={item.href ?? "/"}>{item.label}</Link>
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>

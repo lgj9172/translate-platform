@@ -100,6 +100,7 @@ export default function Page() {
         </LabelSection>
         <div>
           {ask.content.split("\n").map((line: string, index: number) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: text lines have no stable id
             <div key={`${line}-${index}`}>{line}</div>
           ))}
         </div>

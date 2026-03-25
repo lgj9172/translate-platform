@@ -1,0 +1,8 @@
+node_modules
+dist
+
+# 환경변수 파일 — .env.example 만 커밋
+.env*
+!.env.example
+
+/src/generated

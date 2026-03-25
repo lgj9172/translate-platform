@@ -1,0 +1,375 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────
+// User
+// ─────────────────────────────────────────
+
+enum UserProvider {
+  naver
+  kakao
+}
+
+model User {
+  user_id             String        @id @default(uuid()) @db.Uuid
+  email               String        @unique
+  name                String
+  nickname            String
+  phone_number        String        @default("")
+  avatar              String        @default("")
+  birthdate           String        @default("")
+  is_age_verification Boolean       @default(false)
+  is_deleted          Boolean       @default(false)
+  last_login_time     DateTime      @default(now())
+  providers           UserProvider[]
+  agreement           Json?
+  authorization       Json?
+  created_at          DateTime      @default(now())
+  updated_at          DateTime      @updatedAt
+
+  files               File[]
+  translations        Translation[]
+  translation_comments TranslationComment[]
+  counsels            Counsel[]
+  translator          Translator?
+  blogs               Blog[]
+  blog_comments       BlogComment[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────
+// File
+// ─────────────────────────────────────────
+
+model File {
+  file_id    String   @id @default(uuid()) @db.Uuid
+  name       String
+  extension  String
+  user_id    String   @db.Uuid
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [user_id])
+
+  @@map("files")
+}
+
+// ─────────────────────────────────────────
+// Translation
+// ─────────────────────────────────────────
+
+enum TranslationStatus {
+  QUOTE_SENT
+  TRANSLATOR_SELECTED
+  TRANSLATION_BEGAN
+  TRANSLATION_SUBMITTED
+  TRANSLATION_EDIT_REQUESTED
+  TRANSLATION_RESOLVED
+}
+
+model Translation {
+  translation_id      String            @id @default(uuid()) @db.Uuid
+  title               String
+  source_language     String
+  target_language     String
+  categories          String[]
+  description         String            @default("")
+  source_files        Json[]
+  target_files        Json[]
+  deadline            DateTime
+  fee                 Json
+  sample              String            @default("")
+  status              TranslationStatus @default(QUOTE_SENT)
+  is_deleted          Boolean           @default(false)
+  is_canceled         Boolean           @default(false)
+  remaining_revisions Int               @default(3)
+  user_id             String            @db.Uuid
+  resolved_at         DateTime?
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+
+  user       User                 @relation(fields: [user_id], references: [user_id])
+  comments   TranslationComment[]
+  quotations Quotation[]
+  review     Review?
+
+  @@map("translations")
+}
+
+model TranslationComment {
+  comment_id     String   @id @default(uuid()) @db.Uuid
+  content        String
+  user_id        String   @db.Uuid
+  translation_id String   @db.Uuid
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  user        User        @relation(fields: [user_id], references: [user_id])
+  translation Translation @relation(fields: [translation_id], references: [translation_id])
+
+  @@map("translation_comments")
+}
+
+// ─────────────────────────────────────────
+// Quotation
+// ─────────────────────────────────────────
+
+model Quotation {
+  quotation_id   String   @id @default(uuid()) @db.Uuid
+  translation_id String   @db.Uuid
+  translator_id  String   @db.Uuid
+  fee            Json
+  detail         String?
+  is_deleted     Boolean  @default(false)
+  is_canceled    Boolean  @default(false)
+  is_selected    Boolean  @default(false)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  translation Translation @relation(fields: [translation_id], references: [translation_id])
+  translator  Translator  @relation(fields: [translator_id], references: [translator_id])
+
+  @@map("quotations")
+}
+
+// ─────────────────────────────────────────
+// Counsel
+// ─────────────────────────────────────────
+
+enum CounselCategory {
+  SUGGESTION
+  REQUEST_CANCELLATION
+}
+
+model Counsel {
+  counsel_id String          @id @default(uuid()) @db.Uuid
+  content    String
+  is_done    Boolean         @default(false)
+  is_deleted Boolean         @default(false)
+  user_id    String          @db.Uuid
+  category   CounselCategory
+  file_id    String          @db.Uuid
+  created_at DateTime        @default(now())
+  updated_at DateTime        @updatedAt
+
+  user    User            @relation(fields: [user_id], references: [user_id])
+  answers CounselAnswer[]
+
+  @@map("counsels")
+}
+
+model CounselAnswer {
+  answer_id   String   @id @default(uuid()) @db.Uuid
+  content     String
+  answered_at DateTime @default(now())
+  counsel_id  String   @db.Uuid
+
+  counsel Counsel @relation(fields: [counsel_id], references: [counsel_id])
+
+  @@map("counsel_answers")
+}
+
+// ─────────────────────────────────────────
+// Translator
+// ─────────────────────────────────────────
+
+enum TranslatorVerificationStatus {
+  UNVERIFIED
+  PENDING
+  COMPLETED
+  REJECTED
+}
+
+enum TranslatorDegree {
+  BACHELOR
+  MASTER
+  DOCTOR
+}
+
+enum TranslatorGraduationStatus {
+  GRADUATED
+  COMPLETED
+}
+
+model Translator {
+  translator_id         String   @id @default(uuid()) @db.Uuid
+  categories            String[]
+  introduction          String   @default("")
+  user_id               String   @unique @db.Uuid
+  total_career_duration Int?
+  recent_translations   Int?
+  is_draft              Boolean  @default(true)
+  is_deleted            Boolean  @default(false)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  user               User                      @relation(fields: [user_id], references: [user_id])
+  educations         TranslatorEducation[]
+  careers            TranslatorCareer[]
+  certifications     TranslatorCertification[]
+  translation_samples TranslationSample[]
+  quotations         Quotation[]
+  reviews            Review[]
+
+  @@map("translators")
+}
+
+model TranslatorEducation {
+  education_id        String                       @id @default(uuid()) @db.Uuid
+  name                String
+  major               String
+  degree              TranslatorDegree
+  graduation_status   TranslatorGraduationStatus
+  started_at          DateTime
+  ended_at            DateTime
+  verification_status TranslatorVerificationStatus @default(UNVERIFIED)
+  file_id             String                       @db.Uuid
+  is_deleted          Boolean                      @default(false)
+  translator_id       String                       @db.Uuid
+  created_at          DateTime                     @default(now())
+  updated_at          DateTime                     @updatedAt
+
+  translator Translator @relation(fields: [translator_id], references: [translator_id])
+
+  @@map("translator_educations")
+}
+
+model TranslatorCareer {
+  career_id           String                       @id @default(uuid()) @db.Uuid
+  name                String
+  position            String
+  achievement         String?
+  is_employed         Boolean                      @default(false)
+  started_at          DateTime
+  ended_at            DateTime?
+  verification_status TranslatorVerificationStatus @default(UNVERIFIED)
+  file_id             String                       @db.Uuid
+  is_deleted          Boolean                      @default(false)
+  translator_id       String                       @db.Uuid
+  created_at          DateTime                     @default(now())
+  updated_at          DateTime                     @updatedAt
+
+  translator Translator @relation(fields: [translator_id], references: [translator_id])
+
+  @@map("translator_careers")
+}
+
+model TranslatorCertification {
+  certification_id    String                       @id @default(uuid()) @db.Uuid
+  name                String
+  organization        String
+  started_at          DateTime
+  verification_status TranslatorVerificationStatus @default(UNVERIFIED)
+  file_id             String                       @db.Uuid
+  is_deleted          Boolean                      @default(false)
+  translator_id       String                       @db.Uuid
+  created_at          DateTime                     @default(now())
+  updated_at          DateTime                     @updatedAt
+
+  translator Translator @relation(fields: [translator_id], references: [translator_id])
+
+  @@map("translator_certifications")
+}
+
+model TranslationSample {
+  translation_sample_id String   @id @default(uuid()) @db.Uuid
+  source_language       String
+  target_language       String
+  source_text           String
+  target_text           String
+  is_deleted            Boolean  @default(false)
+  translator_id         String   @db.Uuid
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  translator Translator @relation(fields: [translator_id], references: [translator_id])
+
+  @@map("translation_samples")
+}
+
+// ─────────────────────────────────────────
+// Notice / FAQ
+// ─────────────────────────────────────────
+
+model Notice {
+  notice_id    String   @id @default(uuid()) @db.Uuid
+  title        String
+  description  String
+  is_important Boolean  @default(false)
+  created_by   String
+  updated_by   String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@map("notices")
+}
+
+model Faq {
+  faq_id      String   @id @default(uuid()) @db.Uuid
+  title       String
+  description String
+  created_by  String
+  updated_by  String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("faqs")
+}
+
+// ─────────────────────────────────────────
+// Blog
+// ─────────────────────────────────────────
+
+model Blog {
+  blog_id    String   @id @default(uuid()) @db.Uuid
+  title      String
+  content    String
+  is_deleted Boolean  @default(false)
+  user_id    String   @db.Uuid
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user     User          @relation(fields: [user_id], references: [user_id])
+  comments BlogComment[]
+
+  @@map("blogs")
+}
+
+model BlogComment {
+  comment_id String   @id @default(uuid()) @db.Uuid
+  content    String
+  user_id    String   @db.Uuid
+  blog_id    String   @db.Uuid
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [user_id])
+  blog Blog @relation(fields: [blog_id], references: [blog_id])
+
+  @@map("blog_comments")
+}
+
+// ─────────────────────────────────────────
+// Review
+// ─────────────────────────────────────────
+
+model Review {
+  translator_id  String   @db.Uuid
+  translation_id String   @unique @db.Uuid
+  ratings        Json
+  comment        String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  translator  Translator  @relation(fields: [translator_id], references: [translator_id])
+  translation Translation @relation(fields: [translation_id], references: [translation_id])
+
+  @@id([translator_id, translation_id])
+  @@map("reviews")
+}

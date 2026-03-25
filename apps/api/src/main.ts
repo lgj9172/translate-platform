@@ -1,4 +1,6 @@
+import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
@@ -6,14 +8,32 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api/v1");
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
+
   app.enableCors({
     origin: ["http://localhost:3000", "https://localhost:3000"],
     credentials: true,
   });
 
-  await app.listen(process.env.PORT ?? 3001);
-  console.log(
-    `🚀 NestJS 서버가 포트 ${process.env.PORT ?? 3001}에서 실행 중입니다.`,
-  );
+  const config = new DocumentBuilder()
+    .setTitle("Translate Platform API")
+    .setDescription("번역 플랫폼 API 문서")
+    .setVersion("1.0")
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup("api/docs", app, document);
+
+  const port = process.env.PORT ?? 3001;
+  await app.listen(port);
+  console.log(`🚀 NestJS 서버가 포트 ${port}에서 실행 중입니다.`);
+  console.log(`📄 Swagger: http://localhost:${port}/api/docs`);
 }
 bootstrap();

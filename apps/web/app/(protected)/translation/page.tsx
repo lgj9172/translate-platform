@@ -63,7 +63,6 @@ export default function Page() {
               <TranslationCard
                 key={translation.translation_id}
                 translation={translation}
-                // showQuotations
               />
             </Link>
           ))}

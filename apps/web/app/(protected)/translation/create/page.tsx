@@ -1,5 +1,21 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+import {
+  Controller,
+  FormProvider,
+  type SubmitErrorHandler,
+  type SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import { NumericFormat } from "react-number-format";
+import { z } from "zod";
 import { postFile } from "@/apis/files";
 import { postTranslation } from "@/apis/translations";
 import Speciality from "@/app/(protected)/my/translator/_component/Speciality";
@@ -24,24 +40,8 @@ import {
   TRANSLATION_CURRENCY,
   TRANSLATION_LANGUAGE,
   TRANSLATION_LANGUAGE_LABEL,
-  TranslationLanguage,
+  type TranslationLanguage,
 } from "@/types/entities";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useMemo } from "react";
-import {
-  Controller,
-  FormProvider,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
-import { NumericFormat } from "react-number-format";
-import { z } from "zod";
 
 const PostTranslationFormSchema = z
   .object({

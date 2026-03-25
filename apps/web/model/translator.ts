@@ -1,10 +1,10 @@
+import { z } from "zod";
 import {
   TRANSLATION_CATEGORY,
-  TranslationCategory,
-  TranslationSample,
-  TranslatorCertification,
+  type TranslationCategory,
+  type TranslationSample,
+  type TranslatorCertification,
 } from "@/types/entities";
-import { z } from "zod";
 import { CareerDefaultValue, CareerSchema } from "./career";
 import { CertificationSchema } from "./certification";
 import { EducationDefaultValue, EducationSchema } from "./education";

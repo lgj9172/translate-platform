@@ -1,5 +1,5 @@
-import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { RadioGroupItem } from "@/components/ui/radio-group";
 
 interface RadioButtonProps {
   value: string;

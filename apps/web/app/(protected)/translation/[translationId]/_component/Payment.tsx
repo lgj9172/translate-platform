@@ -5,7 +5,7 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Card } from "@/components/ui/card";
-import { Translation } from "@/types/entities";
+import type { Translation } from "@/types/entities";
 
 interface Props {
   translation: Translation;

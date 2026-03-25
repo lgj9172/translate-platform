@@ -1,7 +1,7 @@
+import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Notice } from "@/types/entities";
-import dayjs from "dayjs";
+import type { Notice } from "@/types/entities";
 
 interface Props {
   notice: Notice;

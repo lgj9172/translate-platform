@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import CancelTranslationModal from "@/modals/CancelTranslationModal";
-import { Translation } from "@/types/entities";
-import { Stack } from "@/components/ui/stack";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Stack } from "@/components/ui/stack";
+import CancelTranslationModal from "@/modals/CancelTranslationModal";
+import type { Translation } from "@/types/entities";
 
 export default function WaitTranslationStart({
   translation,

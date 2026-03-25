@@ -1,3 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import {
+  AlertCircle,
+  Award,
+  Briefcase,
+  CheckCircle,
+  Clock,
+  FileText,
+  GraduationCap,
+} from "lucide-react";
 import { getTranslator } from "@/apis/translator";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -5,17 +16,6 @@ import {
   TRANSLATOR_GRADUATION_STATUS_LABEL,
 } from "@/types/entities";
 import { getLanguageLabel } from "@/utils/converter/label";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import {
-  GraduationCap,
-  Briefcase,
-  Award,
-  FileText,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-} from "lucide-react";
 
 export default function Profile({ translatorId }: { translatorId: string }) {
   const { data: translator } = useQuery({

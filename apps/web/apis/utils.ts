@@ -1,4 +1,4 @@
-import { PaginationParams } from "./clients";
+import type { PaginationParams } from "./clients";
 
 type SnakeToCamelCase<S extends string> = S extends `${infer T}_${infer U}`
   ? `${T}${Capitalize<SnakeToCamelCase<U>>}`

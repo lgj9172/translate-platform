@@ -1,9 +1,9 @@
-import { Quotation } from "@/types/entities";
+import type { Quotation } from "@/types/entities";
 import {
   ClientWithAuth,
-  Response,
-  PaginatedResponse,
-  PaginationParams,
+  type PaginatedResponse,
+  type PaginationParams,
+  type Response,
 } from "./clients";
 
 export const getTranslationQuotations = async ({

@@ -1,9 +1,9 @@
-import { Counsel, CounselAnswer, CounselCategory } from "@/types/entities";
+import type { Counsel, CounselAnswer, CounselCategory } from "@/types/entities";
 import {
   ClientWithAuth,
-  PaginatedResponse,
-  PaginationParams,
-  Response,
+  type PaginatedResponse,
+  type PaginationParams,
+  type Response,
 } from "./clients";
 
 export const getCounsels = async ({ params }: { params: PaginationParams }) => {

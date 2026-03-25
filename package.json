@@ -11,9 +11,12 @@
     "dev:web": "pnpm --filter @translate/web dev",
     "dev:api": "pnpm --filter @translate/api start:dev",
     "build:web": "pnpm --filter @translate/web build",
-    "build:api": "pnpm --filter @translate/api build"
+    "build:api": "pnpm --filter @translate/api build",
+    "format": "biome format --write .",
+    "check": "biome check --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.9",
     "turbo": "^2.5.4",
     "typescript": "5.8.3"
   },

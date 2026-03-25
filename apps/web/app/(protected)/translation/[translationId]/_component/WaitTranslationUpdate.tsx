@@ -1,9 +1,9 @@
-import { Translation } from "@/types/entities";
+import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Stack } from "@/components/ui/stack";
-import FileDownload from "@/components/FileDownload";
+import type { Translation } from "@/types/entities";
 
 export default function WaitTranslationUpdate({
   translation,

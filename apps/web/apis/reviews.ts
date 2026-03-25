@@ -1,5 +1,9 @@
-import { Review } from "@/types/entities";
-import { ClientWithAuth, PaginatedResponse, Response } from "./clients";
+import type { Review } from "@/types/entities";
+import {
+  ClientWithAuth,
+  type PaginatedResponse,
+  type Response,
+} from "./clients";
 
 export const getReviews = async ({
   translatorId,

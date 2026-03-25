@@ -1,4 +1,4 @@
-import {
+import type {
   PaginationParams,
   Quotation,
   TranslationCategory,
@@ -7,7 +7,7 @@ import {
   TranslatorDegree,
   TranslatorGraduationStatus,
 } from "@/types/entities";
-import { ClientWithAuth, Response } from "./clients";
+import { ClientWithAuth, type Response } from "./clients";
 
 export const getTranslator = async ({
   translatorId,

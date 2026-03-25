@@ -1,3 +1,8 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   getTranslationComments,
   postTranslationComment,
@@ -8,19 +13,14 @@ import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Translation, TranslationComment } from "@/types/entities";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Center } from "@/components/ui/center";
 import { Loader } from "@/components/ui/loader";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import type { Translation, TranslationComment } from "@/types/entities";
 
 function Message({ message }: { message: TranslationComment }) {
   const { data: user } = useQuery({

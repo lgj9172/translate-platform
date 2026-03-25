@@ -1,6 +1,6 @@
-import { getUser, postLogout } from "@/apis/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { getUser, postLogout } from "@/apis/user";
 
 export default function useUser() {
   const router = useRouter();

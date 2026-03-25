@@ -1,3 +1,5 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { postTranslationQuotation } from "@/apis/translations-quotations";
 import {
   AlertDialog,
@@ -8,9 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/AlertDialog";
 import { Button } from "@/components/ui/button";
-import { Fee } from "@/types/entities";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import type { Fee } from "@/types/entities";
 
 export default function SendQuoteModal({
   open,

@@ -1,9 +1,9 @@
 "use client";
 
-import useUser from "@/hooks/useUser";
+import { redirect } from "next/navigation";
 import { Center } from "@/components/ui/center";
 import { Loader } from "@/components/ui/loader";
-import { redirect } from "next/navigation";
+import useUser from "@/hooks/useUser";
 
 export default function ProtectedLayout({
   children,

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { createServer } = require("https");
-const { parse } = require("url");
+const { createServer } = require("node:https");
+const { parse } = require("node:url");
 const next = require("next");
-const fs = require("fs");
+const fs = require("node:fs");
 
 const hostname = "localhost";
 const port = 3000;

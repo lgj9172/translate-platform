@@ -2105,7 +2105,7 @@
             var x = a.offsetLeft;
             var y = a.offsetTop;
             var el = a;
-            while (el.tagName != "BODY") {
+            while (el.tagName !== "BODY") {
               el = el.offsetParent;
               x = x + el.offsetLeft;
               y = y + el.offsetTop;
@@ -2128,7 +2128,7 @@
           }
         }
       }
-      function msoCommentHide(com_id) {
+      function _msoCommentHide(com_id) {
         if (msoBrowserCheck()) {
           c = document.all(com_id);
           if (null != c && null == c.length) {
@@ -2141,7 +2141,7 @@
       function msoBrowserCheck() {
         ms = navigator.appVersion.indexOf("MSIE");
         vers = navigator.appVersion.substring(ms + 5, ms + 6);
-        ie4 = ms > 0 && parseInt(vers) >= 4;
+        ie4 = ms > 0 && parseInt(vers, 10) >= 4;
         return ie4;
       }
       if (msoBrowserCheck()) {
@@ -2240,20 +2240,20 @@
       	mso-font-pitch:variable;
       	mso-font-signature:3 402653184 335544320 0 1 0;}
       @font-face
-      	{font-family:"\@맑은 고딕";
+      	{font-family:"@맑은 고딕";
       	mso-font-charset:129;
       	mso-generic-font-family:swiss;
       	mso-font-pitch:variable;
       	mso-font-signature:-1879048145 701988091 18 0 524289 0;}
       @font-face
-      	{font-family:"\@굴림";
+      	{font-family:"@굴림";
       	panose-1:2 11 6 0 0 1 1 1 1 1;
       	mso-font-charset:129;
       	mso-generic-font-family:swiss;
       	mso-font-pitch:variable;
       	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
       @font-face
-      	{font-family:"\@MS Gothic";
+      	{font-family:"@MS Gothic";
       	panose-1:2 11 6 9 7 2 5 8 2 4;
       	mso-font-charset:128;
       	mso-generic-font-family:modern;

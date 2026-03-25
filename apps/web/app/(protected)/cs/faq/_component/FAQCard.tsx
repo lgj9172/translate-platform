@@ -1,11 +1,11 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Faq } from "@/types/entities";
-import { useState } from "react";
+import type { Faq } from "@/types/entities";
 
 interface Props {
   faq: Faq;

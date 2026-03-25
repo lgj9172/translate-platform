@@ -1,6 +1,6 @@
-import Providers from "@/utils/react-query/Provider";
-import { Suspense } from "react";
 import localFont from "next/font/local";
+import { Suspense } from "react";
+import Providers from "@/utils/react-query/Provider";
 import Shell from "./Shell";
 import "./globals.css";
 

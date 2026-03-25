@@ -1,10 +1,10 @@
-import { File } from "@/types/entities";
+import type { File } from "@/types/entities";
 import { objectToFormData } from "@/utils/converter/form";
 import {
   ClientWithAuth,
-  PaginatedResponse,
-  PaginationParams,
-  Response,
+  type PaginatedResponse,
+  type PaginationParams,
+  type Response,
 } from "./clients";
 
 export const getFiles = async ({ params }: { params: PaginationParams }) => {

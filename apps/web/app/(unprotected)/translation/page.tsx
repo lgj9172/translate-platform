@@ -1,17 +1,17 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { getTranslations } from "@/apis/translations";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationCard from "@/components/TranslationCard";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 
 export default function Page() {
   const {

@@ -1,5 +1,12 @@
 "use client";
 
+import FluenceBi from "@assets/icons/fluence-bi.svg";
+import { useQuery } from "@tanstack/react-query";
+import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
+import Link from "next/link";
+import { type ReactNode, useState } from "react";
+import { getHealth } from "@/apis/health";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,24 +16,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/DropdownMenu";
-import useUser from "@/hooks/useUser";
-import FluenceBi from "@assets/icons/fluence-bi.svg";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { getHealth } from "@/apis/health";
-
-import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
-import Link from "next/link";
-import React, { ReactNode, useState } from "react";
-import { Breadcrumb } from "@/components/Breadcrumb";
 import { Group } from "@/components/ui/group";
-import { useQuery } from "@tanstack/react-query";
+import { Separator } from "@/components/ui/separator";
+import useUser from "@/hooks/useUser";
 
 function HeaderMenu() {
   const { user, signOut } = useUser();

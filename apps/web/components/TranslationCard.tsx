@@ -1,12 +1,12 @@
-import { Card } from "@/components/ui/card";
-import { Translation } from "@/types/entities";
-import { getDday } from "@/utils/converter/label";
+import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import type { Translation } from "@/types/entities";
+import { getDday } from "@/utils/converter/label";
 import CategoryBadges from "./CatagoryBadges";
 import Fee from "./Fee";
 import LanguageBadge from "./LangaugeBadge";
 import TranslationStatus from "./TranslationStatus";
-import dayjs from "dayjs";
 
 interface TranslationCardProps {
   translation: Translation;

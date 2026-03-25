@@ -1,12 +1,12 @@
 "use client";
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import Check from "@assets/icons/check.svg";
-import { Center } from "@/components/ui/center";
-import { Stack } from "@/components/ui/stack";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Center } from "@/components/ui/center";
+import { Stack } from "@/components/ui/stack";
 
 export default function Page() {
   const { translationId } = useParams<{ translationId: string }>();

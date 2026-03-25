@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useId } from "react";
+import { type InputHTMLAttributes, useId } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   text: string;

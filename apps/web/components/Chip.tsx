@@ -1,6 +1,6 @@
+import { type ReactNode, useId } from "react";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { ReactNode, useId } from "react";
 
 interface ChipProps extends React.InputHTMLAttributes<HTMLInputElement> {
   children: ReactNode;

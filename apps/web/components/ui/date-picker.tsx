@@ -1,11 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Calendar as CalendarIcon, Clock } from "lucide-react";
-
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -20,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface DatePickerProps {
   date?: Date;
@@ -98,7 +97,10 @@ export function DateTimePicker({
   React.useEffect(() => {
     if (selectedDate && selectedHour && selectedMinute) {
       const newDate = new Date(selectedDate);
-      newDate.setHours(parseInt(selectedHour), parseInt(selectedMinute));
+      newDate.setHours(
+        parseInt(selectedHour, 10),
+        parseInt(selectedMinute, 10),
+      );
       onDateChange?.(newDate);
     }
   }, [selectedDate, selectedHour, selectedMinute, onDateChange]);

@@ -1,9 +1,9 @@
-import { Faq } from "@/types/entities";
+import type { Faq } from "@/types/entities";
 import {
   ClientWithAuth,
-  PaginatedResponse,
-  PaginationParams,
-  Response,
+  type PaginatedResponse,
+  type PaginationParams,
+  type Response,
 } from "./clients";
 
 export const getFaqs = async ({ params }: { params: PaginationParams }) => {

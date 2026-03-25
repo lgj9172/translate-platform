@@ -1,9 +1,9 @@
-import { Blog, BlogComment } from "@/types/entities";
+import type { Blog, BlogComment } from "@/types/entities";
 import {
   ClientWithAuth,
-  PaginatedResponse,
-  PaginationParams,
-  Response,
+  type PaginatedResponse,
+  type PaginationParams,
+  type Response,
 } from "./clients";
 
 export const getBlogs = async ({ params }: { params: PaginationParams }) => {

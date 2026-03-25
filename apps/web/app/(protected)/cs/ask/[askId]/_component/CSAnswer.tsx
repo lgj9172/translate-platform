@@ -1,6 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { getCounselAnswer } from "@/apis/counsels";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useQuery } from "@tanstack/react-query";
 
 export default function CSAnswer({ askId }: { askId: string }) {
   const { data: answer } = useQuery({

@@ -1,10 +1,10 @@
 "use client";
 
-import StartTranslationModal from "@/modals/StartTranslationModal";
-import { Translation } from "@/types/entities";
-import { Stack } from "@/components/ui/stack";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Stack } from "@/components/ui/stack";
+import StartTranslationModal from "@/modals/StartTranslationModal";
+import type { Translation } from "@/types/entities";
 
 export default function StartTranslation({
   translation,

@@ -1,11 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { getTranslation } from "@/apis/translations";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
 import { Loader } from "@/components/ui/loader";
-import { Quotation } from "@/types/entities";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import type { Quotation } from "@/types/entities";
 import Fee from "./Fee";
 import InputSection from "./InputSection";
 import Label from "./Label";

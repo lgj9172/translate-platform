@@ -1,8 +1,8 @@
 "use client";
 
-import { Translation } from "@/types/entities";
-import { Stack } from "@/components/ui/stack";
 import dayjs from "dayjs";
+import { Stack } from "@/components/ui/stack";
+import type { Translation } from "@/types/entities";
 
 interface Props {
   translation: Translation;

@@ -1,6 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { getFile } from "@/apis/files";
 import { useFileDownload } from "@/hooks/useFileDownload";
-import { useQuery } from "@tanstack/react-query";
 
 export default function FileDownload({ fileId }: { fileId: string }) {
   const { downloadFile } = useFileDownload();

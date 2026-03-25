@@ -1,5 +1,10 @@
-import { ChangeEventHandler, MouseEventHandler, useId, useRef } from "react";
 import { X } from "lucide-react";
+import {
+  type ChangeEventHandler,
+  type MouseEventHandler,
+  useId,
+  useRef,
+} from "react";
 import { Input } from "@/components/ui/input";
 
 interface Props {

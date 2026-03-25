@@ -1,5 +1,5 @@
-import { User, UserProvider, Token } from "@/types/entities";
-import { ClientWithAuth, ClientWithoutAuth, Response } from "./clients";
+import type { Token, User, UserProvider } from "@/types/entities";
+import { ClientWithAuth, ClientWithoutAuth, type Response } from "./clients";
 
 export const getUser = async () => {
   const response = await ClientWithAuth.get<Response<User>>("/users/me");

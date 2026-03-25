@@ -1,12 +1,12 @@
+import { Controller, useFormContext } from "react-hook-form";
+import type { z } from "zod";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Textarea } from "@/components/ui/textarea";
-import { PostTranslatorFormSchema } from "@/model/translator";
-import { Controller, useFormContext } from "react-hook-form";
-import { z } from "zod";
+import type { PostTranslatorFormSchema } from "@/model/translator";
 
 export default function SelfIntroduction() {
   const { control } =

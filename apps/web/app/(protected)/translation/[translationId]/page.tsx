@@ -1,11 +1,11 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { getTranslation } from "@/apis/translations";
 import { getSelectedQuotation } from "@/apis/translations-quotations";
 import { getMyTranslator } from "@/apis/translator";
 import { getOtherUser, getUser } from "@/apis/user";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-
 import CategoryBadges from "@/components/CatagoryBadges";
 import Fee from "@/components/Fee";
 import FileDownload from "@/components/FileDownload";
@@ -17,6 +17,7 @@ import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import TranslationStatus from "@/components/TranslationStatus";
 import { ActionIcon } from "@/components/ui/action-icon";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
@@ -25,8 +26,6 @@ import { Loader } from "@/components/ui/loader";
 import { Separator } from "@/components/ui/separator";
 import { Stack } from "@/components/ui/stack";
 import { TRANSLATION_STATUS } from "@/types/entities";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 필요한 언어 로케일을 불러옵니다.
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";

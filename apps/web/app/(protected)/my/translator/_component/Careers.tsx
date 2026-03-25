@@ -1,25 +1,25 @@
-import { postFile, getFile } from "@/apis/files";
+import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { X } from "lucide-react";
+import { type ChangeEvent, useEffect, useState } from "react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import type { z } from "zod";
+import { getFile, postFile } from "@/apis/files";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DatePicker } from "@/components/ui/date-picker";
-import { Checkbox } from "@/components/ui/checkbox";
-import { CareerDefaultValue } from "@/model/career";
-import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon } from "@/components/ui/action-icon";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useMutation } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { ChangeEvent, useEffect, useState } from "react";
-import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { X } from "lucide-react";
-import { z } from "zod";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Input } from "@/components/ui/input";
 import { Stack } from "@/components/ui/stack";
+import { CareerDefaultValue } from "@/model/career";
+import type { PostTranslatorFormSchema } from "@/model/translator";
 
 export default function Careers() {
   const {
@@ -69,7 +69,7 @@ export default function Careers() {
     };
 
     loadFileNames();
-  }, [careerFields, fileNames]);
+  }, [careerFields, fileNames, getFileInfo]);
 
   const handleClickAppend = () => {
     append(CareerDefaultValue);

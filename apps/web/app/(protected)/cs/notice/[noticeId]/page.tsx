@@ -1,5 +1,10 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { ArrowLeftIcon } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { getNotice } from "@/apis/notices";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
@@ -11,11 +16,6 @@ import { Center } from "@/components/ui/center";
 import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { ArrowLeftIcon } from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 
 export default function Page() {
   const { noticeId } = useParams<{ noticeId: string }>();

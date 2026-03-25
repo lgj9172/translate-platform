@@ -1,4 +1,10 @@
-import { postFile, getFile } from "@/apis/files";
+import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { X } from "lucide-react";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import type { z } from "zod";
+import { getFile, postFile } from "@/apis/files";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -6,26 +12,18 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import SelectBox from "@/components/SelectBox";
-import { Button } from "@/components/ui/button";
-import { DatePicker } from "@/components/ui/date-picker";
-import { DegreeSchema } from "@/model/degree";
-import { EducationDefaultValue } from "@/model/education";
-import { EducationStatusSchema } from "@/model/educationStatus";
-import { PostTranslatorFormSchema } from "@/model/translator";
 import { ActionIcon } from "@/components/ui/action-icon";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Group } from "@/components/ui/group";
-import { Stack } from "@/components/ui/stack";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { X } from "lucide-react";
-
-import { useMutation } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { ChangeEvent, useMemo, useEffect, useState } from "react";
-import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-
-import { z } from "zod";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Stack } from "@/components/ui/stack";
+import type { DegreeSchema } from "@/model/degree";
+import { EducationDefaultValue } from "@/model/education";
+import type { EducationStatusSchema } from "@/model/educationStatus";
+import type { PostTranslatorFormSchema } from "@/model/translator";
 
 export default function Educations() {
   const educationStatusOptions = useMemo<
@@ -96,7 +94,7 @@ export default function Educations() {
     };
 
     loadFileNames();
-  }, [educationFields, fileNames]);
+  }, [educationFields, fileNames, getFileInfo]);
 
   const handleClickAppend = () => {
     append(EducationDefaultValue);

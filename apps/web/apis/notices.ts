@@ -1,9 +1,9 @@
-import { Notice } from "@/types/entities";
+import type { Notice } from "@/types/entities";
 import {
   ClientWithAuth,
-  PaginatedResponse,
-  PaginationParams,
-  Response,
+  type PaginatedResponse,
+  type PaginationParams,
+  type Response,
 } from "./clients";
 
 export const getNotices = async ({ params }: { params: PaginationParams }) => {

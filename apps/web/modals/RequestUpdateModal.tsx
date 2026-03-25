@@ -1,3 +1,9 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import {
+  getTranslation,
+  postTranslationRequestRevision,
+} from "@/apis/translations";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -7,12 +13,6 @@ import {
   AlertDialogTitle,
 } from "@/components/AlertDialog";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  getTranslation,
-  postTranslationRequestRevision,
-} from "@/apis/translations";
-import { toast } from "sonner";
 
 interface RequestUpdateModalProps {
   open: boolean;

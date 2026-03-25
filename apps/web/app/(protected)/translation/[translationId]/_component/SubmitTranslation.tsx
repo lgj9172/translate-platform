@@ -1,5 +1,10 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from "dayjs";
+import { useState } from "react";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -7,14 +12,9 @@ import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
-import SubmitTranslationModal from "@/modals/SubmitTranslationModal";
-import { Translation } from "@/types/entities";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@/components/ui/stack";
-import dayjs from "dayjs";
-import { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
+import SubmitTranslationModal from "@/modals/SubmitTranslationModal";
+import type { Translation } from "@/types/entities";
 
 const SubmitTranslationFormSchema = z.object({
   file: z

@@ -1,18 +1,18 @@
+import { useMemo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import type { z } from "zod";
 import Chip from "@/components/Chip";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
-import { PostTranslatorFormSchema } from "@/model/translator";
+import type { PostTranslatorFormSchema } from "@/model/translator";
 import {
   TRANSLATION_CATEGORY,
   TRANSLATION_CATEGORY_LABEL,
-  TranslationCategory,
+  type TranslationCategory,
 } from "@/types/entities";
-import { useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { z } from "zod";
 
 export default function Speciality() {
   const categoryOptions: { label: string; value: TranslationCategory }[] =

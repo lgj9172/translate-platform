@@ -1,12 +1,12 @@
-import { Translation } from "@/types/entities";
+import { useState } from "react";
+import FileDownload from "@/components/FileDownload";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/ui/stack";
-import { useState } from "react";
 import ResumeTranslationModal from "@/modals/ResumeTranslationModal";
-import FileDownload from "@/components/FileDownload";
+import type { Translation } from "@/types/entities";
 
 export default function WaitConfirm({
   translation,

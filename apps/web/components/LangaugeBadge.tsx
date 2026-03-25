@@ -1,7 +1,7 @@
-import { TranslationLanguage } from "@/types/entities";
-import { getLanguageLabel } from "@/utils/converter/label";
 import { FaArrowRight } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
+import type { TranslationLanguage } from "@/types/entities";
+import { getLanguageLabel } from "@/utils/converter/label";
 
 export default function LanguageBadge({
   sourceLanguage,

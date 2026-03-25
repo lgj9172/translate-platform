@@ -1,5 +1,9 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeftIcon, StarIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { getTranslator } from "@/apis/translator";
 import { getOtherUser } from "@/apis/user";
 import PageHeader from "@/components/PageHeader";
@@ -14,10 +18,6 @@ import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCategoryLabel } from "@/utils/converter/label";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowLeftIcon, StarIcon, UserIcon } from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 import Profile from "./_component/Profile";
 
 export default function Page() {

@@ -1,5 +1,7 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { getTranslationQuotations } from "@/apis/translations-quotations";
 import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
@@ -12,9 +14,7 @@ import { Loader } from "@/components/ui/loader";
 import { Stack } from "@/components/ui/stack";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import SelectQuoteModal from "@/modals/SelectQuoteModal";
-import { Translation } from "@/types/entities";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import type { Translation } from "@/types/entities";
 import TranslatorProfile from "./TranslatorProfile";
 
 export default function SelectQuote({

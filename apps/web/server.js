@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { createServer } = require("node:https");
-const { parse } = require("node:url");
 const next = require("next");
 const fs = require("node:fs");
 
@@ -19,8 +18,7 @@ const httpsOptions = {
 app.prepare().then(() => {
   createServer(httpsOptions, async (req, res) => {
     try {
-      const parsedUrl = parse(req.url, true);
-      await handle(req, res, parsedUrl);
+      await handle(req, res);
     } catch (err) {
       console.error("Error occurred handling", req.url, err);
       res.statusCode = 500;

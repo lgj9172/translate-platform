@@ -5,9 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "env-cmd -f .env.local node server.js",
-    "dev:postman": "env-cmd -f .env.postman node server.js",
     "dev:development": "env-cmd -f .env.development next dev",
-    "dev:nest": "env-cmd -f .env.nest next dev",
     "lint": "biome check .",
     "start": "next start",
     "ts": "tsc --noEmit --incremental --watch"

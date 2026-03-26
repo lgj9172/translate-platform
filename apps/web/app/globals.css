@@ -110,6 +110,24 @@
   --sidebar-ring: oklch(0.646 0.222 41.116);
 }
 
+@keyframes dialog-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dialog-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+[data-slot="dialog-content"][data-state="open"],
+.alert-dialog-content[data-state="open"] {
+  animation: dialog-fade-in 0.2s ease;
+}
+[data-slot="dialog-content"][data-state="closed"],
+.alert-dialog-content[data-state="closed"] {
+  animation: dialog-fade-out 0.2s ease;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

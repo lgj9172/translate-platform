@@ -1,8 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { User } from "@translate/types";
 import { getUser } from "@/apis/user";
 import { createClient } from "@/utils/supabase/client";
 
-export default function useUser() {
+interface UseUserOptions {
+  initialUser?: User | null;
+}
+
+export default function useUser({ initialUser }: UseUserOptions = {}) {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
@@ -22,9 +27,12 @@ export default function useUser() {
     queryKey: ["users", "me"],
     queryFn: getUser,
     enabled: !!session,
+    initialData: initialUser ?? undefined,
   });
 
-  const isLoading = isSessionLoading || isUserLoading;
+  // SSR에서 initialUser를 받은 경우 로딩 상태를 건너뜀
+  const isLoading =
+    initialUser !== undefined ? false : isSessionLoading || isUserLoading;
 
   const signOut = async () => {
     await supabase.auth.signOut();

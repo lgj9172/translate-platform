@@ -1,27 +1,31 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import TranslationRequestButton from "./_components/TranslationRequestButton";
 
 function HeroSection() {
   return (
-    <section className="py-16 flex flex-col items-center text-center gap-6">
-      <div className="flex flex-col gap-3">
-        <span className="text-sm font-medium text-primary bg-orange-50 px-3 py-1 rounded-full self-center">
+    <section className="py-16 lg:py-24 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+      <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-6 lg:max-w-xl">
+        <span className="text-sm font-medium text-primary bg-orange-50 px-3 py-1 rounded-full">
           통번역 전문가 플랫폼
         </span>
-        <h1 className="text-3xl font-bold leading-tight text-gray-900">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-gray-900">
           투명한 가격비교,
           <br />
           <span className="text-primary">검증된 번역사</span>와 함께
         </h1>
-        <p className="text-gray-500 text-base leading-relaxed">
+        <p className="text-gray-500 text-base lg:text-lg leading-relaxed">
           전문 번역사의 이력과 샘플을 직접 확인하고
-          <br />
+          <br className="hidden sm:block" />
           합리적인 가격으로 번역을 의뢰하세요.
         </p>
+        <TranslationRequestButton />
       </div>
-      <TranslationRequestButton />
+      <div className="hidden lg:flex items-center justify-center flex-1">
+        <div className="w-full max-w-sm aspect-square rounded-3xl bg-orange-50 flex items-center justify-center">
+          <span className="text-8xl">🌐</span>
+        </div>
+      </div>
     </section>
   );
 }
@@ -36,10 +40,10 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="flex gap-4 p-4 rounded-xl bg-gray-50">
-      <span className="text-2xl shrink-0">{icon}</span>
+    <div className="flex flex-col gap-3 p-5 rounded-2xl bg-gray-50 hover:bg-orange-50 transition-colors">
+      <span className="text-3xl">{icon}</span>
       <div className="flex flex-col gap-1">
-        <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
+        <h3 className="font-semibold text-gray-900">{title}</h3>
         <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
       </div>
     </div>
@@ -75,11 +79,16 @@ function FeaturesSection() {
   ];
 
   return (
-    <section className="py-8 flex flex-col gap-4">
-      <h2 className="text-xl font-bold text-gray-900">
-        왜 플루언스인가요?
-      </h2>
-      <div className="flex flex-col gap-3">
+    <section className="py-12 lg:py-16 flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          왜 플루언스인가요?
+        </h2>
+        <p className="text-gray-500 text-sm lg:text-base">
+          플루언스가 다른 이유를 확인해보세요.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {features.map((f) => (
           <FeatureCard key={f.title} {...f} />
         ))}
@@ -97,9 +106,16 @@ function HowItWorksSection() {
   ];
 
   return (
-    <section className="py-8 flex flex-col gap-4">
-      <h2 className="text-xl font-bold text-gray-900">이용 방법</h2>
-      <div className="flex flex-col gap-0">
+    <section className="py-12 lg:py-16 flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">이용 방법</h2>
+        <p className="text-gray-500 text-sm lg:text-base">
+          간단한 4단계로 번역을 시작하세요.
+        </p>
+      </div>
+
+      {/* Mobile: vertical timeline */}
+      <div className="flex flex-col gap-0 lg:hidden">
         {steps.map((s, i) => (
           <div key={s.step} className="flex gap-4 relative">
             <div className="flex flex-col items-center">
@@ -117,26 +133,44 @@ function HowItWorksSection() {
           </div>
         ))}
       </div>
+
+      {/* Desktop: horizontal steps */}
+      <div className="hidden lg:grid grid-cols-4 gap-4">
+        {steps.map((s, i) => (
+          <div key={s.step} className="flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center shrink-0">
+                {s.step}
+              </div>
+              {i < steps.length - 1 && (
+                <div className="flex-1 h-px bg-orange-200" />
+              )}
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="font-semibold text-gray-900">{s.title}</p>
+              <p className="text-sm text-gray-500">{s.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
 
 function CtaSection() {
   return (
-    <section className="py-8">
-      <div className="bg-orange-50 rounded-2xl p-6 flex flex-col gap-4 text-center">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-bold text-gray-900">
+    <section className="py-12 lg:py-16">
+      <div className="bg-orange-50 rounded-3xl p-8 lg:p-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
             번역사이신가요?
           </h2>
-          <p className="text-sm text-gray-500">
-            플루언스에서 전문성을 인정받고
-            <br />
-            다양한 번역 의뢰를 받아보세요.
+          <p className="text-sm lg:text-base text-gray-500">
+            플루언스에서 전문성을 인정받고 다양한 번역 의뢰를 받아보세요.
           </p>
         </div>
-        <Link href="/signin">
-          <Button variant="outline" className="w-full border-primary text-primary hover:bg-orange-50">
+        <Link href="/signin" className="lg:shrink-0">
+          <Button variant="outline" className="w-full lg:w-auto border-primary text-primary hover:bg-white px-8">
             번역사로 시작하기
           </Button>
         </Link>
@@ -147,13 +181,10 @@ function CtaSection() {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col divide-y divide-gray-100">
       <HeroSection />
-      <Separator />
       <FeaturesSection />
-      <Separator />
       <HowItWorksSection />
-      <Separator />
       <CtaSection />
     </div>
   );

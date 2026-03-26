@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/DropdownMenu";
+import type { User as UserEntity } from "@translate/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -27,8 +28,8 @@ import { Group } from "@/components/ui/group";
 import { Separator } from "@/components/ui/separator";
 import useUser from "@/hooks/useUser";
 
-function HeaderMenu() {
-  const { user, signOut } = useUser();
+function HeaderMenu({ initialUser }: { initialUser?: UserEntity | null }) {
+  const { user, isLoading, signOut } = useUser({ initialUser });
 
   const handleClickSignout = () => {
     signOut();
@@ -127,7 +128,13 @@ function HeaderMenu() {
   );
 }
 
-export default function Shell({ children }: { children: ReactNode }) {
+export default function Shell({
+  children,
+  initialUser,
+}: {
+  children: ReactNode;
+  initialUser?: UserEntity | null;
+}) {
   const [openedTOU, setOpenedTOU] = useState(false);
   const [openedRP, setOpenedRP] = useState(false);
 
@@ -157,27 +164,19 @@ export default function Shell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-w-[360px] max-w-[768px] container mx-auto">
-      <div className="sticky z-10 top-0 bg-white">
-        <div className="h-[48px] px-[20px] flex justify-between items-center">
+    <div className="w-full max-w-screen-xl mx-auto">
+      <div className="sticky z-10 top-0 bg-white border-b border-gray-100">
+        <div className="h-14 px-4 sm:px-6 lg:px-10 flex justify-between items-center">
           <Link href="/">
             <FluenceBi />
           </Link>
-          <Group>
-            <Link
-              href="/cs"
-              className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
-            >
-              고객센터
-            </Link>
-            <HeaderMenu />
-          </Group>
+          <HeaderMenu initialUser={initialUser} />
         </div>
-        <div className="px-[20px] pb-2">
+        <div className="px-4 sm:px-6 lg:px-10 pb-2">
           <Breadcrumb />
         </div>
       </div>
-      <div className="p-[20px]">
+      <div className="px-4 sm:px-6 lg:px-10 py-6">
         {children}
         <footer className="mt-8 pt-6 min-h-[200px]">
           <Separator className="mb-6" />

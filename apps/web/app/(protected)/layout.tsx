@@ -1,28 +1,19 @@
-"use client";
-
 import { redirect } from "next/navigation";
-import { Center } from "@/components/ui/center";
-import { Loader } from "@/components/ui/loader";
-import useUser from "@/hooks/useUser";
+import { createClient } from "@/utils/supabase/server";
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user, isLoading } = useUser();
-
-  if (isLoading) {
-    return (
-      <Center className="h-[500px]">
-        <Loader />
-      </Center>
-    );
-  }
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     redirect("/signin");
   }
 
-  return children;
+  return <>{children}</>;
 }

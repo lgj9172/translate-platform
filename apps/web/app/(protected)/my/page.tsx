@@ -1,21 +1,92 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  BadgeCheckIcon,
+  FileTextIcon,
+  MicIcon,
+  PenLineIcon,
+  StampIcon,
+  UserCogIcon,
+  UserPlusIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { getTranslationsClient } from "@/apis/translations";
-import TranslatorSection from "./_component/TranslatorSection";
 import { getUser } from "@/apis/user";
 import PageHeader from "@/components/PageHeader";
 import PageTitle from "@/components/PageTitle";
 import { ActionIcon } from "@/components/ui/action-icon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
-import { Group } from "@/components/ui/group";
 import { Loader } from "@/components/ui/loader";
-import { Stack } from "@/components/ui/stack";
+import TranslatorSection from "./_component/TranslatorSection";
+
+function SectionHeader({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+      <p className="text-sm text-gray-500">{description}</p>
+    </div>
+  );
+}
+
+function MenuItem({
+  href,
+  icon,
+  title,
+  description,
+  badge,
+  disabled,
+}: {
+  href?: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  badge?: React.ReactNode;
+  disabled?: boolean;
+}) {
+  const inner = (
+    <div
+      className={`flex items-center gap-4 p-4 rounded-xl border transition-colors ${
+        disabled
+          ? "bg-gray-50 border-gray-100 cursor-not-allowed"
+          : "bg-white border-gray-100 hover:border-orange-200 hover:bg-orange-50 cursor-pointer"
+      }`}
+    >
+      <div
+        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+          disabled ? "bg-gray-100 text-gray-400" : "bg-orange-50 text-primary"
+        }`}
+      >
+        {icon}
+      </div>
+      <div className="flex-1 flex flex-col gap-0.5">
+        <span
+          className={`font-medium text-sm ${disabled ? "text-gray-400" : "text-gray-900"}`}
+        >
+          {title}
+        </span>
+        <span className="text-xs text-gray-400">{description}</span>
+      </div>
+      <div className="flex items-center gap-1 shrink-0">
+        {badge}
+        {!disabled && <ArrowRightIcon className="w-4 h-4 text-gray-300" />}
+      </div>
+    </div>
+  );
+
+  if (disabled || !href) return inner;
+  return <Link href={href}>{inner}</Link>;
+}
 
 export default function Page() {
   const {
@@ -33,23 +104,22 @@ export default function Page() {
       queryFn: () => getTranslationsClient({ params: { start: 0, size: 10 } }),
     });
 
-
   return (
-    <Stack>
+    <div className="flex flex-col gap-0">
       <PageHeader>
-        <Group>
+        <div className="flex items-center gap-2">
           <ActionIcon variant="ghost" asChild>
             <Link href="/">
               <ArrowLeftIcon />
             </Link>
           </ActionIcon>
           <PageTitle>마이 페이지</PageTitle>
-        </Group>
+        </div>
       </PageHeader>
 
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-8 pt-4">
         {isLoadingUser && (
-          <Center className="h-[500px]">
+          <Center className="h-40">
             <Loader />
           </Center>
         )}
@@ -60,172 +130,134 @@ export default function Page() {
             </AlertDescription>
           </Alert>
         )}
+
+        {/* 프로필 카드 */}
         {user && (
-          <Card>
-            <div className="flex gap-[8px]">
-              <Avatar>
-                <AvatarImage src={user?.avatar} />
-                <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
+          <div className="relative rounded-2xl bg-gradient-to-br from-orange-50 to-white border border-orange-100 p-6">
+            <div className="flex items-center gap-4">
+              <Avatar className="w-16 h-16 ring-2 ring-orange-200 ring-offset-2">
+                <AvatarImage src={user.avatar} />
+                <AvatarFallback className="text-xl bg-orange-100 text-primary">
+                  {user.name?.[0] || "U"}
+                </AvatarFallback>
               </Avatar>
-              <div>
-                <div className="text-[14px] text-[#4B4D4D]">{user?.name}</div>
-                <div className="text-[14px] text-[#8B8C8D]">
-                  {user?.authorization?.is_translator ? "번역사" : "고객"}
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-gray-900">
+                    {user.name}
+                  </span>
+                  {user.authorization?.is_translator && (
+                    <span className="flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                      <BadgeCheckIcon className="w-3 h-3" />
+                      인증 번역사
+                    </span>
+                  )}
                 </div>
+                <span className="text-sm text-gray-500">{user.email}</span>
+                <span className="text-xs text-gray-400">
+                  {user.authorization?.is_translator ? "번역사" : "고객"} 계정
+                </span>
               </div>
             </div>
-          </Card>
+          </div>
         )}
 
+        {/* 번역사 서비스 섹션 */}
         {user?.authorization?.is_translator && <TranslatorSection />}
 
-        <div className="flex flex-col gap-2">
-          <div>
-            <div className="text-xl font-bold text-gray-800">통번역 서비스</div>
-            <div className="text-sm text-gray-600">
-              요청한 통번역 작업을 확인하세요
-            </div>
+        {/* 통번역 서비스 */}
+        <div className="flex flex-col gap-3">
+          <SectionHeader
+            title="통번역 서비스"
+            description="요청한 통번역 작업을 확인하세요"
+          />
+          <div className="flex flex-col gap-2">
+            <MenuItem
+              href="/my/translation/request"
+              icon={<FileTextIcon className="w-5 h-5" />}
+              title="보낸 번역 요청"
+              description="내가 요청한 번역 현황을 확인하세요"
+              badge={
+                isLoadingTranslationRequest ? (
+                  <Loader color="primary" size="sm" />
+                ) : (
+                  <span className="text-sm font-semibold text-primary">
+                    {translationRequest?.length ?? 0}건
+                  </span>
+                )
+              }
+            />
+            <MenuItem
+              icon={<MicIcon className="w-5 h-5" />}
+              title="보낸 통역 요청"
+              description="내가 요청한 통역 현황을 확인하세요"
+              badge={
+                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                  준비중
+                </span>
+              }
+              disabled
+            />
+            <MenuItem
+              icon={<PenLineIcon className="w-5 h-5" />}
+              title="보낸 감수 요청"
+              description="내가 요청한 감수 현황을 확인하세요"
+              badge={
+                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                  준비중
+                </span>
+              }
+              disabled
+            />
+            <MenuItem
+              icon={<StampIcon className="w-5 h-5" />}
+              title="보낸 공증 요청"
+              description="내가 요청한 공증 현황을 확인하세요"
+              badge={
+                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                  준비중
+                </span>
+              }
+              disabled
+            />
           </div>
-
-          <Link href="/my/translation/request">
-            <Card>
-              <div className="flex justify-between items-center py-2">
-                <div className="flex flex-col">
-                  <span className="font-medium text-gray-800">
-                    보낸 번역 요청
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    내가 요청한 번역 현황을 확인하세요
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {isLoadingTranslationRequest ? (
-                    <Loader color="primary" size="sm" />
-                  ) : (
-                    <div className="text-gray-600 font-medium">
-                      <span className="text-orange-500">
-                        {translationRequest?.length}
-                      </span>{" "}
-                      건
-                    </div>
-                  )}
-                  <ArrowRightIcon className="text-gray-400" />
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Card className="bg-gray-200 opacity-50">
-            <div className="flex justify-between items-center py-2">
-              <div className="flex flex-col">
-                <span className="font-medium text-gray-800">
-                  보낸 통역 요청
-                </span>
-                <span className="text-sm text-gray-500">
-                  내가 요청한 통역 현황을 확인하세요
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="text-gray-600 font-medium">
-                  서비스 제공 예정
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="bg-gray-200 opacity-50">
-            <div className="flex justify-between items-center py-2">
-              <div className="flex flex-col">
-                <span className="font-medium text-gray-800">
-                  보낸 감수 요청
-                </span>
-                <span className="text-sm text-gray-500">
-                  내가 요청한 감수 현황을 확인하세요
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="text-gray-600 font-medium">
-                  서비스 제공 예정
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="bg-gray-200 opacity-50">
-            <div className="flex justify-between items-center py-2">
-              <div className="flex flex-col">
-                <span className="font-medium text-gray-800">
-                  보낸 공증 요청
-                </span>
-                <span className="text-sm text-gray-500">
-                  내가 요청한 공증 현황을 확인하세요
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="text-gray-600 font-medium">
-                  서비스 제공 예정
-                </div>
-              </div>
-            </div>
-          </Card>
         </div>
 
-        {!user?.authorization?.is_translator && (
-          <div className="flex flex-col gap-2">
-            <div>
-              <div className="text-xl font-bold text-gray-800">
-                혹시 통번역사신가요?
-              </div>
-              <div className="text-sm text-gray-600">
-                통번역 대학원을 졸업하셨다면 등록하고 활동해보세요
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Link href="/my/translator">
-                <Card>
-                  <div className="flex justify-between items-center py-2">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-gray-800">
-                        번역사 등록
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        번역사로 활동하고 싶다면 등록해주세요
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-gray-600 font-medium">등록 필요</div>
-                      <ArrowRightIcon className="text-gray-400" />
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            </div>
+        {/* 번역사 등록 유도 */}
+        {!user?.authorization?.is_translator && user && (
+          <div className="flex flex-col gap-3">
+            <SectionHeader
+              title="번역사이신가요?"
+              description="통번역 대학원을 졸업하셨다면 등록하고 활동해보세요"
+            />
+            <MenuItem
+              href="/my/translator"
+              icon={<UserPlusIcon className="w-5 h-5" />}
+              title="번역사 등록"
+              description="번역사로 활동하고 싶다면 등록해주세요"
+              badge={
+                <span className="text-xs font-medium text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">
+                  등록 필요
+                </span>
+              }
+            />
           </div>
         )}
 
-        <div className="flex flex-col gap-2">
-          <div>
-            <div className="text-xl font-bold text-gray-800">회원정보</div>
-            <div className="text-sm text-gray-600">
-              회원정보를 수정하거나 플루언스 서비스를 탈퇴 할 수 있어요
-            </div>
-          </div>
-          <Link href="/my/withdraw">
-            <Card>
-              <div className="flex justify-between items-center py-2">
-                <div className="flex flex-col">
-                  <span className="font-medium text-gray-800">회원 탈퇴</span>
-                  <span className="text-sm text-gray-500">
-                    회원 탈퇴를 진행합니다
-                  </span>
-                </div>
-                <ArrowRightIcon className="text-gray-400" />
-              </div>
-            </Card>
-          </Link>
+        {/* 회원 정보 */}
+        <div className="flex flex-col gap-3">
+          <SectionHeader
+            title="회원 정보"
+            description="회원정보를 수정하거나 서비스를 탈퇴할 수 있어요"
+          />
+          <MenuItem
+            href="/my/withdraw"
+            icon={<UserCogIcon className="w-5 h-5" />}
+            title="회원 탈퇴"
+            description="회원 탈퇴를 진행합니다"
+          />
         </div>
       </div>
-    </Stack>
+    </div>
   );
 }

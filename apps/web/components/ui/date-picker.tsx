@@ -26,6 +26,7 @@ interface DatePickerProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  isInvalid?: boolean;
 }
 
 export function DatePicker({
@@ -34,6 +35,7 @@ export function DatePicker({
   placeholder = "날짜를 선택하세요",
   disabled = false,
   className,
+  isInvalid,
 }: DatePickerProps) {
   return (
     <Popover>
@@ -41,11 +43,13 @@ export function DatePicker({
         <Button
           variant={"outline"}
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full justify-start text-left font-normal text-sm",
             !date && "text-muted-foreground",
+            isInvalid && "border-destructive ring-[3px] ring-destructive/20",
             className,
           )}
           disabled={disabled}
+          data-invalid={isInvalid || undefined}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? (
@@ -126,7 +130,7 @@ export function DateTimePicker({
         <Button
           variant={"outline"}
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full justify-start text-left font-normal text-sm",
             !date && "text-muted-foreground",
             className,
           )}

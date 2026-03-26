@@ -1,7 +1,10 @@
+import { cn } from "@/lib/utils";
+
 interface Props {
   children: React.ReactNode;
+  className?: string;
 }
 
-export default function ControllerSection({ children }: Props) {
-  return <div className="flex flex-col gap-1">{children}</div>;
+export default function ControllerSection({ children, className }: Props) {
+  return <div className={cn("flex flex-col gap-1", className)}>{children}</div>;
 }

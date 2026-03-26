@@ -5,6 +5,7 @@ import {
   useId,
   useRef,
 } from "react";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   placeholder?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onRemove?: () => void;
+  isInvalid?: boolean;
 }
 
 export default function FileInput({
@@ -19,6 +21,7 @@ export default function FileInput({
   placeholder = "",
   onChange,
   onRemove,
+  isInvalid,
 }: Props) {
   const id = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,7 +33,7 @@ export default function FileInput({
   };
 
   return (
-    <label htmlFor={id} className="relative">
+    <label htmlFor={id} className="relative" data-invalid={isInvalid || undefined}>
       <input
         ref={fileInputRef}
         hidden
@@ -40,9 +43,12 @@ export default function FileInput({
       />
       <Input
         readOnly
-        defaultValue={text}
+        value={text ?? ""}
         placeholder={placeholder}
-        className="w-full hover:cursor-pointer"
+        className={cn(
+          "w-full hover:cursor-pointer",
+          isInvalid && "border-destructive ring-[3px] ring-destructive/20",
+        )}
         onClick={handleClickInput}
       />
       {text && (

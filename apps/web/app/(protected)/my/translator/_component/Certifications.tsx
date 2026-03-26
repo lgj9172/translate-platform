@@ -108,6 +108,7 @@ export default function Certifications() {
                 }
                 onDateChange={(date) => handleChangeDateRange(index, date)}
                 placeholder="발급일"
+                isInvalid={!!errors?.certifications?.[index]?.started_at}
               />
               <ErrorText>
                 {errors?.certifications?.[index]?.started_at?.message}
@@ -141,6 +142,7 @@ export default function Certifications() {
               <FileInput
                 placeholder="자격증 사본 추가 (10MB, PDF)"
                 onChange={(e) => handleChangeFile(index, e)}
+                isInvalid={!!errors?.certifications?.[index]?.file_id}
                 onRemove={() => setValue(`certifications.${index}.file_id`, "")}
                 text={
                   watch(`certifications.${index}.file_id`)

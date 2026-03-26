@@ -69,12 +69,70 @@ export class TranslatorsService {
   }
 
   async create(userId: string, dto: CreateTranslatorDto) {
-    const translator = await this.prisma.translator.create({
-      data: {
-        user_id: userId,
-        categories: dto.categories ?? [],
-        introduction: dto.introduction ?? "",
-      },
+    const translator = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.translator.create({
+        data: {
+          user_id: userId,
+          categories: dto.categories ?? [],
+          introduction: dto.introduction ?? "",
+        },
+      });
+
+      if (dto.educations?.length) {
+        await tx.translatorEducation.createMany({
+          data: dto.educations.map((e) => ({
+            translator_id: created.translator_id,
+            name: e.name,
+            major: e.major,
+            degree: e.degree as never,
+            graduation_status: e.graduation_status as never,
+            started_at: new Date(e.started_at),
+            ended_at: new Date(e.ended_at),
+            file_id: e.file_id,
+          })),
+        });
+      }
+
+      if (dto.careers?.length) {
+        await tx.translatorCareer.createMany({
+          data: dto.careers.map((c) => ({
+            translator_id: created.translator_id,
+            name: c.name,
+            position: c.position,
+            achievement: c.achievement,
+            is_employed: c.is_employed ?? false,
+            started_at: new Date(c.started_at),
+            ended_at: c.ended_at ? new Date(c.ended_at) : null,
+            file_id: c.file_id,
+          })),
+        });
+      }
+
+      if (dto.certifications?.length) {
+        await tx.translatorCertification.createMany({
+          data: dto.certifications.map((c) => ({
+            translator_id: created.translator_id,
+            name: c.name,
+            organization: c.organization,
+            started_at: new Date(c.started_at),
+            file_id: c.file_id,
+          })),
+        });
+      }
+
+      if (dto.translation_samples?.length) {
+        await tx.translationSample.createMany({
+          data: dto.translation_samples.map((s) => ({
+            translator_id: created.translator_id,
+            source_language: s.source_language,
+            target_language: s.target_language,
+            source_text: s.source_text,
+            target_text: s.target_text,
+          })),
+        });
+      }
+
+      return created;
     });
     return ok(translator);
   }

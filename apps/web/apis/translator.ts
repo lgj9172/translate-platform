@@ -56,7 +56,7 @@ export const postTranslator = async ({
       started_at: string;
       file_id: string;
     }[];
-    translation_samples: {
+    translation_samples?: {
       source_language: TranslationLanguage;
       target_language: TranslationLanguage;
       source_text: string;

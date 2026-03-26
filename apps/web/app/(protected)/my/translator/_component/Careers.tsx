@@ -127,8 +127,8 @@ export default function Careers() {
                   <X />
                 </ActionIcon>
               </div>
-              <ControllerSection>
-                <div className="flex gap-2">
+              <div className="flex gap-2">
+                <ControllerSection className="flex-1">
                   <Controller
                     control={control}
                     name={`careers.${index}.started_at`}
@@ -139,10 +139,15 @@ export default function Careers() {
                           onChange(date ? dayjs(date).toISOString() : "")
                         }
                         placeholder="시작일"
-                        className="flex-1"
+                        isInvalid={!!errors?.careers?.[index]?.started_at}
                       />
                     )}
                   />
+                  <ErrorText>
+                    {errors?.careers?.[index]?.started_at?.message}
+                  </ErrorText>
+                </ControllerSection>
+                <ControllerSection className="flex-1">
                   <Controller
                     control={control}
                     name={`careers.${index}.ended_at`}
@@ -154,18 +159,15 @@ export default function Careers() {
                         }
                         placeholder="종료일"
                         disabled={watch(`careers.${index}.is_employed`)}
-                        className="flex-1"
+                        isInvalid={!!errors?.careers?.[index]?.ended_at}
                       />
                     )}
                   />
-                </div>
-                <ErrorText>
-                  {errors?.careers?.[index]?.started_at?.message}
-                </ErrorText>
-                <ErrorText>
-                  {errors?.careers?.[index]?.ended_at?.message}
-                </ErrorText>
-              </ControllerSection>
+                  <ErrorText>
+                    {errors?.careers?.[index]?.ended_at?.message}
+                  </ErrorText>
+                </ControllerSection>
+              </div>
               <Controller
                 control={control}
                 name={`careers.${index}.is_employed`}
@@ -228,6 +230,7 @@ export default function Careers() {
                 <FileInput
                   placeholder="경력 증명서 (10MB, PDF)"
                   onChange={(e) => handleChangeFile(index, e)}
+                  isInvalid={!!errors?.careers?.[index]?.file_id}
                   onRemove={() => {
                     setValue(`careers.${index}.file_id`, "");
                     if (career?.file_id) {

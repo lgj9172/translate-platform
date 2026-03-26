@@ -94,7 +94,7 @@ export default function Page() {
   > = (data) => {
     if (user?.authorization?.is_translator && myTranslator?.translator_id) {
       updateTranslator({
-        translatorId: myTranslator?.translator_id,
+        translatorId: myTranslator.translator_id,
         payload: data,
       });
     } else {
@@ -108,6 +108,15 @@ export default function Page() {
     toast.error("잘못 입력되었거나 입력되지 않은 항목이 있어요.", {
       richColors: true,
       position: "top-center",
+    });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const firstInvalid = document.querySelector<HTMLElement>(
+          "[aria-invalid='true'], [data-invalid='true']",
+        );
+        firstInvalid?.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstInvalid?.focus({ preventScroll: true });
+      });
     });
   };
 

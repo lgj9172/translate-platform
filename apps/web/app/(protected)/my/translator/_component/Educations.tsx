@@ -152,8 +152,8 @@ export default function Educations() {
                   <X />
                 </ActionIcon>
               </div>
-              <ControllerSection>
-                <div className="flex gap-2">
+              <div className="flex gap-2">
+                <ControllerSection className="flex-1">
                   <Controller
                     control={control}
                     name={`educations.${index}.started_at`}
@@ -164,10 +164,15 @@ export default function Educations() {
                           onChange(date ? dayjs(date).toISOString() : "")
                         }
                         placeholder="시작월"
-                        className="flex-1"
+                        isInvalid={!!errors?.educations?.[index]?.started_at}
                       />
                     )}
                   />
+                  <ErrorText>
+                    {errors?.educations?.[index]?.started_at?.message}
+                  </ErrorText>
+                </ControllerSection>
+                <ControllerSection className="flex-1">
                   <Controller
                     control={control}
                     name={`educations.${index}.ended_at`}
@@ -178,18 +183,15 @@ export default function Educations() {
                           onChange(date ? dayjs(date).toISOString() : "")
                         }
                         placeholder="종료월"
-                        className="flex-1"
+                        isInvalid={!!errors?.educations?.[index]?.ended_at}
                       />
                     )}
                   />
-                </div>
-                <ErrorText>
-                  {errors?.educations?.[index]?.started_at?.message}
-                </ErrorText>
-                <ErrorText>
-                  {errors?.educations?.[index]?.ended_at?.message}
-                </ErrorText>
-              </ControllerSection>
+                  <ErrorText>
+                    {errors?.educations?.[index]?.ended_at?.message}
+                  </ErrorText>
+                </ControllerSection>
+              </div>
               <ControllerSection>
                 <Controller
                   control={control}
@@ -267,6 +269,7 @@ export default function Educations() {
                 <FileInput
                   placeholder="졸업/수료 증명서 (10MB, PDF)"
                   onChange={(e) => handleChangeFile(index, e)}
+                  isInvalid={!!errors?.educations?.[index]?.file_id}
                   onRemove={() => {
                     setValue(`educations.${index}.file_id`, "");
                     if (education?.file_id) {

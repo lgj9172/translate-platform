@@ -6,8 +6,8 @@ import {
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
-import type { PrismaService } from "../prisma/prisma.service";
-import type { CreateReviewDto, QueryReviewDto } from "./reviews.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateReviewDto, QueryReviewDto } from "./reviews.dto";
 
 @Injectable()
 export class ReviewsService {

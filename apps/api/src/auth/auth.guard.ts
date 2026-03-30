@@ -4,12 +4,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import type { Reflector } from "@nestjs/core";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
-import type { Request } from "express";
+import { Reflector } from "@nestjs/core";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { Request } from "express";
 import { IS_PUBLIC_KEY } from "../common/decorators/public.decorator";
-import type { PrismaService } from "../prisma/prisma.service";
-import type { SupabaseService } from "../supabase/supabase.service";
+import { PrismaService } from "../prisma/prisma.service";
+import { SupabaseService } from "../supabase/supabase.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {

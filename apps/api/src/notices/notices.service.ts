@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
-import type { PrismaService } from "../prisma/prisma.service";
-import type { CreateNoticeDto, UpdateNoticeDto } from "./notices.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateNoticeDto, UpdateNoticeDto } from "./notices.dto";
 
 @Injectable()
 export class NoticesService {

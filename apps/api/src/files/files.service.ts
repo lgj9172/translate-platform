@@ -6,8 +6,8 @@ import {
   type OnModuleInit,
 } from "@nestjs/common";
 import { ok } from "../common/response";
-import type { PrismaService } from "../prisma/prisma.service";
-import type { SupabaseService } from "../supabase/supabase.service";
+import { PrismaService } from "../prisma/prisma.service";
+import { SupabaseService } from "../supabase/supabase.service";
 
 const BUCKET = "files";
 const SIGNED_URL_EXPIRES = 60 * 60; // 1시간

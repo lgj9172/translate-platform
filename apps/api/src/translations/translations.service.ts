@@ -6,8 +6,8 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
-import type { PrismaService } from "../prisma/prisma.service";
-import type { SupabaseService } from "../supabase/supabase.service";
+import { PrismaService } from "../prisma/prisma.service";
+import { SupabaseService } from "../supabase/supabase.service";
 import type {
   CreateCommentDto,
   CreateTranslationDto,

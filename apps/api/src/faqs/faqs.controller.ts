@@ -9,12 +9,12 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import { Admin } from "../common/decorators/admin.decorator";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Public } from "../common/decorators/public.decorator";
-import type { CreateFaqDto, UpdateFaqDto } from "./faqs.dto";
-import type { FaqsService } from "./faqs.service";
+import { CreateFaqDto, UpdateFaqDto } from "./faqs.dto";
+import { FaqsService } from "./faqs.service";
 
 @ApiTags("FAQs")
 @Controller("faqs")

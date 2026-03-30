@@ -8,10 +8,10 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Public } from "../common/decorators/public.decorator";
-import type { QuotationsService } from "../quotations/quotations.service";
+import { QuotationsService } from "../quotations/quotations.service";
 import type {
   CreateCommentDto,
   CreateTranslationDto,
@@ -20,7 +20,7 @@ import type {
   SubmitTranslationDto,
   UpdateTranslationDto,
 } from "./translations.dto";
-import type { TranslationsService } from "./translations.service";
+import { TranslationsService } from "./translations.service";
 
 @ApiTags("Translations")
 @Controller("translations")

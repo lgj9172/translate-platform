@@ -9,10 +9,10 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
-import type { Express } from "express";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { Express } from "express";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
-import type { FilesService } from "./files.service";
+import { FilesService } from "./files.service";
 
 @ApiTags("Files")
 @Controller("files")

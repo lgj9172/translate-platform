@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import { ok } from "../common/response";
-import type { PrismaService } from "../prisma/prisma.service";
-import type { UpdateAgreementDto, UpdateUserDto } from "./users.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { UpdateAgreementDto, UpdateUserDto } from "./users.dto";
 
 @Injectable()
 export class UsersService {

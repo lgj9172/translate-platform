@@ -42,5 +42,17 @@
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["apps/api/src/**/*.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useImportType": "off"
+          }
+        }
+      }
+    }
+  ]
 }

@@ -4,11 +4,11 @@ import {
   ForbiddenException,
   Injectable,
 } from "@nestjs/common";
-import type { Reflector } from "@nestjs/core";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
-import type { Request } from "express";
+import { Reflector } from "@nestjs/core";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { Request } from "express";
 import { IS_ADMIN_KEY } from "../common/decorators/admin.decorator";
-import type { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class AdminGuard implements CanActivate {

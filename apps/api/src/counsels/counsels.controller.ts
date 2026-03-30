@@ -9,7 +9,7 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import { Admin } from "../common/decorators/admin.decorator";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import type {
@@ -18,7 +18,7 @@ import type {
   QueryCounselDto,
   UpdateAnswerDto,
 } from "./counsels.dto";
-import type { CounselsService } from "./counsels.service";
+import { CounselsService } from "./counsels.service";
 
 @ApiTags("Counsels")
 @Controller("counsels")

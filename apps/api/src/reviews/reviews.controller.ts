@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Public } from "../common/decorators/public.decorator";
-import type { CreateReviewDto, QueryReviewDto } from "./reviews.dto";
-import type { ReviewsService } from "./reviews.service";
+import { CreateReviewDto, QueryReviewDto } from "./reviews.dto";
+import { ReviewsService } from "./reviews.service";
 
 @ApiTags("Reviews")
 @Controller("reviews")

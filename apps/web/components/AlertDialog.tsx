@@ -38,7 +38,7 @@ function AlertDialogContent({
       <AlertDialogPrimitive.Content
         ref={ref}
         className={cn(
-          "alert-dialog-content fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-white p-6 shadow-lg sm:rounded-lg",
+          "alert-dialog-content fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-white p-6 shadow-lg sm:max-w-lg",
           className,
         )}
         {...props}
@@ -70,7 +70,10 @@ function AlertDialogFooter({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex flex-row justify-end gap-2", className)}
+      className={cn(
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        className,
+      )}
       {...props}
     />
   );

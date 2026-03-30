@@ -12,7 +12,7 @@ import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { Admin } from "../common/decorators/admin.decorator";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
-import type {
+import {
   CreateAnswerDto,
   CreateCounselDto,
   QueryCounselDto,

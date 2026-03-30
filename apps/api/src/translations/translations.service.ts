@@ -8,7 +8,7 @@ import {
 import { ok, paginated } from "../common/response";
 import { PrismaService } from "../prisma/prisma.service";
 import { SupabaseService } from "../supabase/supabase.service";
-import type {
+import {
   CreateCommentDto,
   CreateTranslationDto,
   QueryTranslationDto,

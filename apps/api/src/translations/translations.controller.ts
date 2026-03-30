@@ -12,7 +12,7 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Public } from "../common/decorators/public.decorator";
 import { QuotationsService } from "../quotations/quotations.service";
-import type {
+import {
   CreateCommentDto,
   CreateTranslationDto,
   CreateTranslationQuotationDto,

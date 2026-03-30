@@ -15,7 +15,7 @@ import {
 export const getTranslations = async ({
   params,
 }: {
-  params: PaginationParams;
+  params: PaginationParams & { status?: string };
 }) => {
   const response = await ClientWithAuth.get<PaginatedResponse<Translation>>(
     `/translations`,
@@ -32,7 +32,7 @@ export const getTranslationsClient = async ({
   params: PaginationParams;
 }) => {
   const response = await ClientWithAuth.get<PaginatedResponse<Translation>>(
-    `/translations/client`,
+    `/translations/mine`,
     {
       params,
     },
@@ -46,7 +46,7 @@ export const getTranslationsTranslator = async ({
   params: PaginationParams;
 }) => {
   const response = await ClientWithAuth.get<PaginatedResponse<Translation>>(
-    `/translations/translator`,
+    `/translations/assigned`,
     {
       params,
     },
@@ -172,7 +172,7 @@ export const postTranslationRequestRevision = async ({
   translationId: string;
 }) => {
   const response = await ClientWithAuth.post<Response<Translation>>(
-    `/translations/${translationId}/request_revision`,
+    `/translations/${translationId}/request-revision`,
   );
   return response.data.data;
 };

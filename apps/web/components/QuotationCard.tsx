@@ -58,7 +58,11 @@ export default function QuotationCard({ quotation }: { quotation: Quotation }) {
           translation && (
             <Link
               className="hover:cursor-pointer"
-              href={`/translation/${quotation.translation_id}`}
+              href={
+                quotation.is_selected
+                  ? `/my/work/${quotation.translation_id}`
+                  : `/market/${quotation.translation_id}`
+              }
               key={quotation.quotation_id}
             >
               <TranslationCard

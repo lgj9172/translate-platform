@@ -1,10 +1,7 @@
-import {
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { ok } from "../common/response";
-import { PrismaService } from "../prisma/prisma.service";
+import type { PrismaService } from "../prisma/prisma.service";
 import type { UpdateAgreementDto, UpdateUserDto } from "./users.dto";
 
 @Injectable()
@@ -18,8 +15,8 @@ export class UsersService {
       create: {
         user_id: supabaseUser.id,
         email: supabaseUser.email ?? "",
-        name: supabaseUser.user_metadata?.["name"] ?? "",
-        nickname: supabaseUser.user_metadata?.["nickname"] ?? "",
+        name: supabaseUser.user_metadata?.name ?? "",
+        nickname: supabaseUser.user_metadata?.nickname ?? "",
         providers: [],
       },
     });
@@ -28,7 +25,9 @@ export class UsersService {
   async findMe(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { user_id: userId },
-      include: { translator: { select: { translator_id: true, is_deleted: true } } },
+      include: {
+        translator: { select: { translator_id: true, is_deleted: true } },
+      },
     });
     if (!user) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
@@ -43,7 +42,7 @@ export class UsersService {
 
   async findOne(userId: string) {
     const user = await this.prisma.user.findUnique({
-      where: { user_id: userId },
+      where: { user_id: userId, is_deleted: false },
       select: {
         user_id: true,
         name: true,

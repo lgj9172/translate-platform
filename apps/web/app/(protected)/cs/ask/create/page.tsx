@@ -33,6 +33,7 @@ import { Stack } from "@/components/ui/stack";
 import { Textarea } from "@/components/ui/textarea";
 import {
   COUNSEL_CATEGORY,
+  COUNSEL_CATEGORY_LABEL,
   type Counsel,
   type CounselCategory,
 } from "@/types/entities";
@@ -67,9 +68,9 @@ export default function Index() {
     { label: string; value: CounselCategory }[]
   >(
     () =>
-      Object.entries(COUNSEL_CATEGORY).map(([value, label]) => ({
-        label,
-        value: value as CounselCategory,
+      Object.entries(COUNSEL_CATEGORY).map(([key]) => ({
+        label: COUNSEL_CATEGORY_LABEL[key as CounselCategory],
+        value: key as CounselCategory,
       })),
     [],
   );
@@ -110,7 +111,7 @@ export default function Index() {
       payload: {
         category: input.category,
         content: input.content,
-        fileId: fileInfo.file_id,
+        file_id: fileInfo.file_id,
       },
     });
   };
@@ -133,7 +134,7 @@ export default function Index() {
                   <ArrowLeftIcon />
                 </Link>
               </ActionIcon>
-              <PageTitle>번역 요청</PageTitle>
+              <PageTitle>1:1 문의 작성</PageTitle>
             </Group>
           </PageHeader>
 

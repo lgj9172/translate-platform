@@ -40,7 +40,7 @@ export const putFaq = async ({
     description: string;
   };
 }) => {
-  const response = await ClientWithAuth.put<Response<Faq>>(
+  const response = await ClientWithAuth.patch<Response<Faq>>(
     `/faqs/${faqId}`,
     payload,
   );

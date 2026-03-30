@@ -1,15 +1,15 @@
 import {
-  CanActivate,
-  ExecutionContext,
+  type CanActivate,
+  type ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
+import type { Reflector } from "@nestjs/core";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import type { Request } from "express";
 import { IS_PUBLIC_KEY } from "../common/decorators/public.decorator";
-import { PrismaService } from "../prisma/prisma.service";
-import { SupabaseService } from "../supabase/supabase.service";
+import type { PrismaService } from "../prisma/prisma.service";
+import type { SupabaseService } from "../supabase/supabase.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -35,21 +35,23 @@ export class AuthGuard implements CanActivate {
       error,
     } = await this.supabase.admin.auth.getUser(token);
 
-    if (error || !user) throw new UnauthorizedException("유효하지 않은 토큰입니다.");
+    if (error || !user)
+      throw new UnauthorizedException("유효하지 않은 토큰입니다.");
 
     // OAuth 최초 로그인 시 users 테이블에 레코드가 없으므로 자동 생성
     await this.syncUser(user);
 
     (request as Request & { user: SupabaseUser; accessToken: string }).user =
       user;
-    (request as Request & { user: SupabaseUser; accessToken: string }).accessToken =
-      token;
+    (
+      request as Request & { user: SupabaseUser; accessToken: string }
+    ).accessToken = token;
 
     return true;
   }
 
   private async syncUser(user: SupabaseUser) {
-    const provider = (user.app_metadata?.["provider"] as string) ?? "";
+    const provider = (user.app_metadata?.provider as string) ?? "";
 
     await this.prisma.user.upsert({
       where: { user_id: user.id },
@@ -57,8 +59,9 @@ export class AuthGuard implements CanActivate {
       create: {
         user_id: user.id,
         email: user.email ?? "",
-        name: user.user_metadata?.["name"] ?? "",
-        nickname: user.user_metadata?.["nickname"] ?? user.user_metadata?.["name"] ?? "",
+        name: user.user_metadata?.name ?? "",
+        nickname:
+          user.user_metadata?.nickname ?? user.user_metadata?.name ?? "",
         providers: provider ? [provider as never] : [],
       },
     });

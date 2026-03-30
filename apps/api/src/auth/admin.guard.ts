@@ -1,14 +1,14 @@
 import {
-  CanActivate,
-  ExecutionContext,
+  type CanActivate,
+  type ExecutionContext,
   ForbiddenException,
   Injectable,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
+import type { Reflector } from "@nestjs/core";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import type { Request } from "express";
 import { IS_ADMIN_KEY } from "../common/decorators/admin.decorator";
-import { PrismaService } from "../prisma/prisma.service";
+import type { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -34,7 +34,8 @@ export class AdminGuard implements CanActivate {
     });
 
     const isAdminUser =
-      (user?.authorization as Record<string, boolean> | null)?.is_admin === true;
+      (user?.authorization as Record<string, boolean> | null)?.is_admin ===
+      true;
 
     if (!isAdminUser) throw new ForbiddenException("관리자 권한이 필요합니다.");
     return true;

@@ -1,11 +1,31 @@
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsBoolean,
+  IsInt,
   IsOptional,
   IsString,
+  Min,
   ValidateNested,
 } from "class-validator";
-import { Type } from "class-transformer";
+
+export class QueryTranslatorDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  start?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  size?: number;
+
+  @IsOptional()
+  @IsString()
+  category?: string;
+}
 
 export class CreateEducationDto {
   @IsString()
@@ -128,99 +148,26 @@ export class UpdateTranslatorDto {
   introduction?: string;
 
   @IsOptional()
-  @IsBoolean()
-  is_draft?: boolean;
-}
-
-export class UpsertEducationDto {
-  @IsOptional()
-  @IsString()
-  education_id?: string;
-
-  @IsString()
-  name!: string;
-
-  @IsString()
-  major!: string;
-
-  @IsString()
-  degree!: string;
-
-  @IsString()
-  graduation_status!: string;
-
-  @IsString()
-  started_at!: string;
-
-  @IsString()
-  ended_at!: string;
-
-  @IsString()
-  file_id!: string;
-}
-
-export class UpsertCareerDto {
-  @IsOptional()
-  @IsString()
-  career_id?: string;
-
-  @IsString()
-  name!: string;
-
-  @IsString()
-  position!: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateEducationDto)
+  educations?: CreateEducationDto[];
 
   @IsOptional()
-  @IsString()
-  achievement?: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateCareerDto)
+  careers?: CreateCareerDto[];
 
   @IsOptional()
-  @IsBoolean()
-  is_employed?: boolean;
-
-  @IsString()
-  started_at!: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateCertificationDto)
+  certifications?: CreateCertificationDto[];
 
   @IsOptional()
-  @IsString()
-  ended_at?: string;
-
-  @IsString()
-  file_id!: string;
-}
-
-export class UpsertCertificationDto {
-  @IsOptional()
-  @IsString()
-  certification_id?: string;
-
-  @IsString()
-  name!: string;
-
-  @IsString()
-  organization!: string;
-
-  @IsString()
-  started_at!: string;
-
-  @IsString()
-  file_id!: string;
-}
-
-export class UpsertSampleDto {
-  @IsOptional()
-  @IsString()
-  translation_sample_id?: string;
-
-  @IsString()
-  source_language!: string;
-
-  @IsString()
-  target_language!: string;
-
-  @IsString()
-  source_text!: string;
-
-  @IsString()
-  target_text!: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateSampleDto)
+  translation_samples?: CreateSampleDto[];
 }

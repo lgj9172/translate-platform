@@ -22,11 +22,9 @@ const SubmitTranslationFormSchema = z.object({
       message: "유효한 파일을 선택하세요.",
     })
     .refine((file) => file.size <= 10 * 1024 * 1024, {
-      // 파일 크기 제한 (10MB)
       message: "파일 크기가 10MB를 초과할 수 없습니다.",
     })
     .refine((file) => file.type === "application/pdf", {
-      // 파일 유형 제한 (PDF)
       message: "PDF 파일만 업로드할 수 있습니다.",
     }),
 });
@@ -90,7 +88,7 @@ export default function SubmitTranslation({
                   <FileInput
                     onChange={(e) => {
                       if (e.target.files?.[0]) {
-                        field.onChange(e.target.files[0]); // React Hook Form의 상태 업데이트
+                        field.onChange(e.target.files[0]);
                       }
                     }}
                     onRemove={() => {

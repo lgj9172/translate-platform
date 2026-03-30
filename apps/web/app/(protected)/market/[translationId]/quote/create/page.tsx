@@ -52,7 +52,6 @@ const PostTranslationQuoteFormDefaultValue = {
 
 export default function Page() {
   const { translationId } = useParams<{ translationId: string }>();
-
   const router = useRouter();
 
   const { data: translation, isLoading } = useQuery({
@@ -69,7 +68,7 @@ export default function Page() {
   const { mutate: mutatePostTranslationQuote } = useMutation({
     mutationFn: postTranslationQuotation,
     onSuccess: () => {
-      router.push(`/translation/${translationId}/quote/create/done`);
+      router.push(`/market/${translationId}/quote/create/done`);
     },
   });
 
@@ -111,7 +110,7 @@ export default function Page() {
           <PageHeader>
             <Group>
               <ActionIcon variant="ghost" asChild>
-                <Link href="/">
+                <Link href={`/market/${translationId}`}>
                   <ArrowLeftIcon />
                 </Link>
               </ActionIcon>

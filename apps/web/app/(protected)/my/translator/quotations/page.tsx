@@ -29,11 +29,11 @@ export default function Page() {
       <PageHeader>
         <Group>
           <ActionIcon variant="ghost" asChild>
-            <Link href="/my">
+            <Link href="/my/translator">
               <ArrowLeftIcon />
             </Link>
           </ActionIcon>
-          <PageTitle>보낸 견적 요청</PageTitle>
+          <PageTitle>제출한 견적</PageTitle>
         </Group>
       </PageHeader>
       {isLoading && (
@@ -44,13 +44,13 @@ export default function Page() {
       {isError && (
         <Alert>
           <AlertDescription>
-            보낸 견적 요청 목록을 불러오는 중 오류가 발생했어요.
+            제출한 견적 목록을 불러오는 중 오류가 발생했어요.
           </AlertDescription>
         </Alert>
       )}
       {translatorQuotations?.length === 0 && (
         <Alert>
-          <AlertDescription>아직 보낸 견적 요청이 없어요.</AlertDescription>
+          <AlertDescription>아직 제출한 견적이 없어요.</AlertDescription>
         </Alert>
       )}
       {translatorQuotations?.length !== 0 && (

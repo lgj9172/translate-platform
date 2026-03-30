@@ -108,9 +108,7 @@ export default function Comments({
     mutationFn: (data: CommentFormType) =>
       postTranslationComment({
         translationId: translation.translation_id,
-        payload: {
-          content: data.content,
-        },
+        payload: { content: data.content },
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({

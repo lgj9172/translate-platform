@@ -4,10 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRightIcon,
   BadgeCheckIcon,
-  FileTextIcon,
-  MicIcon,
-  PenLineIcon,
-  StampIcon,
+  ClipboardListIcon,
+  ReceiptIcon,
+  SearchIcon,
   UserPenIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -93,8 +92,8 @@ export default function TranslatorSection() {
         <MenuItem
           href="/my/translator"
           icon={<UserPenIcon className="w-5 h-5" />}
-          title="번역사 정보 수정"
-          description="번역사 프로필과 경력을 수정하세요"
+          title="번역사 프로필"
+          description="프로필, 경력, 포트폴리오를 관리하세요"
           badge={
             <span className="flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
               <BadgeCheckIcon className="w-3 h-3" />
@@ -103,25 +102,16 @@ export default function TranslatorSection() {
           }
         />
         <MenuItem
-          href="/my/translator/quotations"
-          icon={<FileTextIcon className="w-5 h-5" />}
-          title="보낸 견적 요청"
-          description="내가 보낸 견적을 확인하세요"
-          badge={
-            isLoadingTranslatorQuotations ? (
-              <Loader color="primary" size="sm" />
-            ) : (
-              <span className="text-sm font-semibold text-primary">
-                {translatorQuotations?.length ?? 0}건
-              </span>
-            )
-          }
+          href="/market"
+          icon={<SearchIcon className="w-5 h-5" />}
+          title="새 번역 의뢰"
+          description="견적을 낼 수 있는 번역 의뢰를 둘러보세요"
         />
         <MenuItem
-          href="/my/translation/response"
-          icon={<FileTextIcon className="w-5 h-5" />}
-          title="받은 번역 요청"
-          description="나에게 요청된 번역을 확인하세요"
+          href="/my/work"
+          icon={<ClipboardListIcon className="w-5 h-5" />}
+          title="진행 중인 번역"
+          description="수락한 번역 의뢰와 작업 현황을 확인하세요"
           badge={
             isLoadingTranslationResponse ? (
               <Loader color="primary" size="sm" />
@@ -133,37 +123,19 @@ export default function TranslatorSection() {
           }
         />
         <MenuItem
-          icon={<MicIcon className="w-5 h-5" />}
-          title="받은 통역 요청"
-          description="나에게 요청된 통역을 확인하세요"
+          href="/my/translator/quotations"
+          icon={<ReceiptIcon className="w-5 h-5" />}
+          title="제출한 견적"
+          description="고객에게 보낸 견적 현황을 확인하세요"
           badge={
-            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-              준비중
-            </span>
+            isLoadingTranslatorQuotations ? (
+              <Loader color="primary" size="sm" />
+            ) : (
+              <span className="text-sm font-semibold text-primary">
+                {translatorQuotations?.length ?? 0}건
+              </span>
+            )
           }
-          disabled
-        />
-        <MenuItem
-          icon={<PenLineIcon className="w-5 h-5" />}
-          title="받은 감수 요청"
-          description="나에게 요청된 감수를 확인하세요"
-          badge={
-            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-              준비중
-            </span>
-          }
-          disabled
-        />
-        <MenuItem
-          icon={<StampIcon className="w-5 h-5" />}
-          title="받은 공증 요청"
-          description="나에게 요청된 공증을 확인하세요"
-          badge={
-            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-              준비중
-            </span>
-          }
-          disabled
         />
       </div>
     </div>

@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
@@ -11,15 +10,17 @@ import {
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
-import { QuotationsService } from "../quotations/quotations.service";
-import {
+import { Public } from "../common/decorators/public.decorator";
+import type { QuotationsService } from "../quotations/quotations.service";
+import type {
   CreateCommentDto,
   CreateTranslationDto,
   CreateTranslationQuotationDto,
   QueryTranslationDto,
+  SubmitTranslationDto,
   UpdateTranslationDto,
 } from "./translations.dto";
-import { TranslationsService } from "./translations.service";
+import type { TranslationsService } from "./translations.service";
 
 @ApiTags("Translations")
 @Controller("translations")
@@ -30,13 +31,14 @@ export class TranslationsController {
   ) {}
 
   @Get()
+  @Public()
   @ApiOperation({ summary: "번역 목록 조회 (공개 마켓플레이스)" })
   findAll(@Query() query: QueryTranslationDto) {
     return this.translationsService.findAll(query);
   }
 
-  @Get("client")
-  @ApiOperation({ summary: "내가 보낸 번역 요청 목록 조회" })
+  @Get("mine")
+  @ApiOperation({ summary: "내가 보낸 번역 요청 목록 조회 (의뢰인)" })
   findAllByUser(
     @CurrentUser() user: SupabaseUser,
     @Query() query: QueryTranslationDto,
@@ -44,8 +46,8 @@ export class TranslationsController {
     return this.translationsService.findAllByUser(user.id, query);
   }
 
-  @Get("translator")
-  @ApiOperation({ summary: "번역사로 받은 번역 요청 목록 조회" })
+  @Get("assigned")
+  @ApiOperation({ summary: "내가 담당하는 번역 목록 조회 (번역사)" })
   findAllByTranslator(
     @CurrentUser() user: SupabaseUser,
     @Query() query: QueryTranslationDto,
@@ -55,17 +57,18 @@ export class TranslationsController {
 
   @Post()
   @ApiOperation({ summary: "번역 요청 생성" })
-  create(
-    @CurrentUser() user: SupabaseUser,
-    @Body() dto: CreateTranslationDto,
-  ) {
+  create(@CurrentUser() user: SupabaseUser, @Body() dto: CreateTranslationDto) {
     return this.translationsService.create(user.id, dto);
   }
 
   @Get(":translationId")
+  @Public()
   @ApiOperation({ summary: "번역 상세 조회" })
-  findOne(@Param("translationId") translationId: string) {
-    return this.translationsService.findOne(translationId);
+  findOne(
+    @CurrentUser() user: SupabaseUser | null,
+    @Param("translationId") translationId: string,
+  ) {
+    return this.translationsService.findOne(translationId, user?.id);
   }
 
   @Patch(":translationId")
@@ -78,15 +81,6 @@ export class TranslationsController {
     return this.translationsService.update(translationId, user.id, dto);
   }
 
-  @Delete(":translationId")
-  @ApiOperation({ summary: "번역 삭제" })
-  remove(
-    @CurrentUser() user: SupabaseUser,
-    @Param("translationId") translationId: string,
-  ) {
-    return this.translationsService.remove(translationId, user.id);
-  }
-
   @Post(":translationId/cancel")
   @ApiOperation({ summary: "번역 취소" })
   cancel(
@@ -96,16 +90,54 @@ export class TranslationsController {
     return this.translationsService.cancel(translationId, user.id);
   }
 
-  @Post(":translationId/resolve")
-  @ApiOperation({ summary: "번역 완료 처리" })
-  resolve(
+  @Post(":translationId/start")
+  @ApiOperation({ summary: "번역 시작 (번역사)" })
+  start(
     @CurrentUser() user: SupabaseUser,
     @Param("translationId") translationId: string,
   ) {
-    return this.translationsService.resolve(translationId, user.id);
+    return this.translationsService.start(translationId, user.id);
+  }
+
+  @Post(":translationId/submit")
+  @ApiOperation({ summary: "번역 제출 (번역사)" })
+  submit(
+    @CurrentUser() user: SupabaseUser,
+    @Param("translationId") translationId: string,
+    @Body() dto: SubmitTranslationDto,
+  ) {
+    return this.translationsService.submit(translationId, user.id, dto);
+  }
+
+  @Post(":translationId/confirm")
+  @ApiOperation({ summary: "번역 확정 (의뢰인)" })
+  confirm(
+    @CurrentUser() user: SupabaseUser,
+    @Param("translationId") translationId: string,
+  ) {
+    return this.translationsService.confirm(translationId, user.id);
+  }
+
+  @Post(":translationId/request-revision")
+  @ApiOperation({ summary: "수정 요청 (의뢰인)" })
+  requestRevision(
+    @CurrentUser() user: SupabaseUser,
+    @Param("translationId") translationId: string,
+  ) {
+    return this.translationsService.requestRevision(translationId, user.id);
+  }
+
+  @Post(":translationId/resume")
+  @ApiOperation({ summary: "번역 재시작 (번역사, 수정 요청 후)" })
+  resume(
+    @CurrentUser() user: SupabaseUser,
+    @Param("translationId") translationId: string,
+  ) {
+    return this.translationsService.resume(translationId, user.id);
   }
 
   @Get(":translationId/comments")
+  @Public()
   @ApiOperation({ summary: "번역 댓글 목록" })
   getComments(@Param("translationId") translationId: string) {
     return this.translationsService.getComments(translationId);
@@ -129,13 +161,16 @@ export class TranslationsController {
     return this.quotationsService.findAllByTranslation(translationId);
   }
 
-  @Get(":translationId/quotations/translator")
+  @Get(":translationId/quotations/mine")
   @ApiOperation({ summary: "현재 번역사가 이 번역에 보낸 견적" })
   getMyQuotation(
     @CurrentUser() user: SupabaseUser,
     @Param("translationId") translationId: string,
   ) {
-    return this.quotationsService.findMyQuotationByTranslation(translationId, user.id);
+    return this.quotationsService.findMyQuotationByTranslation(
+      translationId,
+      user.id,
+    );
   }
 
   @Post(":translationId/quotations")
@@ -145,7 +180,12 @@ export class TranslationsController {
     @Param("translationId") translationId: string,
     @Body() dto: CreateTranslationQuotationDto,
   ) {
-    return this.quotationsService.createNested(translationId, user.id, dto.fee, dto.detail);
+    return this.quotationsService.createNested(
+      translationId,
+      user.id,
+      dto.fee,
+      dto.detail,
+    );
   }
 
   @Post(":translationId/quotations/:quotationId/cancel")
@@ -164,11 +204,5 @@ export class TranslationsController {
     @Param("quotationId") quotationId: string,
   ) {
     return this.quotationsService.select(quotationId, user.id);
-  }
-
-  @Get(":translationId/selected-quotation")
-  @ApiOperation({ summary: "선택된 견적 조회" })
-  getSelectedQuotation(@Param("translationId") translationId: string) {
-    return this.quotationsService.findSelectedQuotation(translationId);
   }
 }

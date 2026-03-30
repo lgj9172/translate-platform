@@ -5,10 +5,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   BadgeCheckIcon,
-  FileTextIcon,
-  MicIcon,
-  PenLineIcon,
-  StampIcon,
+  SendIcon,
   UserCogIcon,
   UserPlusIcon,
 } from "lucide-react";
@@ -165,16 +162,16 @@ export default function Page() {
         {/* 번역사 서비스 섹션 */}
         {user?.authorization?.is_translator && <TranslatorSection />}
 
-        {/* 통번역 서비스 */}
+        {/* 번역 서비스 */}
         <div className="flex flex-col gap-3">
           <SectionHeader
-            title="통번역 서비스"
-            description="요청한 통번역 작업을 확인하세요"
+            title="번역 서비스"
+            description="요청한 번역 작업을 확인하세요"
           />
           <div className="flex flex-col gap-2">
             <MenuItem
-              href="/my/translation/request"
-              icon={<FileTextIcon className="w-5 h-5" />}
+              href="/my/requests"
+              icon={<SendIcon className="w-5 h-5" />}
               title="보낸 번역 요청"
               description="내가 요청한 번역 현황을 확인하세요"
               badge={
@@ -186,39 +183,6 @@ export default function Page() {
                   </span>
                 )
               }
-            />
-            <MenuItem
-              icon={<MicIcon className="w-5 h-5" />}
-              title="보낸 통역 요청"
-              description="내가 요청한 통역 현황을 확인하세요"
-              badge={
-                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                  준비중
-                </span>
-              }
-              disabled
-            />
-            <MenuItem
-              icon={<PenLineIcon className="w-5 h-5" />}
-              title="보낸 감수 요청"
-              description="내가 요청한 감수 현황을 확인하세요"
-              badge={
-                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                  준비중
-                </span>
-              }
-              disabled
-            />
-            <MenuItem
-              icon={<StampIcon className="w-5 h-5" />}
-              title="보낸 공증 요청"
-              description="내가 요청한 공증 현황을 확인하세요"
-              badge={
-                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                  준비중
-                </span>
-              }
-              disabled
             />
           </div>
         </div>

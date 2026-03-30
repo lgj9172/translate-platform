@@ -70,10 +70,7 @@ function AlertDialogFooter({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn(
-        "flex flex-row justify-end gap-2",
-        className,
-      )}
+      className={cn("flex flex-row justify-end gap-2", className)}
       {...props}
     />
   );
@@ -134,11 +131,7 @@ function AlertDialogCancel({
   return (
     <AlertDialogPrimitive.Cancel
       ref={ref}
-      className={cn(
-        buttonVariants({ variant: "outline" }),
-        "",
-        className,
-      )}
+      className={cn(buttonVariants({ variant: "outline" }), "", className)}
       {...props}
     />
   );

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 export interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg" | "xl";
   color?: "primary" | "secondary" | "muted";
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 function Loader({

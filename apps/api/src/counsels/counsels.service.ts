@@ -4,23 +4,59 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
-import { PrismaService } from "../prisma/prisma.service";
-import type { CreateAnswerDto, CreateCounselDto, QueryCounselDto } from "./counsels.dto";
+import type { PrismaService } from "../prisma/prisma.service";
+import type {
+  CreateAnswerDto,
+  CreateCounselDto,
+  QueryCounselDto,
+  UpdateAnswerDto,
+} from "./counsels.dto";
 
 @Injectable()
 export class CounselsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(userId: string, query: QueryCounselDto) {
+    const take = query.size ?? 20;
+    const skip = query.start ?? 0;
     const where = {
       user_id: userId,
       is_deleted: false,
-      ...(query.is_done !== undefined ? { is_done: query.is_done === "true" } : {}),
+      ...(query.is_done !== undefined
+        ? { is_done: query.is_done === "true" }
+        : {}),
     };
     const [data, total_count] = await this.prisma.$transaction([
       this.prisma.counsel.findMany({
         where,
         include: { answers: true },
+        skip,
+        take,
+        orderBy: { created_at: "desc" },
+      }),
+      this.prisma.counsel.count({ where }),
+    ]);
+    return paginated(data, total_count, data.length);
+  }
+
+  async findAllAdmin(query: QueryCounselDto) {
+    const take = query.size ?? 20;
+    const skip = query.start ?? 0;
+    const where = {
+      is_deleted: false,
+      ...(query.is_done !== undefined
+        ? { is_done: query.is_done === "true" }
+        : {}),
+    };
+    const [data, total_count] = await this.prisma.$transaction([
+      this.prisma.counsel.findMany({
+        where,
+        include: {
+          answers: true,
+          user: { select: { name: true, email: true } },
+        },
+        skip,
+        take,
         orderBy: { created_at: "desc" },
       }),
       this.prisma.counsel.count({ where }),
@@ -43,11 +79,20 @@ export class CounselsService {
   async findOne(counselId: string, userId: string) {
     const counsel = await this.prisma.counsel.findUnique({
       where: { counsel_id: counselId },
-      include: { answers: true },
     });
     if (!counsel) throw new NotFoundException("문의를 찾을 수 없습니다.");
     if (counsel.user_id !== userId) throw new ForbiddenException();
     return ok(counsel);
+  }
+
+  async getAnswer(counselId: string, userId: string) {
+    const counsel = await this.prisma.counsel.findUnique({
+      where: { counsel_id: counselId },
+      include: { answers: { orderBy: { answered_at: "desc" }, take: 1 } },
+    });
+    if (!counsel) throw new NotFoundException("문의를 찾을 수 없습니다.");
+    if (counsel.user_id !== userId) throw new ForbiddenException();
+    return ok(counsel.answers[0] ?? null);
   }
 
   async addAnswer(counselId: string, dto: CreateAnswerDto) {
@@ -59,5 +104,34 @@ export class CounselsService {
       data: { is_done: true },
     });
     return ok(answer);
+  }
+
+  async updateAnswer(counselId: string, dto: UpdateAnswerDto) {
+    const answer = await this.prisma.counselAnswer.findFirst({
+      where: { counsel_id: counselId },
+      orderBy: { answered_at: "desc" },
+    });
+    if (!answer) throw new NotFoundException("답변을 찾을 수 없습니다.");
+    const updated = await this.prisma.counselAnswer.update({
+      where: { answer_id: answer.answer_id },
+      data: { content: dto.content },
+    });
+    return ok(updated);
+  }
+
+  async removeAnswer(counselId: string) {
+    const answer = await this.prisma.counselAnswer.findFirst({
+      where: { counsel_id: counselId },
+      orderBy: { answered_at: "desc" },
+    });
+    if (!answer) throw new NotFoundException("답변을 찾을 수 없습니다.");
+    await this.prisma.counselAnswer.delete({
+      where: { answer_id: answer.answer_id },
+    });
+    await this.prisma.counsel.update({
+      where: { counsel_id: counselId },
+      data: { is_done: false },
+    });
+    return ok(null);
   }
 }

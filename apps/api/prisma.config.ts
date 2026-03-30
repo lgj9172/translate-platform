@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import { defineConfig } from "prisma/config";
 
-const env = process.env["NODE_ENV"] ?? "development";
+const env = process.env.NODE_ENV ?? "development";
 
 if (env === "production") {
   // 프로덕션: .env.production 만 로드
@@ -18,6 +18,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: process.env.DATABASE_URL,
   },
 });

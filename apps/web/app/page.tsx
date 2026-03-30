@@ -99,16 +99,26 @@ function FeaturesSection() {
 
 function HowItWorksSection() {
   const steps = [
-    { step: "01", title: "번역 요청 등록", desc: "번역할 문서와 요구사항을 입력해요." },
+    {
+      step: "01",
+      title: "번역 요청 등록",
+      desc: "번역할 문서와 요구사항을 입력해요.",
+    },
     { step: "02", title: "견적 수신", desc: "번역사들이 견적을 제출해요." },
-    { step: "03", title: "번역사 선택", desc: "이력과 견적을 비교해 선택해요." },
+    {
+      step: "03",
+      title: "번역사 선택",
+      desc: "이력과 견적을 비교해 선택해요.",
+    },
     { step: "04", title: "번역 완료", desc: "완성된 번역물을 전달받아요." },
   ];
 
   return (
     <section className="py-12 lg:py-16 flex flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">이용 방법</h2>
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          이용 방법
+        </h2>
         <p className="text-gray-500 text-sm lg:text-base">
           간단한 4단계로 번역을 시작하세요.
         </p>
@@ -170,7 +180,10 @@ function CtaSection() {
           </p>
         </div>
         <Link href="/signin" className="lg:shrink-0">
-          <Button variant="outline" className="w-full lg:w-auto border-primary text-primary hover:bg-white px-8">
+          <Button
+            variant="outline"
+            className="w-full lg:w-auto border-primary text-primary hover:bg-white px-8"
+          >
             번역사로 시작하기
           </Button>
         </Link>

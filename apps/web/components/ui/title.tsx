@@ -24,6 +24,7 @@ export interface TitleProps
     VariantProps<typeof titleVariants> {
   asChild?: boolean;
   order?: 1 | 2 | 3 | 4 | 5 | 6;
+  ref?: React.Ref<HTMLHeadingElement>;
 }
 
 function Title({

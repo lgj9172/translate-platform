@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
-import { PrismaService } from "../prisma/prisma.service";
+import type { PrismaService } from "../prisma/prisma.service";
 import type { CreateNoticeDto, UpdateNoticeDto } from "./notices.dto";
 
 @Injectable()
@@ -11,14 +11,20 @@ export class NoticesService {
     const take = query.size ?? 20;
     const skip = query.start ?? 0;
     const [data, total_count] = await this.prisma.$transaction([
-      this.prisma.notice.findMany({ skip, take, orderBy: [{ is_important: "desc" }, { created_at: "desc" }] }),
+      this.prisma.notice.findMany({
+        skip,
+        take,
+        orderBy: [{ is_important: "desc" }, { created_at: "desc" }],
+      }),
       this.prisma.notice.count(),
     ]);
     return paginated(data, total_count, data.length);
   }
 
   async findOne(noticeId: string) {
-    const notice = await this.prisma.notice.findUnique({ where: { notice_id: noticeId } });
+    const notice = await this.prisma.notice.findUnique({
+      where: { notice_id: noticeId },
+    });
     if (!notice) throw new NotFoundException("공지사항을 찾을 수 없습니다.");
     return ok(notice);
   }

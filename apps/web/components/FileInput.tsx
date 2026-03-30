@@ -5,8 +5,8 @@ import {
   useId,
   useRef,
 } from "react";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 interface Props {
   text?: string;
@@ -33,7 +33,11 @@ export default function FileInput({
   };
 
   return (
-    <label htmlFor={id} className="relative" data-invalid={isInvalid || undefined}>
+    <label
+      htmlFor={id}
+      className="relative"
+      data-invalid={isInvalid || undefined}
+    >
       <input
         ref={fileInputRef}
         hidden

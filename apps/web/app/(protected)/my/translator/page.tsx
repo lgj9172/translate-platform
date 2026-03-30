@@ -142,8 +142,7 @@ export default function Page() {
                 </Link>
               </ActionIcon>
               <PageTitle>
-                번역사{" "}
-                {user?.authorization?.is_translator ? "정보 수정" : "등록"}
+                번역사 {user?.authorization?.is_translator ? "프로필" : "등록"}
               </PageTitle>
             </Group>
           </PageHeader>

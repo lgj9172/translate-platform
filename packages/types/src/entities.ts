@@ -213,6 +213,7 @@ export interface Translation {
   resolved_at?: string;
   created_at?: string;
   updated_at?: string;
+  quotations?: Quotation[];
 }
 
 export interface TranslationComment {
@@ -254,13 +255,14 @@ export interface Counsel {
   created_at?: string;
   updated_at?: string;
   category: CounselCategory;
-  file_id: string;
+  file_id?: string;
 }
 
 export interface CounselAnswer {
   answer_id: string;
   content: string;
   answered_at: string;
+  updated_at?: string;
   counsel_id: string;
 }
 
@@ -406,6 +408,7 @@ export interface Blog {
 export interface BlogComment {
   comment_id: string;
   content: string;
+  is_deleted: boolean;
   user_id: string;
   blog_id: string;
   created_at?: string;
@@ -421,6 +424,7 @@ export interface ReviewRating {
 export interface Review {
   translator_id: string;
   translation_id: string;
+  user_id: string;
   ratings: ReviewRating;
   comment?: string;
   created_at?: string;

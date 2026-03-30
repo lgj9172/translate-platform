@@ -1,4 +1,4 @@
-import { ExecutionContext, createParamDecorator } from "@nestjs/common";
+import { createParamDecorator, type ExecutionContext } from "@nestjs/common";
 import type { User } from "@supabase/supabase-js";
 
 export const CurrentUser = createParamDecorator(

@@ -107,7 +107,7 @@ const PostTranslationFormDefaultValue = {
   sample: "",
 };
 
-export default function Index() {
+export default function Page() {
   const router = useRouter();
 
   const languageOptions = useMemo<
@@ -147,7 +147,7 @@ export default function Index() {
     useMutation({
       mutationFn: postTranslation,
       onSuccess: (res) => {
-        router.push(`/my/translation/request/${res.translation_id}`);
+        router.push(`/my/requests/${res.translation_id}`);
       },
     });
 
@@ -156,7 +156,7 @@ export default function Index() {
       mutationFn: postFile,
     });
 
-  const handlSubmitSuccess: SubmitHandler<PostTranslationFormType> = async (
+  const handleSubmitSuccess: SubmitHandler<PostTranslationFormType> = async (
     input,
   ) => {
     const filesInfo = await Promise.all(
@@ -196,13 +196,13 @@ export default function Index() {
   > = async () => {};
 
   return (
-    <form onSubmit={handleSubmit(handlSubmitSuccess, handleSubmitError)}>
+    <form onSubmit={handleSubmit(handleSubmitSuccess, handleSubmitError)}>
       <FormProvider {...methods}>
         <Stack className="w-full h-full" gap="xl">
           <PageHeader>
             <Group>
               <ActionIcon variant="ghost" asChild>
-                <Link href="/my/translation/request">
+                <Link href="/my/requests">
                   <ArrowLeftIcon />
                 </Link>
               </ActionIcon>
@@ -245,7 +245,7 @@ export default function Index() {
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as TranslationLanguage);
-                      trigger(`source_language`);
+                      trigger("source_language");
                     }}
                   />
                 )}
@@ -263,7 +263,7 @@ export default function Index() {
                     data={languageOptions}
                     onChange={(v) => {
                       onChange(v as TranslationLanguage);
-                      trigger(`target_language`);
+                      trigger("target_language");
                     }}
                   />
                 )}

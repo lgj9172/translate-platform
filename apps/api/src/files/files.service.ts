@@ -3,11 +3,11 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  OnModuleInit,
+  type OnModuleInit,
 } from "@nestjs/common";
 import { ok } from "../common/response";
-import { PrismaService } from "../prisma/prisma.service";
-import { SupabaseService } from "../supabase/supabase.service";
+import type { PrismaService } from "../prisma/prisma.service";
+import type { SupabaseService } from "../supabase/supabase.service";
 
 const BUCKET = "files";
 const SIGNED_URL_EXPIRES = 60 * 60; // 1시간
@@ -50,7 +50,9 @@ export class FilesService implements OnModuleInit {
       if (extension === "PDF") {
         // pdf-parse v1 (CommonJS) - require로 직접 로드
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const pdfParse = require("pdf-parse") as (buf: Buffer) => Promise<{ text: string }>;
+        const pdfParse = require("pdf-parse") as (
+          buf: Buffer,
+        ) => Promise<{ text: string }>;
         const data = await pdfParse(buffer);
         return this.countText(data.text ?? "");
       }
@@ -58,7 +60,9 @@ export class FilesService implements OnModuleInit {
         return this.countText(buffer.toString("utf-8"));
       }
     } catch (err) {
-      this.logger.warn(`글자 수 추출 실패 (${extension}): ${(err as Error).message}`);
+      this.logger.warn(
+        `글자 수 추출 실패 (${extension}): ${(err as Error).message}`,
+      );
     }
     return { char_with_blank: 0, char_without_blank: 0, word: 0 };
   }
@@ -93,11 +97,15 @@ export class FilesService implements OnModuleInit {
     return ok({ ...file, ...charCount });
   }
 
-  async findOne(fileId: string) {
+  async findOne(fileId: string, userId: string) {
     const file = await this.prisma.file.findUnique({
       where: { file_id: fileId },
     });
     if (!file) throw new NotFoundException("파일을 찾을 수 없습니다.");
+    if (file.user_id !== userId)
+      throw new ForbiddenException(
+        "본인이 업로드한 파일만 조회할 수 있습니다.",
+      );
 
     const path = `${file.user_id}/${file.file_id}.${file.extension.toLowerCase()}`;
     const { data, error } = await this.supabase.admin.storage

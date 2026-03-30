@@ -14,7 +14,7 @@ export default function TranslationRequestButton() {
     } = await supabase.auth.getSession();
 
     if (session) {
-      router.push("/my/translation/request");
+      router.push("/my/requests/create");
     } else {
       router.push("/signin");
     }

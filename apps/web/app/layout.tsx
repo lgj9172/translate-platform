@@ -1,6 +1,6 @@
+import type { User } from "@translate/types";
 import localFont from "next/font/local";
 import { Suspense } from "react";
-import type { User } from "@translate/types";
 import Providers from "@/utils/react-query/Provider";
 import { createClient } from "@/utils/supabase/server";
 import Shell from "./Shell";

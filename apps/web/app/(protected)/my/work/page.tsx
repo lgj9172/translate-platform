@@ -16,13 +16,13 @@ import { Stack } from "@/components/ui/stack";
 
 export default function Page() {
   const {
-    data: translationsResponse,
+    data: translations,
     isLoading,
     isError,
   } = useQuery({
     queryKey: ["translations", "translator"],
     queryFn: () =>
-      getTranslationsTranslator({ params: { start: 0, size: 10 } }),
+      getTranslationsTranslator({ params: { start: 0, size: 100 } }),
   });
 
   return (
@@ -34,7 +34,7 @@ export default function Page() {
               <ArrowLeftIcon />
             </Link>
           </ActionIcon>
-          <PageTitle>받은 번역 요청</PageTitle>
+          <PageTitle>진행 중인 번역</PageTitle>
         </Group>
       </PageHeader>
       {isLoading && (
@@ -45,21 +45,21 @@ export default function Page() {
       {isError && (
         <Alert>
           <AlertDescription>
-            받은 번역 요청 목록을 불러오는 중 오류가 발생했어요.
+            진행 중인 번역 목록을 불러오는 중 오류가 발생했어요.
           </AlertDescription>
         </Alert>
       )}
-      {translationsResponse?.length === 0 && (
+      {translations?.length === 0 && (
         <Alert>
-          <AlertDescription>아직 받은 번역 요청이 없어요.</AlertDescription>
+          <AlertDescription>아직 진행 중인 번역이 없어요.</AlertDescription>
         </Alert>
       )}
-      {translationsResponse?.length !== 0 && (
+      {translations?.length !== 0 && (
         <div className="flex flex-col gap-[8px]">
-          {translationsResponse?.map((translation) => (
+          {translations?.map((translation) => (
             <Link
               className="hover:cursor-pointer"
-              href={`/translation/${translation.translation_id}`}
+              href={`/my/work/${translation.translation_id}`}
               key={translation.translation_id}
             >
               <TranslationCard

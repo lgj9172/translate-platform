@@ -27,7 +27,7 @@ export const postCounsel = async ({
   payload: {
     content: string;
     category: CounselCategory;
-    fileId: string;
+    file_id?: string;
   };
 }) => {
   const response = await ClientWithAuth.post<Response<Counsel>>(
@@ -73,7 +73,7 @@ export const putCounselAnswer = async ({
     content: string;
   };
 }) => {
-  const response = await ClientWithAuth.put<Response<CounselAnswer>>(
+  const response = await ClientWithAuth.patch<Response<CounselAnswer>>(
     `/counsels/${counselId}/answer`,
     payload,
   );

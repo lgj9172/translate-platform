@@ -1,16 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
-import { UpdateAgreementDto, UpdateUserDto } from "./users.dto";
-import { UsersService } from "./users.service";
+import type { UpdateAgreementDto, UpdateUserDto } from "./users.dto";
+import type { UsersService } from "./users.service";
 
 @ApiTags("Users")
 @Controller("users")

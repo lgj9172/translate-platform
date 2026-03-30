@@ -15,36 +15,41 @@ import {
 export function Breadcrumb() {
   const pathname = usePathname();
 
-  // 홈 페이지에서는 브레드크럼을 표시하지 않음
   if (pathname === "/") {
     return null;
   }
 
-  // 경로를 세그먼트로 분할
   const segments = pathname.split("/").filter(Boolean);
 
-  // 경로 패턴에 대한 라벨 매핑
   const pathLabelMap: Record<string, string> = {
-    "/translation": "번역",
-    "/translation/*": "번역 상세",
+    // 마켓플레이스
+    "/market": "새 번역 의뢰",
+    "/market/*": "의뢰 상세",
+    "/market/*/quote/create": "견적 보내기",
+    "/market/*/quote/create/done": "견적 완료",
+    // 마이페이지
     "/my": "마이페이지",
-    "/my/translator": "번역사 정보",
-    "/my/translator/quotations": "보낸 견적",
-    "/my/translation/request": "보낸 번역 요청",
-    "/my/translation/request/create": "번역 요청",
-    "/my/translation/request/*": "번역 상세",
-    "/my/translation/response": "받은 번역 요청",
-    "/my/translation/response/*": "번역 상세",
+    "/my/requests": "보낸 번역 요청",
+    "/my/requests/create": "번역 요청",
+    "/my/requests/*": "번역 상세",
+    "/my/work": "진행 중인 번역",
+    "/my/work/*": "번역 상세",
+    "/my/translator": "번역사 프로필",
+    "/my/translator/quotations": "제출한 견적",
+    // 고객센터
     "/cs": "고객센터",
     "/cs/notice": "공지사항",
+    "/cs/notice/*": "공지 상세",
     "/cs/faq": "자주하는 질문",
     "/cs/ask": "1:1 문의",
+    "/cs/ask/create": "1:1 문의 작성",
     "/cs/ask/*": "문의 상세",
-    "/signin": "로그인",
+    // 번역사 프로필
     "/translator/*": "번역사 프로필",
+    // 기타
+    "/signin": "로그인",
   };
 
-  // 경로 패턴 매칭 헬퍼
   const matchLabel = (path: string): string | null => {
     if (pathLabelMap[path]) return pathLabelMap[path];
     for (const [pattern, label] of Object.entries(pathLabelMap)) {
@@ -56,19 +61,15 @@ export function Breadcrumb() {
     return null;
   };
 
-  // 경로 접두사(prefix)를 순서대로 확인하며 매핑된 것만 브레드크럼에 포함
   const breadcrumbItems = [];
   let currentPath = "";
 
   for (const segment of segments) {
     currentPath += `/${segment}`;
     const label = matchLabel(currentPath);
-
-    // pathLabelMap에 없는 중간 세그먼트는 건너뜀
     if (!label) continue;
 
     const isLast = currentPath === pathname;
-
     breadcrumbItems.push({
       label,
       href: isLast ? undefined : currentPath,

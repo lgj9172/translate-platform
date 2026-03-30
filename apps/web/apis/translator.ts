@@ -7,7 +7,11 @@ import type {
   TranslatorDegree,
   TranslatorGraduationStatus,
 } from "@/types/entities";
-import { ClientWithAuth, type Response } from "./clients";
+import {
+  ClientWithAuth,
+  type PaginatedResponse,
+  type Response,
+} from "./clients";
 
 export const getTranslator = async ({
   translatorId,
@@ -103,7 +107,7 @@ export const putTranslator = async ({
       started_at: string;
       file_id: string;
     }[];
-    samples?: {
+    translation_samples?: {
       source_language: TranslationLanguage;
       target_language: TranslationLanguage;
       source_text: string;
@@ -111,9 +115,20 @@ export const putTranslator = async ({
     }[];
   };
 }) => {
-  const response = await ClientWithAuth.put<Response<Translator>>(
+  const response = await ClientWithAuth.patch<Response<Translator>>(
     `/translators/${translatorId}`,
     payload,
+  );
+  return response.data.data;
+};
+
+export const postTranslatorPublish = async ({
+  translatorId,
+}: {
+  translatorId: string;
+}) => {
+  const response = await ClientWithAuth.post<Response<Translator>>(
+    `/translators/${translatorId}/publish`,
   );
   return response.data.data;
 };
@@ -123,7 +138,7 @@ export const getTranslatorQuotations = async ({
 }: {
   params: PaginationParams;
 }) => {
-  const response = await ClientWithAuth.get<Response<Quotation[]>>(
+  const response = await ClientWithAuth.get<PaginatedResponse<Quotation>>(
     `/quotations/me`,
     { params },
   );

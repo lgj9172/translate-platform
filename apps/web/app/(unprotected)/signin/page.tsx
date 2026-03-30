@@ -1,6 +1,7 @@
 "use client";
 
 import KakaoLogo from "@assets/logos/signin-kakao.svg";
+import type * as React from "react";
 import Typography from "@/components/Typography";
 import { createClient } from "@/utils/supabase/client";
 
@@ -50,7 +51,15 @@ export default function Signin() {
     });
   };
 
-  const socialButtons = [
+  const socialButtons: Array<{
+    provider: string;
+    onClick: () => void;
+    icon: React.ReactNode;
+    bgColor: string;
+    textColor?: string;
+    text: string;
+    border?: boolean;
+  }> = [
     {
       provider: "kakao" as const,
       onClick: signInWithKakao,

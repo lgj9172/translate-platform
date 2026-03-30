@@ -2,8 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeftIcon, StarIcon, UserIcon } from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getTranslator } from "@/apis/translator";
 import { getOtherUser } from "@/apis/user";
 import PageHeader from "@/components/PageHeader";
@@ -22,6 +21,7 @@ import Profile from "./_component/Profile";
 
 export default function Page() {
   const { translatorId } = useParams<{ translatorId: string }>();
+  const router = useRouter();
 
   const { data: translator, isLoading } = useQuery({
     queryKey: ["translator", translatorId],
@@ -47,10 +47,8 @@ export default function Page() {
     <Stack className="w-full h-full gap-6">
       <PageHeader>
         <Group>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/">
-              <ArrowLeftIcon className="h-4 w-4" />
-            </Link>
+          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+            <ArrowLeftIcon className="h-4 w-4" />
           </Button>
           <PageTitle>번역사 프로필</PageTitle>
         </Group>

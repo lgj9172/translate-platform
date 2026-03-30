@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
 } from "@nestjs/common";
@@ -10,8 +12,13 @@ import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { Admin } from "../common/decorators/admin.decorator";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
-import { CounselsService } from "./counsels.service";
-import { CreateAnswerDto, CreateCounselDto, QueryCounselDto } from "./counsels.dto";
+import type {
+  CreateAnswerDto,
+  CreateCounselDto,
+  QueryCounselDto,
+  UpdateAnswerDto,
+} from "./counsels.dto";
+import type { CounselsService } from "./counsels.service";
 
 @ApiTags("Counsels")
 @Controller("counsels")
@@ -20,11 +27,15 @@ export class CounselsController {
 
   @Get()
   @ApiOperation({ summary: "내 문의 목록" })
-  findAll(
-    @CurrentUser() user: SupabaseUser,
-    @Query() query: QueryCounselDto,
-  ) {
+  findAll(@CurrentUser() user: SupabaseUser, @Query() query: QueryCounselDto) {
     return this.counselsService.findAll(user.id, query);
+  }
+
+  @Get("admin")
+  @Admin()
+  @ApiOperation({ summary: "전체 문의 목록 (관리자)" })
+  findAllAdmin(@Query() query: QueryCounselDto) {
+    return this.counselsService.findAllAdmin(query);
   }
 
   @Post()
@@ -42,7 +53,16 @@ export class CounselsController {
     return this.counselsService.findOne(counselId, user.id);
   }
 
-  @Post(":counselId/answers")
+  @Get(":counselId/answer")
+  @ApiOperation({ summary: "문의 답변 조회" })
+  getAnswer(
+    @CurrentUser() user: SupabaseUser,
+    @Param("counselId") counselId: string,
+  ) {
+    return this.counselsService.getAnswer(counselId, user.id);
+  }
+
+  @Post(":counselId/answer")
   @Admin()
   @ApiOperation({ summary: "문의 답변 등록 (관리자)" })
   addAnswer(
@@ -50,5 +70,22 @@ export class CounselsController {
     @Body() dto: CreateAnswerDto,
   ) {
     return this.counselsService.addAnswer(counselId, dto);
+  }
+
+  @Patch(":counselId/answer")
+  @Admin()
+  @ApiOperation({ summary: "문의 답변 수정 (관리자)" })
+  updateAnswer(
+    @Param("counselId") counselId: string,
+    @Body() dto: UpdateAnswerDto,
+  ) {
+    return this.counselsService.updateAnswer(counselId, dto);
+  }
+
+  @Delete(":counselId/answer")
+  @Admin()
+  @ApiOperation({ summary: "문의 답변 삭제 (관리자)" })
+  removeAnswer(@Param("counselId") counselId: string) {
+    return this.counselsService.removeAnswer(counselId);
   }
 }

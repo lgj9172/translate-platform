@@ -20,8 +20,7 @@ export const postReview = async ({
   payload,
 }: {
   payload: {
-    translatorId: string;
-    translationId: string;
+    translation_id: string;
     ratings: {
       translation_quality: number;
       communication: number;

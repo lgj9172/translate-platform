@@ -40,14 +40,14 @@ export default function Page() {
           </Alert>
         </Stack>
         <div className="flex gap-2">
-          <Link href="/">
-            <Button variant="secondary">메인 화면</Button>
+          <Link href="/market">
+            <Button variant="secondary">새 번역 의뢰 보기</Button>
           </Link>
-          <Link href={`/translation/${translationId}`}>
+          <Link href={`/market/${translationId}`}>
             <Button>이 번역 요청 보기</Button>
           </Link>
-          <Link href="/my/translation/request">
-            <Button>나의 요청</Button>
+          <Link href="/my/translator/quotations">
+            <Button variant="secondary">제출한 견적 보기</Button>
           </Link>
         </div>
       </Stack>

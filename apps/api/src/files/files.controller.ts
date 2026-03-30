@@ -12,7 +12,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import type { Express } from "express";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
-import { FilesService } from "./files.service";
+import type { FilesService } from "./files.service";
 
 @ApiTags("Files")
 @Controller("files")
@@ -45,17 +45,14 @@ export class FilesController {
   }
 
   @Get(":fileId")
-  @ApiOperation({ summary: "파일 정보 및 Presigned URL 조회" })
-  findOne(@Param("fileId") fileId: string) {
-    return this.filesService.findOne(fileId);
+  @ApiOperation({ summary: "파일 정보 및 Presigned URL 조회 (본인 파일만)" })
+  findOne(@CurrentUser() user: SupabaseUser, @Param("fileId") fileId: string) {
+    return this.filesService.findOne(fileId, user.id);
   }
 
   @Delete(":fileId")
   @ApiOperation({ summary: "파일 삭제" })
-  remove(
-    @CurrentUser() user: SupabaseUser,
-    @Param("fileId") fileId: string,
-  ) {
+  remove(@CurrentUser() user: SupabaseUser, @Param("fileId") fileId: string) {
     return this.filesService.remove(fileId, user.id);
   }
 }

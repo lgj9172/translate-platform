@@ -22,3 +22,8 @@ export class CreateBlogCommentDto {
   @IsString()
   content!: string;
 }
+
+export class UpdateBlogCommentDto {
+  @IsString()
+  content!: string;
+}

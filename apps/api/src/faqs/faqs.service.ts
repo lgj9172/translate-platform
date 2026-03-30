@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
-import { PrismaService } from "../prisma/prisma.service";
+import type { PrismaService } from "../prisma/prisma.service";
 import type { CreateFaqDto, UpdateFaqDto } from "./faqs.dto";
 
 @Injectable()

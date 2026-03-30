@@ -39,6 +39,7 @@ model User {
   translator          Translator?
   blogs               Blog[]
   blog_comments       BlogComment[]
+  reviews             Review[]
 
   @@map("users")
 }
@@ -154,7 +155,7 @@ model Counsel {
   is_deleted Boolean         @default(false)
   user_id    String          @db.Uuid
   category   CounselCategory
-  file_id    String          @db.Uuid
+  file_id    String?         @db.Uuid
   created_at DateTime        @default(now())
   updated_at DateTime        @updatedAt
 
@@ -168,6 +169,7 @@ model CounselAnswer {
   answer_id   String   @id @default(uuid()) @db.Uuid
   content     String
   answered_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
   counsel_id  String   @db.Uuid
 
   counsel Counsel @relation(fields: [counsel_id], references: [counsel_id])
@@ -344,6 +346,7 @@ model Blog {
 model BlogComment {
   comment_id String   @id @default(uuid()) @db.Uuid
   content    String
+  is_deleted Boolean  @default(false)
   user_id    String   @db.Uuid
   blog_id    String   @db.Uuid
   created_at DateTime @default(now())
@@ -362,6 +365,7 @@ model BlogComment {
 model Review {
   translator_id  String   @db.Uuid
   translation_id String   @unique @db.Uuid
+  user_id        String   @db.Uuid
   ratings        Json
   comment        String?
   created_at     DateTime @default(now())
@@ -369,6 +373,7 @@ model Review {
 
   translator  Translator  @relation(fields: [translator_id], references: [translator_id])
   translation Translation @relation(fields: [translation_id], references: [translation_id])
+  user        User        @relation(fields: [user_id], references: [user_id])
 
   @@id([translator_id, translation_id])
   @@map("reviews")

@@ -40,7 +40,7 @@ export const putBlog = async ({
     content: string;
   };
 }) => {
-  const response = await ClientWithAuth.put<Response<Blog>>(
+  const response = await ClientWithAuth.patch<Response<Blog>>(
     `/blogs/${blogId}`,
     payload,
   );
@@ -95,7 +95,7 @@ export const putBlogComment = async ({
     content: string;
   };
 }) => {
-  const response = await ClientWithAuth.put<Response<BlogComment>>(
+  const response = await ClientWithAuth.patch<Response<BlogComment>>(
     `/blogs/${blogId}/comments/${commentId}`,
     payload,
   );

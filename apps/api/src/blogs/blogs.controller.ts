@@ -1,10 +1,24 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Public } from "../common/decorators/public.decorator";
-import { BlogsService } from "./blogs.service";
-import { CreateBlogCommentDto, CreateBlogDto, UpdateBlogDto } from "./blogs.dto";
+import type {
+  CreateBlogCommentDto,
+  CreateBlogDto,
+  UpdateBlogCommentDto,
+  UpdateBlogDto,
+} from "./blogs.dto";
+import type { BlogsService } from "./blogs.service";
 
 @ApiTags("Blogs")
 @Controller("blogs")
@@ -47,6 +61,13 @@ export class BlogsController {
     return this.blogsService.remove(blogId, user.id);
   }
 
+  @Get(":blogId/comments")
+  @Public()
+  @ApiOperation({ summary: "댓글 목록" })
+  getComments(@Param("blogId") blogId: string) {
+    return this.blogsService.findComments(blogId);
+  }
+
   @Post(":blogId/comments")
   @ApiOperation({ summary: "댓글 작성" })
   addComment(
@@ -55,6 +76,16 @@ export class BlogsController {
     @Body() dto: CreateBlogCommentDto,
   ) {
     return this.blogsService.addComment(blogId, user.id, dto);
+  }
+
+  @Patch(":blogId/comments/:commentId")
+  @ApiOperation({ summary: "댓글 수정" })
+  updateComment(
+    @CurrentUser() user: SupabaseUser,
+    @Param("commentId") commentId: string,
+    @Body() dto: UpdateBlogCommentDto,
+  ) {
+    return this.blogsService.updateComment(commentId, user.id, dto);
   }
 
   @Delete(":blogId/comments/:commentId")

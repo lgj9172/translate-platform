@@ -1,30 +1,19 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { getSelectedQuotation } from "@/apis/translations-quotations";
 import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import TranslatorProfile from "@/components/translation/TranslatorProfile";
 import { Card } from "@/components/ui/card";
-import type { Translation } from "@/types/entities";
-import TranslatorProfile from "./TranslatorProfile";
+import type { Quotation, Translation } from "@/types/entities";
 
 interface Props {
   translation: Translation;
+  selectedQuotation?: Quotation;
 }
 
-export default function Translator({ translation }: Props) {
-  const { data: selectedQuotation } = useQuery({
-    queryKey: [
-      "translations",
-      translation.translation_id,
-      "selected-quotation",
-    ],
-    queryFn: () =>
-      getSelectedQuotation({ translationId: translation.translation_id }),
-  });
-
+export default function Translator({ translation, selectedQuotation }: Props) {
   return (
     <InputSection>
       <LabelSection>

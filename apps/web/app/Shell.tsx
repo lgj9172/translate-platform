@@ -2,6 +2,7 @@
 
 import FluenceBi from "@assets/icons/fluence-bi.svg";
 import { useQuery } from "@tanstack/react-query";
+import type { User as UserEntity } from "@translate/types";
 import { Bell, HeadphonesIcon, HelpCircle, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
@@ -16,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/DropdownMenu";
-import type { User as UserEntity } from "@translate/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -29,7 +29,7 @@ import { Separator } from "@/components/ui/separator";
 import useUser from "@/hooks/useUser";
 
 function HeaderMenu({ initialUser }: { initialUser?: UserEntity | null }) {
-  const { user, isLoading, signOut } = useUser({ initialUser });
+  const { user, signOut } = useUser({ initialUser });
 
   const handleClickSignout = () => {
     signOut();

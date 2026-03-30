@@ -7,6 +7,7 @@ import Fee from "@/components/Fee";
 import InputSection from "@/components/InputSection";
 import Label from "@/components/Label";
 import LabelSection from "@/components/LabelSection";
+import TranslatorProfile from "@/components/translation/TranslatorProfile";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Center } from "@/components/ui/center";
@@ -15,7 +16,6 @@ import { Stack } from "@/components/ui/stack";
 import CancelTranslationModal from "@/modals/CancelTranslationModal";
 import SelectQuoteModal from "@/modals/SelectQuoteModal";
 import type { Translation } from "@/types/entities";
-import TranslatorProfile from "./TranslatorProfile";
 
 export default function SelectQuote({
   translation,
@@ -34,10 +34,7 @@ export default function SelectQuote({
     queryFn: () =>
       getTranslationQuotations({
         translationId: translation.translation_id,
-        params: {
-          start: 0,
-          size: 10,
-        },
+        params: { start: 0, size: 10 },
       }),
   });
 

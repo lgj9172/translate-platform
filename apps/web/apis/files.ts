@@ -1,17 +1,5 @@
 import type { File } from "@/types/entities";
-import {
-  ClientWithAuth,
-  type PaginatedResponse,
-  type PaginationParams,
-  type Response,
-} from "./clients";
-
-export const getFiles = async ({ params }: { params: PaginationParams }) => {
-  const response = await ClientWithAuth.get<PaginatedResponse<File>>(`/files`, {
-    params,
-  });
-  return response.data.data;
-};
+import { ClientWithAuth, type Response } from "./clients";
 
 export const getFile = async ({ fileId }: { fileId: string }) => {
   const response = await ClientWithAuth.get<Response<File>>(`/files/${fileId}`);

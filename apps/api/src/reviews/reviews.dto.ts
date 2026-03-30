@@ -2,9 +2,6 @@ import { IsNumber, IsObject, IsOptional, IsString } from "class-validator";
 
 export class CreateReviewDto {
   @IsString()
-  translator_id!: string;
-
-  @IsString()
   translation_id!: string;
 
   @IsObject()

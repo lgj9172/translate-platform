@@ -1,11 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { Admin } from "../common/decorators/admin.decorator";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Public } from "../common/decorators/public.decorator";
-import { CreateNoticeDto, UpdateNoticeDto } from "./notices.dto";
-import { NoticesService } from "./notices.service";
+import type { CreateNoticeDto, UpdateNoticeDto } from "./notices.dto";
+import type { NoticesService } from "./notices.service";
 
 @ApiTags("Notices")
 @Controller("notices")

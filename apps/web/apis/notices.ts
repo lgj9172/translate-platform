@@ -48,7 +48,7 @@ export const putNotice = async ({
     isImportant: boolean;
   };
 }) => {
-  const response = await ClientWithAuth.put<Response<Notice>>(
+  const response = await ClientWithAuth.patch<Response<Notice>>(
     `/notices/${noticeId}`,
     payload,
   );

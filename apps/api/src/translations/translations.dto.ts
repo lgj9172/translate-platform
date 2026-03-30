@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsDateString,
@@ -9,14 +10,30 @@ import {
   IsUUID,
   ValidateNested,
 } from "class-validator";
-import { Type } from "class-transformer";
 
 const LANGUAGES = [
-  "ko-KR","en-US","ja-JP","zh-CN","ru-RU","es-ES","ar-SA","de-DE","fr-FR",
+  "ko-KR",
+  "en-US",
+  "ja-JP",
+  "zh-CN",
+  "ru-RU",
+  "es-ES",
+  "ar-SA",
+  "de-DE",
+  "fr-FR",
 ] as const;
 
-const CATEGORIES = [
-  "IT","FINANCE","CONTENTS","GAME","LAW","MEDICAL","CONSTRUCTION","MARKETING","LITERATURE","ETC",
+const _CATEGORIES = [
+  "IT",
+  "FINANCE",
+  "CONTENTS",
+  "GAME",
+  "LAW",
+  "MEDICAL",
+  "CONSTRUCTION",
+  "MARKETING",
+  "LITERATURE",
+  "ETC",
 ] as const;
 
 export class SourceFileDto {
@@ -114,4 +131,10 @@ export class CreateTranslationQuotationDto {
   @IsOptional()
   @IsString()
   detail?: string;
+}
+
+export class SubmitTranslationDto {
+  @IsArray()
+  @IsString({ each: true })
+  target_files!: string[];
 }

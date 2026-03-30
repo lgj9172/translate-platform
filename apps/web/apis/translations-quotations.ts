@@ -22,37 +22,13 @@ export const getTranslationQuotations = async ({
   return response.data.data;
 };
 
-export const getTranslationQuotation = async ({
-  translationId,
-  quotationId,
-}: {
-  translationId: string;
-  quotationId: string;
-}) => {
-  const response = await ClientWithAuth.get<Response<Quotation>>(
-    `/translations/${translationId}/quotations/${quotationId}`,
-  );
-  return response.data.data;
-};
-
 export const getTranslatorQuotation = async ({
   translationId,
 }: {
   translationId: string;
 }) => {
   const response = await ClientWithAuth.get<Response<Quotation>>(
-    `/translations/${translationId}/quotations/translator`,
-  );
-  return response.data.data;
-};
-
-export const getSelectedQuotation = async ({
-  translationId,
-}: {
-  translationId: string;
-}) => {
-  const response = await ClientWithAuth.get<Response<Quotation>>(
-    `/translations/${translationId}/selected-quotation`,
+    `/translations/${translationId}/quotations/mine`,
   );
   return response.data.data;
 };

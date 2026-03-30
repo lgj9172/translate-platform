@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
+import { FilesService } from "../files/files.service";
 import { PrismaService } from "../prisma/prisma.service";
 import {
   CreateAnswerDto,
@@ -14,7 +15,10 @@ import {
 
 @Injectable()
 export class CounselsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly filesService: FilesService,
+  ) {}
 
   async findAll(userId: string, query: QueryCounselDto) {
     const take = query.size ?? 20;
@@ -82,7 +86,12 @@ export class CounselsService {
     });
     if (!counsel) throw new NotFoundException("문의를 찾을 수 없습니다.");
     if (counsel.user_id !== userId) throw new ForbiddenException();
-    return ok(counsel);
+
+    const fileInfo = counsel.file_id
+      ? await this.filesService.enrichFileInfo(counsel.file_id)
+      : null;
+
+    return ok({ ...counsel, file: fileInfo });
   }
 
   async getAnswer(counselId: string, userId: string) {

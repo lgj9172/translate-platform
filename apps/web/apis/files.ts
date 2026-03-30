@@ -16,15 +16,7 @@ export const postFile = async ({
   const formData = new FormData();
   formData.append("file", payload.content);
 
-  const response = await ClientWithAuth.post<Response<File>>(
-    "/files",
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    },
-  );
+  const response = await ClientWithAuth.post<Response<File>>("/files", formData);
   return response.data.data;
 };
 

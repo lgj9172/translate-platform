@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Controller,
   FormProvider,
@@ -43,26 +43,22 @@ const PostCSAskFormSchema = z.object({
     errorMap: () => ({ message: "종류를 선택해 주세요." }),
   }),
   content: z.string().min(1, "내용을 입력해 주세요."),
-  file: z
-    .instanceof(globalThis.File, {
-      message: "파일이 선택되지 않았어요.",
-    })
-    .refine(
-      (file) => file.size <= 10 * 1024 * 1024,
-      "파일은 최대 10MB까지 업로드 할 수 있어요.",
-    ),
+  file_id: z.string().optional(),
+  file_name: z.string().optional(),
 });
 
 export type PostCSAskFormType = z.infer<typeof PostCSAskFormSchema>;
 
-const PostCSAskFormDefaultValue = {
+const PostCSAskFormDefaultValue: PostCSAskFormType = {
   category: COUNSEL_CATEGORY.SUGGESTION,
   content: "",
-  files: [] as globalThis.File[],
+  file_id: undefined,
+  file_name: undefined,
 };
 
 export default function Index() {
   const router = useRouter();
+  const [isUploading, setIsUploading] = useState(false);
 
   const askCategoryOptions = useMemo<
     { label: string; value: CounselCategory }[]
@@ -84,8 +80,12 @@ export default function Index() {
   const {
     control,
     handleSubmit,
+    setValue,
+    watch,
     formState: { isSubmitting },
   } = methods;
+
+  const fileName = watch("file_name");
 
   const { mutate: mutatePostCounsel } = useMutation({
     mutationFn: postCounsel,
@@ -94,29 +94,37 @@ export default function Index() {
     },
   });
 
-  const { mutateAsync: mutatePostFile } = useMutation({
-    mutationFn: postFile,
-  });
+  const { mutateAsync: uploadFile } = useMutation({ mutationFn: postFile });
 
-  const handlSubmitSuccess: SubmitHandler<PostCSAskFormType> = async (
-    input,
-  ) => {
-    const fileInfo = await mutatePostFile({
-      payload: { content: input.file },
-    });
-    if (!fileInfo) {
-      throw new Error("파일 업로드에 실패했습니다.");
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploading(true);
+    try {
+      const res = await uploadFile({ payload: { content: file } });
+      setValue("file_id", res.file_id);
+      setValue("file_name", res.name);
+    } catch {
+      toast.error("파일 업로드에 실패했습니다.", {
+        richColors: true,
+        position: "top-center",
+      });
+    } finally {
+      setIsUploading(false);
     }
+  };
+
+  const handlSubmitSuccess: SubmitHandler<PostCSAskFormType> = (input) => {
     mutatePostCounsel({
       payload: {
         category: input.category,
         content: input.content,
-        file_id: fileInfo.file_id,
+        file_id: input.file_id,
       },
     });
   };
 
-  const handleSubmitError: SubmitErrorHandler<PostCSAskFormType> = async () => {
+  const handleSubmitError: SubmitErrorHandler<PostCSAskFormType> = () => {
     toast.error("잘못 입력되었거나 입력되지 않은 항목이 있어요.", {
       richColors: true,
       position: "top-center",
@@ -178,34 +186,22 @@ export default function Index() {
             <LabelSection>
               <Label>첨부파일</Label>
             </LabelSection>
-            <Controller
-              name="file"
-              control={control}
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <ControllerSection>
-                  <FileInput
-                    placeholder="파일 (10MB, PDF)"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        onChange(file);
-                        e.target.value = "";
-                      }
-                    }}
-                    onRemove={() => onChange(null)}
-                    text={value?.name}
-                  />
-                  <ErrorText>{error?.message}</ErrorText>
-                </ControllerSection>
-              )}
-            />
+            <ControllerSection>
+              <FileInput
+                placeholder={isUploading ? "업로드 중..." : "파일 (10MB, PDF)"}
+                onChange={handleFileChange}
+                onRemove={() => {
+                  setValue("file_id", undefined);
+                  setValue("file_name", undefined);
+                }}
+                text={fileName}
+                disabled={isUploading}
+              />
+            </ControllerSection>
           </InputSection>
 
           <div className="flex justify-end">
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || isUploading}>
               등록
             </Button>
           </div>

@@ -2,12 +2,11 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  Logger,
   NotFoundException,
 } from "@nestjs/common";
 import { ok, paginated } from "../common/response";
+import { FilesService } from "../files/files.service";
 import { PrismaService } from "../prisma/prisma.service";
-import { SupabaseService } from "../supabase/supabase.service";
 import {
   CreateCommentDto,
   CreateTranslationDto,
@@ -16,16 +15,11 @@ import {
   UpdateTranslationDto,
 } from "./translations.dto";
 
-const FILES_BUCKET = "files";
-const SIGNED_URL_EXPIRES = 60 * 60;
-
 @Injectable()
 export class TranslationsService {
-  private readonly logger = new Logger(TranslationsService.name);
-
   constructor(
     private readonly prisma: PrismaService,
-    private readonly supabase: SupabaseService,
+    private readonly filesService: FilesService,
   ) {}
 
   async findAll(query: QueryTranslationDto) {
@@ -162,24 +156,24 @@ export class TranslationsService {
       sourceFiles.map(async (sf) => {
         if (!sf.file_id) return sf;
         if (!canSeeFiles) return { ...sf, presigned_url: null };
-        const file = await this.prisma.file.findUnique({
-          where: { file_id: sf.file_id },
-        });
-        if (!file) return sf;
-        const path = `${file.user_id}/${file.file_id}.${file.extension.toLowerCase()}`;
-        const { data, error } = await this.supabase.admin.storage
-          .from(FILES_BUCKET)
-          .createSignedUrl(path, SIGNED_URL_EXPIRES);
-        if (error) this.logger.warn(`signed URL 생성 실패: ${error.message}`);
-        return {
-          ...sf,
-          name: file.name,
-          presigned_url: data?.signedUrl ?? null,
-        };
+        const info = await this.filesService.enrichFileInfo(sf.file_id);
+        return info ? { ...sf, ...info } : sf;
       }),
     );
 
-    return ok({ ...translation, source_files: enrichedSourceFiles });
+    const targetFileIds = (translation.target_files ?? []) as string[];
+    const enrichedTargetFiles = await Promise.all(
+      targetFileIds.map(async (fileId) => {
+        const info = await this.filesService.enrichFileInfo(fileId);
+        return { file_id: fileId, ...(info ?? { name: undefined, presigned_url: null }) };
+      }),
+    );
+
+    return ok({
+      ...translation,
+      source_files: enrichedSourceFiles,
+      target_files: enrichedTargetFiles,
+    });
   }
 
   private async getTranslatorByUserId(userId: string) {
@@ -297,7 +291,11 @@ export class TranslationsService {
       where: { translation_id: translationId },
     });
     if (!translation) throw new NotFoundException();
-    if (translation.status !== "TRANSLATION_EDIT_REQUESTED")
+    if (
+      !["TRANSLATION_EDIT_REQUESTED", "TRANSLATION_SUBMITTED"].includes(
+        translation.status as string,
+      )
+    )
       throw new BadRequestException("재시작할 수 없는 상태입니다.");
 
     const translator = await this.getTranslatorByUserId(userId);

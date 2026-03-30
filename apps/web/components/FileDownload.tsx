@@ -15,7 +15,7 @@ export default function FileDownload({ fileId, presignedUrl, name }: Props) {
   const { data: file } = useQuery({
     queryKey: ["file", fileId],
     queryFn: () => getFile({ fileId }),
-    enabled: !presignedUrl,
+    enabled: !presignedUrl && !!fileId,
   });
 
   const resolvedUrl = presignedUrl ?? file?.presigned_url;

@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Controller,
   FormProvider,
@@ -15,6 +15,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 import { z } from "zod";
 import { postFile } from "@/apis/files";
 import { postTranslation } from "@/apis/translations";
@@ -58,14 +59,13 @@ const PostTranslationFormSchema = z
     description: z.string(),
     source_files: z
       .array(
-        z
-          .instanceof(File, {
-            message: "파일이 선택되지 않았어요.",
-          })
-          .refine(
-            (file) => file.size <= 10 * 1024 * 1024,
-            "원문 파일은 최대 10MB까지 업로드 할 수 있어요.",
-          ),
+        z.object({
+          file_id: z.string(),
+          name: z.string(),
+          char_with_blank: z.number(),
+          char_without_blank: z.number(),
+          word: z.number(),
+        }),
       )
       .refine((files) => files.length > 0, "원문 파일을 선택해 주세요."),
     deadline: z
@@ -100,7 +100,7 @@ const PostTranslationFormDefaultValue = {
   target_language: "en-US" as const,
   categories: [],
   description: "",
-  source_files: [],
+  source_files: [] as PostTranslationFormType["source_files"],
   deadline: dayjs().add(7, "day").toISOString(),
   fee_unit: "KRW" as const,
   fee_value: 0,
@@ -109,6 +109,7 @@ const PostTranslationFormDefaultValue = {
 
 export default function Page() {
   const router = useRouter();
+  const [isUploading, setIsUploading] = useState(false);
 
   const languageOptions = useMemo<
     { label: string; value: TranslationLanguage }[]
@@ -151,23 +152,39 @@ export default function Page() {
       },
     });
 
-  const { mutateAsync: mutatePostFile, isPending: isPostFilePending } =
-    useMutation({
-      mutationFn: postFile,
-    });
+  const { mutateAsync: uploadFile } = useMutation({ mutationFn: postFile });
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (files: PostTranslationFormType["source_files"]) => void,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploading(true);
+    try {
+      const res = await uploadFile({ payload: { content: file } });
+      onChange([
+        {
+          file_id: res.file_id,
+          name: res.name,
+          char_with_blank: res.char_with_blank ?? 0,
+          char_without_blank: res.char_without_blank ?? 0,
+          word: res.word ?? 0,
+        },
+      ]);
+    } catch {
+      toast.error("파일 업로드에 실패했습니다.", {
+        richColors: true,
+        position: "top-center",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmitSuccess: SubmitHandler<PostTranslationFormType> = async (
     input,
   ) => {
-    const filesInfo = await Promise.all(
-      input.source_files.map((file) =>
-        mutatePostFile({
-          payload: {
-            content: file,
-          },
-        }),
-      ),
-    );
     await mutatePostTranslation({
       payload: {
         title: input.title,
@@ -175,11 +192,11 @@ export default function Page() {
         target_language: input.target_language,
         categories: input.categories,
         description: input.description,
-        source_files: filesInfo.map((file) => ({
-          file_id: file.file_id,
-          char_with_blank: file.char_with_blank ?? 0,
-          char_without_blank: file.char_without_blank ?? 0,
-          word: file.word ?? 0,
+        source_files: input.source_files.map((sf) => ({
+          file_id: sf.file_id,
+          char_with_blank: sf.char_with_blank,
+          char_without_blank: sf.char_without_blank,
+          word: sf.word,
         })),
         deadline: input.deadline,
         fee: {
@@ -310,16 +327,13 @@ export default function Page() {
               }) => (
                 <ControllerSection>
                   <FileInput
-                    placeholder="원문 파일 (10MB, PDF)"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        onChange([file]);
-                        e.target.value = "";
-                      }
-                    }}
+                    placeholder={
+                      isUploading ? "업로드 중..." : "원문 파일 (10MB, PDF)"
+                    }
+                    onChange={(e) => handleFileChange(e, onChange)}
                     onRemove={() => onChange([])}
                     text={value?.[0]?.name}
+                    disabled={isUploading}
                   />
                   <ErrorText>{error?.message}</ErrorText>
                 </ControllerSection>
@@ -413,9 +427,7 @@ export default function Page() {
           <div className="flex justify-end">
             <Button
               type="submit"
-              disabled={
-                isSubmitting || isPostTranslationPending || isPostFilePending
-              }
+              disabled={isSubmitting || isPostTranslationPending || isUploading}
             >
               등록
             </Button>

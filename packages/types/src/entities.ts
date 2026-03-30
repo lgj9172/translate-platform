@@ -191,6 +191,8 @@ export interface TranslationTargetFile {
   char_without_blank: number;
   word: number;
   file_id: string;
+  name?: string;
+  presigned_url?: string | null;
 }
 
 export interface Translation {
@@ -256,6 +258,10 @@ export interface Counsel {
   updated_at?: string;
   category: CounselCategory;
   file_id?: string;
+  file?: {
+    name: string;
+    presigned_url: string | null;
+  } | null;
 }
 
 export interface CounselAnswer {

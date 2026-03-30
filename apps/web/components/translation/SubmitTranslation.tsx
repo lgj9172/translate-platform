@@ -4,7 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { postFile } from "@/apis/files";
 import ControllerSection from "@/components/ControllerSection";
 import ErrorText from "@/components/ErrorText";
 import FileInput from "@/components/FileInput";
@@ -17,23 +20,11 @@ import SubmitTranslationModal from "@/modals/SubmitTranslationModal";
 import type { Translation } from "@/types/entities";
 
 const SubmitTranslationFormSchema = z.object({
-  file: z
-    .custom<File>((file) => file instanceof File, {
-      message: "유효한 파일을 선택하세요.",
-    })
-    .refine((file) => file.size <= 10 * 1024 * 1024, {
-      message: "파일 크기가 10MB를 초과할 수 없습니다.",
-    })
-    .refine((file) => file.type === "application/pdf", {
-      message: "PDF 파일만 업로드할 수 있습니다.",
-    }),
+  file_id: z.string().min(1, "번역 파일을 업로드해 주세요."),
+  file_name: z.string(),
 });
 
 type SubmitTranslationFormType = z.infer<typeof SubmitTranslationFormSchema>;
-
-const SubmitTranslationFormDefaultValue = {
-  file: undefined,
-};
 
 export default function SubmitTranslation({
   translation,
@@ -42,21 +33,39 @@ export default function SubmitTranslation({
 }) {
   const [openSubmitTranslationModal, setOpenSubmitTranslationModal] =
     useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const methods = useForm<SubmitTranslationFormType>({
     resolver: zodResolver(SubmitTranslationFormSchema),
-    defaultValues: SubmitTranslationFormDefaultValue,
-    mode: "onChange",
+    defaultValues: { file_id: "", file_name: "" },
   });
 
-  const { control, handleSubmit } = methods;
+  const { control, handleSubmit, setValue, watch } = methods;
+  const fileId = watch("file_id");
+  const fileName = watch("file_name");
 
-  const handleSubmitValid: SubmitHandler<SubmitTranslationFormType> = ({
-    file,
-  }) => {
-    if (file) {
-      setOpenSubmitTranslationModal(true);
+  const { mutateAsync: uploadFile } = useMutation({ mutationFn: postFile });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploading(true);
+    try {
+      const res = await uploadFile({ payload: { content: file } });
+      setValue("file_id", res.file_id, { shouldValidate: true });
+      setValue("file_name", res.name);
+    } catch {
+      toast.error("파일 업로드에 실패했습니다.", {
+        richColors: true,
+        position: "top-center",
+      });
+    } finally {
+      setIsUploading(false);
     }
+  };
+
+  const handleSubmitValid: SubmitHandler<SubmitTranslationFormType> = () => {
+    setOpenSubmitTranslationModal(true);
   };
 
   return (
@@ -81,21 +90,21 @@ export default function SubmitTranslation({
           </LabelSection>
           <ControllerSection>
             <Controller
-              name="file"
+              name="file_id"
               control={control}
-              render={({ field, fieldState: { error } }) => (
+              render={({ fieldState: { error } }) => (
                 <>
                   <FileInput
-                    onChange={(e) => {
-                      if (e.target.files?.[0]) {
-                        field.onChange(e.target.files[0]);
-                      }
-                    }}
+                    onChange={handleFileChange}
                     onRemove={() => {
-                      field.onChange(undefined);
+                      setValue("file_id", "", { shouldValidate: true });
+                      setValue("file_name", "");
                     }}
-                    placeholder="번역 파일 (10MB, PDF)"
-                    text={field.value?.name}
+                    placeholder={
+                      isUploading ? "업로드 중..." : "번역 파일 (10MB, PDF)"
+                    }
+                    text={fileName || undefined}
+                    disabled={isUploading}
                   />
                   <ErrorText>{error?.message}</ErrorText>
                 </>
@@ -105,16 +114,23 @@ export default function SubmitTranslation({
         </InputSection>
 
         <div className="flex justify-end">
-          <Button type="submit" onClick={handleSubmit(handleSubmitValid)}>
+          <Button
+            type="submit"
+            onClick={handleSubmit(handleSubmitValid)}
+            disabled={isUploading}
+          >
             번역 제출
           </Button>
         </div>
-        <SubmitTranslationModal
-          open={openSubmitTranslationModal}
-          onOpenChange={setOpenSubmitTranslationModal}
-          translationId={translation.translation_id}
-          file={methods.getValues("file")}
-        />
+
+        {fileId && (
+          <SubmitTranslationModal
+            open={openSubmitTranslationModal}
+            onOpenChange={setOpenSubmitTranslationModal}
+            translationId={translation.translation_id}
+            fileId={fileId}
+          />
+        )}
       </Stack>
     </form>
   );

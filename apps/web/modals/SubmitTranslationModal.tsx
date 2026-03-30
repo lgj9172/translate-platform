@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { postFile } from "@/apis/files";
 import { postTranslationSubmit } from "@/apis/translations";
 import {
   AlertDialog,
@@ -16,16 +15,14 @@ export default function SubmitTranslationModal({
   open,
   onOpenChange,
   translationId,
-  file,
+  fileId,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   translationId: string;
-  file: File;
+  fileId: string;
 }) {
   const queryClient = useQueryClient();
-
-  const { mutateAsync } = useMutation({ mutationFn: postFile });
 
   const { mutate: mutatePostTranslationSubmit, isPending } = useMutation({
     mutationFn: postTranslationSubmit,
@@ -41,14 +38,11 @@ export default function SubmitTranslationModal({
     },
   });
 
-  const handleClickConfirm = async () => {
-    const res = await mutateAsync({
-      payload: { content: file },
-    });
+  const handleClickConfirm = () => {
     mutatePostTranslationSubmit({
       translationId,
       payload: {
-        target_files: [res.file_id],
+        target_files: [fileId],
       },
     });
   };

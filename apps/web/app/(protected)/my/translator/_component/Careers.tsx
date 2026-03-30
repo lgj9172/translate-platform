@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { X } from "lucide-react";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import type { z } from "zod";
 import { getFile, postFile } from "@/apis/files";
@@ -39,7 +39,7 @@ export default function Careers() {
   const careerFields = watch("careers");
   const [fileNames, setFileNames] = useState<{ [key: string]: string }>({});
 
-  const getFileInfo = async (fileId: string) => {
+  const getFileInfo = useCallback(async (fileId: string) => {
     try {
       const fileInfo = await getFile({ fileId });
       return fileInfo;
@@ -47,7 +47,7 @@ export default function Careers() {
       console.error("파일 정보를 가져오는데 실패했습니다:", error);
       return null;
     }
-  };
+  }, []);
 
   useEffect(() => {
     const loadFileNames = async () => {
@@ -69,7 +69,6 @@ export default function Careers() {
     };
 
     loadFileNames();
-    // biome-ignore lint/correctness/useExhaustiveDependencies: getFileInfo is a stable imported function
   }, [careerFields, fileNames, getFileInfo]);
 
   const handleClickAppend = () => {

@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Controller,
   Delete,
   Get,
   Param,
+  ParseFilePipe,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -31,8 +33,12 @@ export class FilesController {
   @UseInterceptors(FileInterceptor("file"))
   upload(
     @CurrentUser() user: SupabaseUser,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(new ParseFilePipe({ fileIsRequired: true }))
+    file: Express.Multer.File,
   ) {
+    if (!file?.buffer) {
+      throw new BadRequestException("파일이 첨부되지 않았습니다.");
+    }
     const originalName = Buffer.from(file.originalname, "latin1").toString(
       "utf8",
     );

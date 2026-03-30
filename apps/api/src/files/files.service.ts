@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
   type OnModuleInit,
@@ -81,7 +82,10 @@ export class FilesService implements OnModuleInit {
       .from(BUCKET)
       .upload(path, buffer, { contentType: mimeType });
 
-    if (error) throw new Error(`Storage 업로드 실패: ${error.message}`);
+    if (error) {
+      this.logger.error(`Storage 업로드 실패: ${error.message}`);
+      throw new InternalServerErrorException("파일 업로드에 실패했습니다.");
+    }
 
     const charCount = await this.extractCharCount(buffer, extension);
 
@@ -112,9 +116,30 @@ export class FilesService implements OnModuleInit {
       .from(BUCKET)
       .createSignedUrl(path, SIGNED_URL_EXPIRES);
 
-    if (error) throw new Error("서명된 URL 생성 실패");
+    if (error) {
+      this.logger.error(`서명된 URL 생성 실패: ${error.message}`);
+      throw new InternalServerErrorException("파일 URL 생성에 실패했습니다.");
+    }
 
     return ok({ ...file, presigned_url: data.signedUrl });
+  }
+
+  async enrichFileInfo(
+    fileId: string,
+  ): Promise<{ name: string; presigned_url: string | null } | null> {
+    const file = await this.prisma.file.findUnique({
+      where: { file_id: fileId },
+    });
+    if (!file) return null;
+    const path = `${file.user_id}/${file.file_id}.${file.extension.toLowerCase()}`;
+    const { data, error } = await this.supabase.admin.storage
+      .from(BUCKET)
+      .createSignedUrl(path, SIGNED_URL_EXPIRES);
+    if (error) {
+      this.logger.warn(`signed URL 생성 실패: ${error.message}`);
+      return { name: file.name, presigned_url: null };
+    }
+    return { name: file.name, presigned_url: data.signedUrl };
   }
 
   async remove(fileId: string, userId: string) {

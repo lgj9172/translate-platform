@@ -33,10 +33,13 @@ export default function WaitConfirm({
         <LabelSection>
           <Label>번역 결과물</Label>
         </LabelSection>
-        {translation.target_files.map((target_file) => (
+        {translation.target_files.map((target_file, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: file_id can be null
           <FileDownload
-            key={target_file.file_id}
+            key={`${target_file.file_id}-${index}`}
             fileId={target_file.file_id}
+            presignedUrl={target_file.presigned_url}
+            name={target_file.name}
           />
         ))}
       </InputSection>

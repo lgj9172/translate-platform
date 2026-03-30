@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
+import { FilesModule } from "../files/files.module";
 import { QuotationsModule } from "../quotations/quotations.module";
-import { SupabaseModule } from "../supabase/supabase.module";
 import { TranslationsController } from "./translations.controller";
 import { TranslationsService } from "./translations.service";
 
 @Module({
-  imports: [SupabaseModule, QuotationsModule],
+  imports: [QuotationsModule, FilesModule],
   controllers: [TranslationsController],
   providers: [TranslationsService],
 })

@@ -14,6 +14,7 @@ interface Props {
   onChange: ChangeEventHandler<HTMLInputElement>;
   onRemove?: () => void;
   isInvalid?: boolean;
+  disabled?: boolean;
 }
 
 export default function FileInput({
@@ -22,6 +23,7 @@ export default function FileInput({
   onChange,
   onRemove,
   isInvalid,
+  disabled,
 }: Props) {
   const id = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,6 +46,7 @@ export default function FileInput({
         type="file"
         id={id}
         onChange={onChange}
+        disabled={disabled}
       />
       <Input
         readOnly
@@ -52,8 +55,9 @@ export default function FileInput({
         className={cn(
           "w-full hover:cursor-pointer",
           isInvalid && "border-destructive ring-[3px] ring-destructive/20",
+          disabled && "opacity-50 cursor-not-allowed pointer-events-none",
         )}
-        onClick={handleClickInput}
+        onClick={disabled ? undefined : handleClickInput}
       />
       {text && (
         <div className="absolute right-0 top-0 bottom-0 w-fit flex justify-center items-center p-3">

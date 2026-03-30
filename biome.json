@@ -17,42 +17,15 @@
       "!**/.next",
       "!**/dist",
       "!**/build",
-      "!**/.turbo",
-      "!**/pnpm-lock.yaml"
+      "!**/.turbo"
     ]
   },
   "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 80
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true
-    }
+    "indentStyle": "space"
   },
   "javascript": {
-    "formatter": {
-      "quoteStyle": "double",
-      "trailingCommas": "all",
-      "semicolons": "always"
-    },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     }
-  },
-  "overrides": [
-    {
-      "includes": ["apps/api/src/**/*.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "useImportType": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

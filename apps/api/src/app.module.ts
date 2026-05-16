@@ -4,6 +4,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { BlogsModule } from "./blogs/blogs.module";
+import { validateEnv } from "./config/env.validation";
 import { CounselsModule } from "./counsels/counsels.module";
 import { FaqsModule } from "./faqs/faqs.module";
 import { FilesModule } from "./files/files.module";
@@ -25,6 +26,7 @@ import { UsersModule } from "./users/users.module";
         ".env.local",
         `.env.${process.env.NODE_ENV ?? "development"}`,
       ],
+      validate: validateEnv,
     }),
     PrismaModule,
     SupabaseModule,

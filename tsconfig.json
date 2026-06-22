@@ -1,4 +1,43 @@
 {
-  "files": [],
-  "references": [{ "path": "./apps/web" }, { "path": "./apps/api" }]
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/types/*": ["./types/*"],
+      "@/*": ["./*"],
+      "@assets/*": ["./public/assets/*"]
+    },
+    "baseUrl": "."
+  },
+  "include": [
+    "next-env.d.ts",
+    "global.d.ts",
+    "app/**/*",
+    "components/**/*",
+    "apis/**/*",
+    "constants/**/*",
+    "hooks/**/*",
+    "lib/**/*",
+    "model/**/*",
+    "modals/**/*",
+    "types/**/*",
+    "utils/**/*",
+    "server.js",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }
